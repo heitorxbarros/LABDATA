@@ -1,0 +1,90 @@
+---
+title: "Reprodução de mapa a partir da tabela 6471"
+---
+
+```{r dados, include=FALSE}
+renda <- readRDS("DADOS/renda.RDS")
+```
+
+## Objetivo
+
+Criar mapa a partir da reprodução da tabela [**tabela 6471**](https://sidra.ibge.gov.br/tabela/6471) do SIDRA, através dos pacotes `PNADcIBGE`, `survey` e `ggplot2`.
+
+## Estimando valores
+
+Usaremos a função `get_pnadc` para obter dados da população no segundo trimestre de 2024. Depois, usaremos a função `svytotal` para estimar os totais populacionais das interações entre *sexo* e *idade*.
+
+Alternativamente, é possível carregar dados baixados anteriormente, economizando no tempo de execução do código.
+
+```{r estimativas, results="hide",message=F,eval=F}
+# Carregando pacotes----------------------------------------------------------------------------
+library(PNADcIBGE)
+library(survey)
+
+# Define variáveis de interesse da PNADc
+variaveis_selecionadas <- c("VD4020", "UF")
+
+# Importando dados e estimando valores de interesse -----------------------------------------
+# dados =  get_pnadc(year = "2024", quarter = "2",
+#                   vars = variaveis_selecionadas)
+
+# Carregando os dados baixados anteriormente (altere o caminho usado em sua máquina)
+dados = readRDS(paste0("C:/Users/03002433/Documents/LABDATA/pnadc",
+                       "2024","2",".RDS"))
+
+# Estimando a renda por Estado
+renda = svyby(~VD4020, ~UF, dados, svymean, na.rm = TRUE)
+```
+
+
+## Gráfico 
+
+Usando o pacote `ggplot2` é possível criar diversos tipos de gráfico. Com o pacote `geobr` é possível baixar dados especiais brasileiros. Dessa forma, usaremos os pacotes `geobr`, `dplyr`, `tidyr` e `forcats` para formatar os dados obtidos anteriormente.
+
+```{r grafico,  out.width="100%", fig.align='center', dpi=600, warning=F, message=F}
+# Carregando pacotes
+library(dplyr)
+library(geobr)
+library(ggplot2)
+
+# Baixando dados dos Estados
+estados = read_state(year=2020)
+
+# Juntando data frames
+estados = left_join(estados, renda, by = c('name_state' = 'UF'))
+
+# Alguns estados estão com acentuação diferente nos data frames 
+# Ajustando dados
+estados$VD4020[estados$name_state=='Amazônas'] = renda$VD4020[renda$UF=='Amazonas']
+estados$VD4020[estados$name_state=='Rio Grande Do Norte'] = renda$VD4020[renda$UF=='Rio Grande do Norte']
+estados$VD4020[estados$name_state=='Rio Grande Do Sul'] = renda$VD4020[renda$UF=='Rio Grande do Sul']
+estados$VD4020[estados$name_state=='Mato Grosso Do Sul'] = renda$VD4020[renda$UF=='Mato Grosso do Sul']
+estados$VD4020[estados$name_state=='Rio De Janeiro'] = renda$VD4020[renda$UF=='Rio de Janeiro']
+
+# Criando gráfico
+
+ggplot()+
+  # Definindo tipo do gráfico (mapa)
+  geom_sf(data=estados, aes(fill = as.numeric(VD4020)), colour=NA, size=.15)+
+  # Definindo cores usando escala viridis (acessível para dautônicos)
+  scale_fill_viridis_c(option = "A",name='Rendimento Médio',direction = -1) +
+  # Adicionando título
+  labs(title = 'Rendimento médio mensal real das pessoas de 14 anos ou mais',
+       subtitle = 'Segundo Trimestre de 2024',
+       caption = 'Pesquisa Nacional por Amostra de Domicílios Contínua Trimestral') +
+  # Alterando tema
+  theme_minimal() +
+  # Faz ajustes no tema do gráfico
+  theme(
+        plot.title = element_text(face = 'bold', size = 12),
+        plot.subtitle = element_text(face = 'italic', size = 9),
+        plot.title.position = "plot", 
+        plot.caption.position =  "plot"
+        ) 
+```
+
+Usando o comando `ggsave()` é possível salvar a imagem em PNG.
+
+```{r salva, eval=F}
+ggsave('grafico1.png',dpi = 600,width = 9,height = 7)
+```

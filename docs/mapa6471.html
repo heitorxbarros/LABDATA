@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Introdução – LABDATA</title>
+<title>Reprodução de mapa a partir da tabela 6471 – LABDATA</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -114,7 +114,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./index.html">Introdução</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item">Reprodução de mapa a partir da tabela 6471</li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -141,7 +141,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <ul class="list-unstyled mt-1">
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./index.html" class="sidebar-item-text sidebar-link active">
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Introdução</span></a>
   </div>
 </li>
@@ -160,13 +160,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./grafico6471.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Elaboração de gráfico da tabela 6471</span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./mapa6471.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Elaboração de mapa com dados da tabela 6471</span></a>
+ <span class="menu-text">Elaboração de gráfico da tabela 6471 (Rendimento médio mensal por ocupação)</span></a>
   </div>
 </li>
     </ul>
@@ -179,11 +173,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#replicando-resultados-do-sidra" id="toc-replicando-resultados-do-sidra" class="nav-link active" data-scroll-target="#replicando-resultados-do-sidra">Replicando resultados do SIDRA</a>
-  <ul class="collapse">
-  <li><a href="#preparação" id="toc-preparação" class="nav-link" data-scroll-target="#preparação">Preparação</a></li>
-  <li><a href="#links-importantes" id="toc-links-importantes" class="nav-link" data-scroll-target="#links-importantes">Links importantes</a></li>
-  </ul></li>
+  <li><a href="#objetivo" id="toc-objetivo" class="nav-link active" data-scroll-target="#objetivo">Objetivo</a></li>
+  <li><a href="#estimando-valores" id="toc-estimando-valores" class="nav-link" data-scroll-target="#estimando-valores">Estimando valores</a></li>
+  <li><a href="#gráfico" id="toc-gráfico" class="nav-link" data-scroll-target="#gráfico">Gráfico</a></li>
   </ul>
 </nav>
     </div>
@@ -192,7 +184,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Introdução</h1>
+<h1 class="title">Reprodução de mapa a partir da tabela 6471</h1>
 </div>
 
 
@@ -209,25 +201,91 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<section id="replicando-resultados-do-sidra" class="level1">
-<h1>Replicando resultados do SIDRA</h1>
-<p>Os artigos apresentados tem como objetivo reproduzir resultados do SIDRA usando dados da PNAD Contínua, através dos pacotes <code>PNADcIBGE</code> e <code>survey</code> da linguagem <strong>R</strong>. Além disso, alguns artigos demonstram o uso dos dados obtidos na contrução de gráficos usando pacotes como <code>ggplot2</code> e <code>geobr</code>.</p>
-<section id="preparação" class="level2">
-<h2 class="anchored" data-anchor-id="preparação">Preparação</h2>
-<p>Antes de começar, certifique-se que os pacotes necessários estão instalados em suas versões mais recentes.</p>
+<section id="objetivo" class="level2">
+<h2 class="anchored" data-anchor-id="objetivo">Objetivo</h2>
+<p>Criar mapa a partir da reprodução da tabela <a href="https://sidra.ibge.gov.br/tabela/6471"><strong>tabela 6471</strong></a> do SIDRA, através dos pacotes <code>PNADcIBGE</code>, <code>survey</code> e <code>ggplot2</code>.</p>
+</section>
+<section id="estimando-valores" class="level2">
+<h2 class="anchored" data-anchor-id="estimando-valores">Estimando valores</h2>
+<p>Usaremos a função <code>get_pnadc</code> para obter dados da população no segundo trimestre de 2024. Depois, usaremos a função <code>svytotal</code> para estimar os totais populacionais das interações entre <em>sexo</em> e <em>idade</em>.</p>
+<p>Alternativamente, é possível carregar dados baixados anteriormente, economizando no tempo de execução do código.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">'PNADcIBGE'</span>) </span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">'survey'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Carregando pacotes----------------------------------------------------------------------------</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(PNADcIBGE)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(survey)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Define variáveis de interesse da PNADc</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>variaveis_selecionadas <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"VD4020"</span>, <span class="st">"UF"</span>)</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Importando dados e estimando valores de interesse -----------------------------------------</span></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="co"># dados =  get_pnadc(year = "2024", quarter = "2",</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="co">#                   vars = variaveis_selecionadas)</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Carregando os dados baixados anteriormente (altere o caminho usado em sua máquina)</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>dados <span class="ot">=</span> <span class="fu">readRDS</span>(<span class="fu">paste0</span>(<span class="st">"C:/Users/03002433/Documents/LABDATA/pnadc"</span>,</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>                       <span class="st">"2024"</span>,<span class="st">"2"</span>,<span class="st">".RDS"</span>))</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Estimando a renda por Estado</span></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>renda <span class="ot">=</span> <span class="fu">svyby</span>(<span class="sc">~</span>VD4020, <span class="sc">~</span>UF, dados, svymean, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="links-importantes" class="level2">
-<h2 class="anchored" data-anchor-id="links-importantes">Links importantes</h2>
-<p>Tutorial do desenvolvedor do pacote <code>PNADcIBGE</code>, <strong><em>Gabriel Assuncao:</em></strong> <a href="https://rpubs.com/gabriel-assuncao-ibge/pnadc" class="uri">https://rpubs.com/gabriel-assuncao-ibge/pnadc</a> ;</p>
-<p>Tabelas do SIDRA: <a href="https://sidra.ibge.gov.br/pesquisa/pnadct/tabelas" class="uri">https://sidra.ibge.gov.br/pesquisa/pnadct/tabelas</a> ;</p>
-<p>Documentação do pacote survey: <a href="https://cran.r-project.org/web/packages/survey/survey.pdf" class="uri">https://cran.r-project.org/web/packages/survey/survey.pdf</a> ;</p>
+<section id="gráfico" class="level2">
+<h2 class="anchored" data-anchor-id="gráfico">Gráfico</h2>
+<p>Usando o pacote <code>ggplot2</code> é possível criar diversos tipos de gráfico. Com o pacote <code>geobr</code> é possível baixar dados especiais brasileiros. Dessa forma, usaremos os pacotes <code>geobr</code>, <code>dplyr</code>, <code>tidyr</code> e <code>forcats</code> para formatar os dados obtidos anteriormente.</p>
+<div class="cell" data-layout-align="center">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Carregando pacotes</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(geobr)</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Baixando dados dos Estados</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>estados <span class="ot">=</span> <span class="fu">read_state</span>(<span class="at">year=</span><span class="dv">2020</span>)</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Juntando data frames</span></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>estados <span class="ot">=</span> <span class="fu">left_join</span>(estados, renda, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">'name_state'</span> <span class="ot">=</span> <span class="st">'UF'</span>))</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Alguns estados estão com acentuação diferente nos data frames </span></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Ajustando dados</span></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>estados<span class="sc">$</span>VD4020[estados<span class="sc">$</span>name_state<span class="sc">==</span><span class="st">'Amazônas'</span>] <span class="ot">=</span> renda<span class="sc">$</span>VD4020[renda<span class="sc">$</span>UF<span class="sc">==</span><span class="st">'Amazonas'</span>]</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a>estados<span class="sc">$</span>VD4020[estados<span class="sc">$</span>name_state<span class="sc">==</span><span class="st">'Rio Grande Do Norte'</span>] <span class="ot">=</span> renda<span class="sc">$</span>VD4020[renda<span class="sc">$</span>UF<span class="sc">==</span><span class="st">'Rio Grande do Norte'</span>]</span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>estados<span class="sc">$</span>VD4020[estados<span class="sc">$</span>name_state<span class="sc">==</span><span class="st">'Rio Grande Do Sul'</span>] <span class="ot">=</span> renda<span class="sc">$</span>VD4020[renda<span class="sc">$</span>UF<span class="sc">==</span><span class="st">'Rio Grande do Sul'</span>]</span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>estados<span class="sc">$</span>VD4020[estados<span class="sc">$</span>name_state<span class="sc">==</span><span class="st">'Mato Grosso Do Sul'</span>] <span class="ot">=</span> renda<span class="sc">$</span>VD4020[renda<span class="sc">$</span>UF<span class="sc">==</span><span class="st">'Mato Grosso do Sul'</span>]</span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>estados<span class="sc">$</span>VD4020[estados<span class="sc">$</span>name_state<span class="sc">==</span><span class="st">'Rio De Janeiro'</span>] <span class="ot">=</span> renda<span class="sc">$</span>VD4020[renda<span class="sc">$</span>UF<span class="sc">==</span><span class="st">'Rio de Janeiro'</span>]</span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a><span class="co"># Criando gráfico</span></span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>()<span class="sc">+</span></span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Definindo tipo do gráfico (mapa)</span></span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_sf</span>(<span class="at">data=</span>estados, <span class="fu">aes</span>(<span class="at">fill =</span> <span class="fu">as.numeric</span>(VD4020)), <span class="at">colour=</span><span class="cn">NA</span>, <span class="at">size=</span>.<span class="dv">15</span>)<span class="sc">+</span></span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Definindo cores usando escala viridis (acessível para dautônicos)</span></span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_viridis_c</span>(<span class="at">option =</span> <span class="st">"A"</span>,<span class="at">name=</span><span class="st">'Rendimento Médio'</span>,<span class="at">direction =</span> <span class="sc">-</span><span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Adicionando título</span></span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">'Rendimento médio mensal real das pessoas de 14 anos ou mais'</span>,</span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a>       <span class="at">subtitle =</span> <span class="st">'Segundo Trimestre de 2024'</span>,</span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a>       <span class="at">caption =</span> <span class="st">'Pesquisa Nacional por Amostra de Domicílios Contínua Trimestral'</span>) <span class="sc">+</span></span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Alterando tema</span></span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Faz ajustes no tema do gráfico</span></span>
+<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(</span>
+<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a>        <span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">'bold'</span>, <span class="at">size =</span> <span class="dv">12</span>),</span>
+<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a>        <span class="at">plot.subtitle =</span> <span class="fu">element_text</span>(<span class="at">face =</span> <span class="st">'italic'</span>, <span class="at">size =</span> <span class="dv">9</span>),</span>
+<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a>        <span class="at">plot.title.position =</span> <span class="st">"plot"</span>, </span>
+<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a>        <span class="at">plot.caption.position =</span>  <span class="st">"plot"</span></span>
+<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a>        ) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="mapa6471_files/figure-html/grafico-1.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Usando o comando <code>ggsave()</code> é possível salvar a imagem em PNG.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggsave</span>(<span class="st">'grafico1.png'</span>,<span class="at">dpi =</span> <span class="dv">600</span>,<span class="at">width =</span> <span class="dv">9</span>,<span class="at">height =</span> <span class="dv">7</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 
 
-</section>
 </section>
 
 </main> <!-- /main -->

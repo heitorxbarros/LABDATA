@@ -145,5 +145,33 @@
     "crumbs": [
       "Reprodução da tabela 5606 (Massa de rendimento)"
     ]
+  },
+  {
+    "objectID": "mapa6471.html",
+    "href": "mapa6471.html",
+    "title": "Reprodução de mapa a partir da tabela 6471",
+    "section": "",
+    "text": "Criar mapa a partir da reprodução da tabela tabela 6471 do SIDRA, através dos pacotes PNADcIBGE, survey e ggplot2."
+  },
+  {
+    "objectID": "mapa6471.html#objetivo",
+    "href": "mapa6471.html#objetivo",
+    "title": "Reprodução de mapa a partir da tabela 6471",
+    "section": "",
+    "text": "Criar mapa a partir da reprodução da tabela tabela 6471 do SIDRA, através dos pacotes PNADcIBGE, survey e ggplot2."
+  },
+  {
+    "objectID": "mapa6471.html#estimando-valores",
+    "href": "mapa6471.html#estimando-valores",
+    "title": "Reprodução de mapa a partir da tabela 6471",
+    "section": "Estimando valores",
+    "text": "Estimando valores\nUsaremos a função get_pnadc para obter dados da população no segundo trimestre de 2024. Depois, usaremos a função svytotal para estimar os totais populacionais das interações entre sexo e idade.\nAlternativamente, é possível carregar dados baixados anteriormente, economizando no tempo de execução do código.\n\n# Carregando pacotes----------------------------------------------------------------------------\nlibrary(PNADcIBGE)\nlibrary(survey)\n\n# Define variáveis de interesse da PNADc\nvariaveis_selecionadas &lt;- c(\"VD4020\", \"UF\")\n\n# Importando dados e estimando valores de interesse -----------------------------------------\n# dados =  get_pnadc(year = \"2024\", quarter = \"2\",\n#                   vars = variaveis_selecionadas)\n\n# Carregando os dados baixados anteriormente (altere o caminho usado em sua máquina)\ndados = readRDS(paste0(\"C:/Users/03002433/Documents/LABDATA/pnadc\",\n                       \"2024\",\"2\",\".RDS\"))\n\n# Estimando a renda por Estado\nrenda = svyby(~VD4020, ~UF, dados, svymean, na.rm = TRUE)"
+  },
+  {
+    "objectID": "mapa6471.html#gráfico",
+    "href": "mapa6471.html#gráfico",
+    "title": "Reprodução de mapa a partir da tabela 6471",
+    "section": "Gráfico",
+    "text": "Gráfico\nUsando o pacote ggplot2 é possível criar diversos tipos de gráfico. Com o pacote geobr é possível baixar dados especiais brasileiros. Dessa forma, usaremos os pacotes geobr, dplyr, tidyr e forcats para formatar os dados obtidos anteriormente.\n\n# Carregando pacotes\nlibrary(dplyr)\nlibrary(geobr)\nlibrary(ggplot2)\n\n# Baixando dados dos Estados\nestados = read_state(year=2020)\n\n# Juntando data frames\nestados = left_join(estados, renda, by = c('name_state' = 'UF'))\n\n# Alguns estados estão com acentuação diferente nos data frames \n# Ajustando dados\nestados$VD4020[estados$name_state=='Amazônas'] = renda$VD4020[renda$UF=='Amazonas']\nestados$VD4020[estados$name_state=='Rio Grande Do Norte'] = renda$VD4020[renda$UF=='Rio Grande do Norte']\nestados$VD4020[estados$name_state=='Rio Grande Do Sul'] = renda$VD4020[renda$UF=='Rio Grande do Sul']\nestados$VD4020[estados$name_state=='Mato Grosso Do Sul'] = renda$VD4020[renda$UF=='Mato Grosso do Sul']\nestados$VD4020[estados$name_state=='Rio De Janeiro'] = renda$VD4020[renda$UF=='Rio de Janeiro']\n\n# Criando gráfico\n\nggplot()+\n  # Definindo tipo do gráfico (mapa)\n  geom_sf(data=estados, aes(fill = as.numeric(VD4020)), colour=NA, size=.15)+\n  # Definindo cores usando escala viridis (acessível para dautônicos)\n  scale_fill_viridis_c(option = \"A\",name='Rendimento Médio',direction = -1) +\n  # Adicionando título\n  labs(title = 'Rendimento médio mensal real das pessoas de 14 anos ou mais',\n       subtitle = 'Segundo Trimestre de 2024',\n       caption = 'Pesquisa Nacional por Amostra de Domicílios Contínua Trimestral') +\n  # Alterando tema\n  theme_minimal() +\n  # Faz ajustes no tema do gráfico\n  theme(\n        plot.title = element_text(face = 'bold', size = 12),\n        plot.subtitle = element_text(face = 'italic', size = 9),\n        plot.title.position = \"plot\", \n        plot.caption.position =  \"plot\"\n        ) \n\n\n\n\n\n\n\n\nUsando o comando ggsave() é possível salvar a imagem em PNG.\n\nggsave('grafico1.png',dpi = 600,width = 9,height = 7)"
   }
 ]
