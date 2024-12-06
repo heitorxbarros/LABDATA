@@ -1,0 +1,107 @@
+---
+title: "Reprodução da tabela 6471"
+---
+
+## Objetivo
+
+Reproduzir [**tabela 6471**](https://sidra.ibge.gov.br/tabela/6471), que apresenta o **Rendimento médio mensal real das pessoas de 14 anos ou mais de idade ocupadas na semana de referência com rendimento de trabalho, habitualmente recebido no trabalho principal.**
+
+```{r tabela1, echo=FALSE, out.width="100%", fig.align='center', dpi=600}
+knitr::include_graphics("TABELAS/TABELA6471.png")
+df = readRDS("DADOS/dfgrafico6471.RDS")
+```
+
+
+## Estimando valores
+
+Os objetos obtidos a partir da função `get_pnadc` podem ocupar mais de 1,5 GB, se selecionadas todas as variáveis do trimestre. Portanto, se você deseja reproduzir as estimativas de uma tabela do SIDRA para um número grande de trimestres, é provável que a memória RAM de sua máquina não suporte todos os objetos de uma só vez. Assim, o ideal para um estimativas de um período grande é remover os objetos obtidos de cada trimestre após calcular suas estimativas. Caso deseje reutilizar o objeto, é possível salvá-lo na memória principal de sua máquina, eliminando a necessidade de baixá-lo novamente com a função `get_pnadc`, que pode ser um processo lento a depender de sua conexão.
+
+Então, com o uso de funções iterativas, é possível reutilizar o código para calcular as estimativas sem esgotar a memória RAM. Dessa forma, cada etapa do código é realizada através de funções específicas.
+
+```{r estimativas, results="hide",message=F, eval=F}
+# Carregando pacotes----------------------------------------------------------------------------
+library(PNADcIBGE)
+library(survey)
+
+# Definindo parâmetros------------------------------------------------------------------------
+# Cria tabela com periodos de interesse (anos e trimestres)
+periodos <- expand.grid(year = 2023:2024, quarter = 1:4)
+periodos <- periodos[order(periodos$year, periodos$quarter), ]
+periodos <- periodos[1:6,]
+
+
+# Define variáveis de interesse da PNADc
+variaveis_selecionadas <- c("VD4002", "VD4009", "VD4019")
+
+# Importando dados e estimando valores de interesse -----------------------------------------
+# Cria data frame para armazenar resultados
+df <- data.frame()
+
+# Cria looping iterando sobre os trimestres selecionados
+for(i in 1:nrow(periodos)){
+  # Importando dados
+  # dados = get_pnadc(year = periodos$year[i], quarter = periodos$quarter[i],
+  #                  vars = variaveis_selecionadas)
+  
+   dados = readRDS(paste0("C:/Users/03002433/Documents/LABDATA/pnadc",
+                          periodos$year[i],periodos$quarter[i],".RDS"))
+   
+   # Transformando a variável para valores reais usando o deflator
+   dados$variables = transform(dados$variables, VD4019_real = VD4019*Habitual)
+  
+  # Estimando valores
+  ## O resultado apresenta duas linhas. A primeira contém "Pessoas na força de trabalho" e a
+  ## segunda "Pessoas fora da força de trabalho".
+  resultado <- svyby(~VD4019_real, ~VD4009, dados, svymean, na.rm = TRUE)
+  
+  # Estimando CV
+  cv = cv(resultado)
+  
+  # Criando data frame temporário com resultados do trimestre
+  df_temp <- data.frame(
+    year = rep(periodos$year[i], 10),
+    quarter = rep(periodos$quarter[i], 10),
+    ocupacao = resultado[1],
+    taxa = resultado[2],
+    cv = cv[1])
+  
+  # Gravando resultados no data frame
+  df <- rbind(df, df_temp)
+  
+  # Remove dados da do trimestre da memória
+  remove(dados)
+}
+```
+
+
+## Tabela
+
+Usando o pacote `gt` é possível formatar uma tabela para exibir os valores calculados.
+
+```{r tabela}
+# Carregando pacote
+library(gt)
+
+# Criando tabela
+gt(df) |> 
+ tab_header(
+   title = "6471 - Rendimento médio mensal real das pessoas de 14 anos ou mais de idade ocupadas na semana de referência com rendimento de trabalho, habitualmente recebido no trabalho principal",
+   subtitle = "Variável - Rendimento médio mensal real das pessoas de 14 anos ou mais de idade ocupadas na semana de referência com rendimento de trabalho, habitualmente recebido no trabalho principal"
+ ) |> 
+  cols_label(
+   year = "Ano",
+   quarter = "Trimestre",
+   VD4009 = "Ocupação",
+   VD4019_real = "Renda média",
+   cv = "Coeficiente de Variação"
+ ) |> 
+  fmt_percent(
+    columns = c(cv),
+    decimals = 2) |> 
+  fmt_number(
+    columns = c(VD4019_real),
+    decimals = 2
+  )
+```
+
+</br>

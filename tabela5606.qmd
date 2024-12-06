@@ -1,0 +1,82 @@
+---
+title: "Reprodução da tabela 5606"
+---
+
+## Objetivo
+
+Reproduzir [**tabela 5606**](https://sidra.ibge.gov.br/tabela/5606) apresenta a Massa de rendimento mensal, na semana de referência, das pessoas de 14 anos ou mais de idade.
+
+```{r tabela1, echo=FALSE, out.width="100%", fig.align='center', dpi=600}
+knitr::include_graphics("TABELAS/TABELA6471.png")
+df = readRDS("DADOS/dadosTAB5606.RDS")
+```
+
+## Estimando valores
+
+Para estimar a massa de rendimento, usaremos a tabela `svytotal`, que estima o total de uma determinada variável.
+
+```{r estimativas, results="hide",message=F,eval=FALSE}
+# Carregando pacotes----------------------------------------------------------------------------
+library(PNADcIBGE)
+library(survey)
+
+# Definindo parâmetros------------------------------------------------------------------------
+# Cria tabela com periodos de interesse (anos e trimestres)
+periodos <- expand.grid(year = 2023:2024, quarter = 1:4)
+periodos <- periodos[order(periodos$year, periodos$quarter), ]
+periodos <- periodos[1:6,]
+
+# Define variáveis de interesse da PNADc
+variaveis_selecionadas <- c("VD4019")
+
+# Importando dados e estimando valores de interesse -----------------------------------------
+# Cria data frame para armazenar resultados
+df <- data.frame(periodos,total = NA, cv = NA)
+
+# Cria looping iterando sobre os trimestres selecionados
+for(i in 1:nrow(periodos)){
+  # Importando dados
+  dados = get_pnadc(year = periodos$year[i], quarter = periodos$quarter[i],
+                    vars = variaveis_selecionadas)
+  
+  # Estimando valores
+  ## O resultado apresenta duas linhas. A primeira contém "Pessoas na força de trabalho" e a
+  ## segunda "Pessoas fora da força de trabalho".
+  resultado = svytotal(x = ~VD4019, design = dados, na.rm = TRUE)
+  
+  # Estimando CV
+  cv = cv(resultado)
+  
+  # Gravando resultados no data frame
+  df$total[df$year == periodos$year[i] & df$quarter == periodos$quarter[i]] = resultado[1] 
+  df$cv[df$year == periodos$year[i] & df$quarter == periodos$quarter[i]] = cv[1] 
+  
+  # Remove dados da do trimestre da memória
+  remove(dados)
+}
+```
+
+## Tabela
+
+Usando o pacote `gt` é possível formatar uma tabela para exibir os valores calculados.
+
+```{r tabela}
+# Carregando pacote
+library(gt)
+
+# Criando tabela
+gt(df) |> 
+ tab_header(
+   title = "Tabela 5606 - Massa de rendimento mensal real das pessoas de 14 anos ou mais de idade ocupadas na semana de referência com rendimento de trabalho, habitualmente e efetivamente recebidos em todos os trabalhos",
+   subtitle = "Variável - Massa de rendimento mensal real das pessoas de 14 anos ou mais de idade ocupadas na semana de referência com rendimento de trabalho, habitualmente recebido em todos os trabalhos"
+ ) |> 
+  cols_label(
+   year = "Ano",
+   total = "Trimestre",
+   total = "Total",
+   cv = "Coeficiente de Variação"
+ )
+
+```
+
+</br>

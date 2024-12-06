@@ -1,0 +1,24 @@
+---
+title: "Introdução"
+---
+
+# Replicando resultados do SIDRA
+
+Os artigos apresentados tem como objetivo reproduzir resultados do SIDRA usando dados da PNAD Contínua, através dos pacotes `PNADcIBGE` e `survey` da linguagem **R**. Além disso, alguns artigos demonstram o uso dos dados obtidos na contrução de gráficos usando pacotes como `ggplot2` e `geobr`.
+
+## Preparação
+
+Antes de começar, certifique-se que os pacotes necessários estão instalados em suas versões mais recentes.
+
+```{r instalacao, eval=F}
+install.packages('PNADcIBGE') 
+install.packages('survey')
+```
+
+## Links importantes
+
+Tutorial do desenvolvedor do pacote `PNADcIBGE`, ***Gabriel Assuncao:*** <https://rpubs.com/gabriel-assuncao-ibge/pnadc> ;
+
+Tabelas do SIDRA: <https://sidra.ibge.gov.br/pesquisa/pnadct/tabelas> ;
+
+Documentação do pacote survey: <https://cran.r-project.org/web/packages/survey/survey.pdf> ;

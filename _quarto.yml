@@ -1,0 +1,25 @@
+project:
+  type: website
+
+website:
+  title: "LABDATA"
+  sidebar:
+    search: true
+    logo: https://ence.ibge.gov.br/images/logoence.fw.png
+    contents:
+      - href: index.qmd
+        text: Introdução
+      - href: tabela6471.qmd
+        text: Reprodução da tabela 6471 (Rendimento médio mensal por ocupação)
+      - href: tabela5606.qmd
+        text: Reprodução da tabela 5606 (Massa de rendimento)
+      - href: grafico6471.qmd
+        text: Elaboração de gráfico da tabela 6471 (Rendimento médio mensal por ocupação)
+
+format:
+  html:
+    theme: cosmo
+    css: styles.css
+    toc: true
+
+editor: visual
