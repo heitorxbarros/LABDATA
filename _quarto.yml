@@ -23,6 +23,9 @@ website:
         contents: 
           - tabela5917.qmd
           - grafico5917.qmd
+      - section: "Tabela 4099 - Taxa de desocupação"
+        contents: 
+          - tabela4099.qmd
 
 format:
   html:

@@ -79,7 +79,7 @@ for(i in 1:nrow(periodos)){
 
 Usando o pacote `gt` é possível formatar uma tabela para exibir os valores calculados.
 
-```{r tabela}
+```{r tabela, warning=F, message=F}
 # Carregando pacote
 library(gt)
 

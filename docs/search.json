@@ -331,5 +331,49 @@
       "Tabela 5917 - População total",
       "Criando pirâmide etária"
     ]
+  },
+  {
+    "objectID": "tabela4099.html",
+    "href": "tabela4099.html",
+    "title": "Reproduzindo a tabela",
+    "section": "",
+    "text": "Reproduzir tabela 4099, que apresenta a Taxa de desocupação e de subutilização da força de trabalho, na semana de referência, das pessoas de 14 anos ou mais de idade.",
+    "crumbs": [
+      "Tabela 4099 - Taxa de desocupação",
+      "Reproduzindo a tabela"
+    ]
+  },
+  {
+    "objectID": "tabela4099.html#objetivo",
+    "href": "tabela4099.html#objetivo",
+    "title": "Reproduzindo a tabela",
+    "section": "",
+    "text": "Reproduzir tabela 4099, que apresenta a Taxa de desocupação e de subutilização da força de trabalho, na semana de referência, das pessoas de 14 anos ou mais de idade.",
+    "crumbs": [
+      "Tabela 4099 - Taxa de desocupação",
+      "Reproduzindo a tabela"
+    ]
+  },
+  {
+    "objectID": "tabela4099.html#estimando-valores",
+    "href": "tabela4099.html#estimando-valores",
+    "title": "Reproduzindo a tabela",
+    "section": "Estimando valores",
+    "text": "Estimando valores\nPara estimar taxas, usamos a função svyratio, definindo o numerados e o denominador.\n\n# Carregando pacotes----------------------------------------------------------------------------\nlibrary(PNADcIBGE)\nlibrary(survey)\n\n# Definindo parâmetros------------------------------------------------------------------------\n# Cria tabela com periodos de interesse (anos e trimestres)\nperiodos &lt;- expand.grid(year = 2023:2024, quarter = 1:4)\nperiodos &lt;- periodos[order(periodos$year, periodos$quarter), ]\nperiodos &lt;- periodos[1:6,]\n\n# Define variáveis de interesse da PNADc\nvariaveis_selecionadas &lt;- c(\"VD4002\",\"VD4001\")\n\n# Importando dados e estimando valores de interesse -----------------------------------------\n# Cria data frame para armazenar resultados\ndf &lt;- data.frame(periodos,taxa = NA, cv = NA)\n\n# Cria looping iterando sobre os trimestres selecionados\nfor(i in 1:nrow(periodos)){\n  # Importando dados\n  # dados = get_pnadc(year = periodos$year[i], quarter = periodos$quarter[i],\n  #                  vars = variaveis_selecionadas)\n  \n  dados = readRDS(paste0(\"c:/Users/Avell B155 MAX/Documents/pnadc\",\n                          periodos$year[i],periodos$quarter[i],\".RDS\"))\n  \n  # Estimando valores\n  ## O resultado apresenta duas linhas. A primeira contém \"Pessoas na força de trabalho\" e a\n  ## segunda \"Pessoas fora da força de trabalho\".\n  resultado = svyratio(numerator=~(VD4002==\"Pessoas desocupadas\"), \n                       denominator=~grepl(\"^Pessoas na\",VD4001), # A função grepl foi usada para evitar problemas de encoding com o \"ç\"\n                       design=dados, na.rm=TRUE)\n  \n  # Estimando CV\n  cv = cv(resultado)\n  \n  # Gravando resultados no data frame\n  df$taxa[df$year == periodos$year[i] & df$quarter == periodos$quarter[i]] = resultado[1] \n  df$cv[df$year == periodos$year[i] & df$quarter == periodos$quarter[i]] = cv[1] \n  \n  # Remove dados da do trimestre da memória\n  remove(dados)\n}",
+    "crumbs": [
+      "Tabela 4099 - Taxa de desocupação",
+      "Reproduzindo a tabela"
+    ]
+  },
+  {
+    "objectID": "tabela4099.html#tabela",
+    "href": "tabela4099.html#tabela",
+    "title": "Reproduzindo a tabela",
+    "section": "Tabela",
+    "text": "Tabela\nUsando o pacote gt é possível formatar uma tabela para exibir os valores calculados.\n\n# Carregando pacote\nlibrary(gt)\n\n# Criando tabela\ngt(df) |&gt; \n tab_header(\n   title = \"Tabela 4099 - Taxas de desocupação e de subutilização da força de trabalho, na semana de referência, das pessoas de 14 anos ou mais de idade\",\n   subtitle = \"Variável - Taxa de desocupação, na semana de referência, das pessoas de 14 anos ou mais de idade (%)\"\n ) |&gt; \n  cols_label(\n   year = \"Ano\",\n   quarter = \"Trimestre\",\n   taxa = \"Taxa\",\n   cv = \"Coeficiente de Variação\"\n ) |&gt; \n  fmt_percent(\n    columns = c(taxa,cv),\n    decimals = 1)\n\n\n\n\n\n\n\nTabela 4099 - Taxas de desocupação e de subutilização da força de trabalho, na semana de referência, das pessoas de 14 anos ou mais de idade\n\n\nVariável - Taxa de desocupação, na semana de referência, das pessoas de 14 anos ou mais de idade (%)\n\n\nAno\nTrimestre\nTaxa\nCoeficiente de Variação\n\n\n\n\n2023\n1\n0.08793574\n1.2%\n\n\n2023\n2\n0.08039508\n1.2%\n\n\n2023\n3\n0.0768891\n1.2%\n\n\n2023\n4\n0.07409955\n1.1%\n\n\n2024\n1\n0.07923948\n1.1%\n\n\n2024\n2\n0.06895154\n1.2%",
+    "crumbs": [
+      "Tabela 4099 - Taxa de desocupação",
+      "Reproduzindo a tabela"
+    ]
   }
 ]
