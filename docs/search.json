@@ -4,7 +4,7 @@
     "href": "index.html",
     "title": "Introdução",
     "section": "",
-    "text": "Os artigos apresentados tem como objetivo reproduzir resultados do SIDRA usando dados da PNAD Contínua, através dos pacotes PNADcIBGE e survey da linguagem R. Além disso, alguns artigos demonstram o uso dos dados obtidos na contrução de gráficos usando pacotes como ggplot2 e geobr.\n\n\nAntes de começar, certifique-se que os pacotes necessários estão instalados em suas versões mais recentes.\n\ninstall.packages('PNADcIBGE') \ninstall.packages('survey')\n\n\n\n\nTutorial do desenvolvedor do pacote PNADcIBGE, Gabriel Assuncao: https://rpubs.com/gabriel-assuncao-ibge/pnadc ;\nTabelas do SIDRA: https://sidra.ibge.gov.br/pesquisa/pnadct/tabelas ;\nDocumentação do pacote survey: https://cran.r-project.org/web/packages/survey/survey.pdf ;",
+    "text": "Os artigos apresentados tem como objetivo reproduzir resultados do SIDRA usando dados da PNAD Contínua, através dos pacotes PNADcIBGE e survey da linguagem R. Além disso, alguns artigos demonstram o uso dos dados obtidos na contrução de gráficos usando pacotes como ggplot2 e geobr.\n\n\nAntes de começar, certifique-se que os pacotes necessários estão instalados em suas versões mais recentes.\n\ninstall.packages('PNADcIBGE') \ninstall.packages('survey')\n\n\n\n\nO pacote PNADcIBGE permite importar os dados online através da função get_pnadc ou carregá-los diretamente de arquivos salvos em disco offline, através das funções read_pnadc e pnadc_design.\nOs objetos obtidos a partir da função get_pnadc podem ocupar mais de 1,5 GB, se selecionadas todas as variáveis do trimestre. Portanto, se você deseja reproduzir as estimativas de uma tabela do SIDRA para um número grande de trimestres, é provável que a memória RAM de sua máquina não suporte todos os objetos de uma só vez. Assim, o ideal para um estimativas de um período grande é remover os objetos obtidos de cada trimestre após calcular suas estimativas. Caso deseje reutilizar o objeto, é possível salvá-lo na memória principal de sua máquina, eliminando a necessidade de baixá-lo novamente com a função get_pnadc, que pode ser um processo lento a depender de sua conexão.\n\n# Importando online\ndadosPNADc &lt;- get_pnadc(year=2024, quarter=2)\n\n# Importando offline\ndadosPNADc &lt;- read_pnadc(microdata=\"PNADC_022024.txt\", input_txt=\"input_PNADC_trimestral.txt\")\ndadosPNADc &lt;- pnadc_design(data_pnadc=dadosPNADc)\n\n# Salvando objeto na máquina\nsaveRDS(object = dadosPNADC, file = \"dadospnad.RDS\")\n\n# Recarregando objeto salvo na máquina\ndadosPNADc = readRDS(\"dadospnad.RDS\")\n\n\n\n\n\nTutorial do desenvolvedor do pacote PNADcIBGE, Gabriel Assuncao: https://rpubs.com/gabriel-assuncao-ibge/pnadc ;\nTabelas do SIDRA: https://sidra.ibge.gov.br/pesquisa/pnadct/tabelas ;\nDocumentação do pacote survey: https://cran.r-project.org/web/packages/survey/survey.pdf ;",
     "crumbs": [
       "Introdução"
     ]
@@ -32,71 +32,78 @@
   {
     "objectID": "tabela6471.html",
     "href": "tabela6471.html",
-    "title": "Reprodução da tabela 6471",
+    "title": "Reproduzindo a tabela",
     "section": "",
     "text": "Reproduzir tabela 6471, que apresenta o Rendimento médio mensal real das pessoas de 14 anos ou mais de idade ocupadas na semana de referência com rendimento de trabalho, habitualmente recebido no trabalho principal.",
     "crumbs": [
-      "Reprodução da tabela 6471 (Rendimento médio mensal por ocupação)"
+      "Tabela 6471 - Rendimento médio",
+      "Reproduzindo a tabela"
     ]
   },
   {
     "objectID": "tabela6471.html#objetivo",
     "href": "tabela6471.html#objetivo",
-    "title": "Reprodução da tabela 6471",
+    "title": "Reproduzindo a tabela",
     "section": "",
     "text": "Reproduzir tabela 6471, que apresenta o Rendimento médio mensal real das pessoas de 14 anos ou mais de idade ocupadas na semana de referência com rendimento de trabalho, habitualmente recebido no trabalho principal.",
     "crumbs": [
-      "Reprodução da tabela 6471 (Rendimento médio mensal por ocupação)"
+      "Tabela 6471 - Rendimento médio",
+      "Reproduzindo a tabela"
     ]
   },
   {
     "objectID": "tabela6471.html#estimando-valores",
     "href": "tabela6471.html#estimando-valores",
-    "title": "Reprodução da tabela 6471",
+    "title": "Reproduzindo a tabela",
     "section": "Estimando valores",
-    "text": "Estimando valores\nOs objetos obtidos a partir da função get_pnadc podem ocupar mais de 1,5 GB, se selecionadas todas as variáveis do trimestre. Portanto, se você deseja reproduzir as estimativas de uma tabela do SIDRA para um número grande de trimestres, é provável que a memória RAM de sua máquina não suporte todos os objetos de uma só vez. Assim, o ideal para um estimativas de um período grande é remover os objetos obtidos de cada trimestre após calcular suas estimativas. Caso deseje reutilizar o objeto, é possível salvá-lo na memória principal de sua máquina, eliminando a necessidade de baixá-lo novamente com a função get_pnadc, que pode ser um processo lento a depender de sua conexão.\nEntão, com o uso de funções iterativas, é possível reutilizar o código para calcular as estimativas sem esgotar a memória RAM. Dessa forma, cada etapa do código é realizada através de funções específicas.\n\n# Carregando pacotes----------------------------------------------------------------------------\nlibrary(PNADcIBGE)\nlibrary(survey)\n\n# Definindo parâmetros------------------------------------------------------------------------\n# Cria tabela com periodos de interesse (anos e trimestres)\nperiodos &lt;- expand.grid(year = 2023:2024, quarter = 1:4)\nperiodos &lt;- periodos[order(periodos$year, periodos$quarter), ]\nperiodos &lt;- periodos[1:6,]\n\n\n# Define variáveis de interesse da PNADc\nvariaveis_selecionadas &lt;- c(\"VD4002\", \"VD4009\", \"VD4019\")\n\n# Importando dados e estimando valores de interesse -----------------------------------------\n# Cria data frame para armazenar resultados\ndf &lt;- data.frame()\n\n# Cria looping iterando sobre os trimestres selecionados\nfor(i in 1:nrow(periodos)){\n  # Importando dados\n  # dados = get_pnadc(year = periodos$year[i], quarter = periodos$quarter[i],\n  #                  vars = variaveis_selecionadas)\n  \n   dados = readRDS(paste0(\"C:/Users/03002433/Documents/LABDATA/pnadc\",\n                          periodos$year[i],periodos$quarter[i],\".RDS\"))\n   \n   # Transformando a variável para valores reais usando o deflator\n   dados$variables = transform(dados$variables, VD4019_real = VD4019*Habitual)\n  \n  # Estimando valores\n  ## O resultado apresenta duas linhas. A primeira contém \"Pessoas na força de trabalho\" e a\n  ## segunda \"Pessoas fora da força de trabalho\".\n  resultado &lt;- svyby(~VD4019_real, ~VD4009, dados, svymean, na.rm = TRUE)\n  \n  # Estimando CV\n  cv = cv(resultado)\n  \n  # Criando data frame temporário com resultados do trimestre\n  df_temp &lt;- data.frame(\n    year = rep(periodos$year[i], 10),\n    quarter = rep(periodos$quarter[i], 10),\n    ocupacao = resultado[1],\n    taxa = resultado[2],\n    cv = cv[1])\n  \n  # Gravando resultados no data frame\n  df &lt;- rbind(df, df_temp)\n  \n  # Remove dados da do trimestre da memória\n  remove(dados)\n}",
+    "text": "Estimando valores\nUsando a função svyby, é possível calcular estimativas para vários domínios. Dessa forma, vamos calcular a média da variável VD4019 para os domínios da variável VD009.\n\nVD009 - Posição na ocupação e categoria do emprego do trabalho principal da semana de referência para pessoas de 14 anos ou mais de idade;\nVD4019 - Rendimento mensal habitual de todos os trabalhos para pessoas de 14 anos ou mais de idade (apenas para pessoas que receberam em dinheiro, produtos ou mercadorias em qualquer trabalho);\n\nTambém podemos calcular variáveis de rendimento deflacionadas. Multiplicando o rendimento pelas variáveis Habitual ou Efetivo, podemos obter estimativas sob o valor real.\n\n# Carregando pacotes----------------------------------------------------------------------------\nlibrary(PNADcIBGE)\nlibrary(survey)\n\n# Definindo parâmetros------------------------------------------------------------------------\n# Cria tabela com periodos de interesse (anos e trimestres)\nperiodos &lt;- expand.grid(year = 2023:2024, quarter = 1:4)\nperiodos &lt;- periodos[order(periodos$year, periodos$quarter), ]\nperiodos &lt;- periodos[1:6,]\n\ndados$variables$Efetivo\n# Define variáveis de interesse da PNADc\nvariaveis_selecionadas &lt;- c(\"VD4009\", \"VD4019\")\n\n# Importando dados e estimando valores de interesse -----------------------------------------\n# Cria data frame para armazenar resultados\ndf &lt;- data.frame()\n\n# Cria looping iterando sobre os trimestres selecionados\nfor(i in 1:nrow(periodos)){\n  # Importando dados\n   dados = get_pnadc(year = periodos$year[i], quarter = periodos$quarter[i],\n                    vars = variaveis_selecionadas)\n  \n   \n   # Transformando a variável para valores reais usando o deflator\n   dados$variables = transform(dados$variables, VD4019_real = VD4019*Habitual)\n  \n  # Estimando valores\n  ## O resultado apresenta duas linhas. A primeira contém \"Pessoas na força de trabalho\" e a\n  ## segunda \"Pessoas fora da força de trabalho\".\n  resultado &lt;- svyby(~VD4019_real, ~VD4009, dados, svymean, na.rm = TRUE)\n  \n  # Estimando CV\n  cv = cv(resultado)\n  \n  # Criando data frame temporário com resultados do trimestre\n  df_temp &lt;- data.frame(\n    year = rep(periodos$year[i], 10),\n    quarter = rep(periodos$quarter[i], 10),\n    ocupacao = resultado[1],\n    taxa = resultado[2],\n    cv = cv[1])\n  \n  # Gravando resultados no data frame\n  df &lt;- rbind(df, df_temp)\n  \n  # Remove dados da do trimestre da memória\n  remove(dados)\n}",
     "crumbs": [
-      "Reprodução da tabela 6471 (Rendimento médio mensal por ocupação)"
+      "Tabela 6471 - Rendimento médio",
+      "Reproduzindo a tabela"
     ]
   },
   {
     "objectID": "tabela6471.html#tabela",
     "href": "tabela6471.html#tabela",
-    "title": "Reprodução da tabela 6471",
+    "title": "Reproduzindo a tabela",
     "section": "Tabela",
-    "text": "Tabela\nUsando o pacote gt é possível formatar uma tabela para exibir os valores calculados.\n\n# Carregando pacote\nlibrary(gt)\n\n# Criando tabela\ngt(df) |&gt; \n tab_header(\n   title = \"6471 - Rendimento médio mensal real das pessoas de 14 anos ou mais de idade ocupadas na semana de referência com rendimento de trabalho, habitualmente recebido no trabalho principal\",\n   subtitle = \"Variável - Rendimento médio mensal real das pessoas de 14 anos ou mais de idade ocupadas na semana de referência com rendimento de trabalho, habitualmente recebido no trabalho principal\"\n ) |&gt; \n  cols_label(\n   year = \"Ano\",\n   quarter = \"Trimestre\",\n   VD4009 = \"Ocupação\",\n   VD4019_real = \"Renda média\",\n   cv = \"Coeficiente de Variação\"\n ) |&gt; \n  fmt_percent(\n    columns = c(cv),\n    decimals = 2) |&gt; \n  fmt_number(\n    columns = c(VD4019_real),\n    decimals = 2\n  )\n\n\n\n\n\n\n\n6471 - Rendimento médio mensal real das pessoas de 14 anos ou mais de idade ocupadas na semana de referência com rendimento de trabalho, habitualmente recebido no trabalho principal\n\n\nVariável - Rendimento médio mensal real das pessoas de 14 anos ou mais de idade ocupadas na semana de referência com rendimento de trabalho, habitualmente recebido no trabalho principal\n\n\nAno\nTrimestre\nOcupação\nRenda média\nCoeficiente de Variação\n\n\n\n\n2023\n1\nEmpregado no setor privado com carteira de trabalho assinada\n2,899.88\n1.07%\n\n\n2023\n1\nEmpregado no setor privado sem carteira de trabalho assinada\n2,171.70\n1.07%\n\n\n2023\n1\nTrabalhador doméstico com carteira de trabalho assinada\n1,654.37\n1.07%\n\n\n2023\n1\nTrabalhador doméstico sem carteira de trabalho assinada\n1,025.05\n1.07%\n\n\n2023\n1\nEmpregado no setor público com carteira de trabalho assinada\n4,582.33\n1.07%\n\n\n2023\n1\nEmpregado no setor público sem carteira de trabalho assinada\n2,746.38\n1.07%\n\n\n2023\n1\nMilitar e servidor estatutário\n5,620.63\n1.07%\n\n\n2023\n1\nEmpregador\n7,859.33\n1.07%\n\n\n2023\n1\nConta-própria\n2,463.16\n1.07%\n\n\n2023\n1\nTrabalhador familiar auxiliar\n1,250.65\n1.07%\n\n\n2023\n2\nEmpregado no setor privado com carteira de trabalho assinada\n2,878.77\n1.00%\n\n\n2023\n2\nEmpregado no setor privado sem carteira de trabalho assinada\n2,108.39\n1.00%\n\n\n2023\n2\nTrabalhador doméstico com carteira de trabalho assinada\n1,681.62\n1.00%\n\n\n2023\n2\nTrabalhador doméstico sem carteira de trabalho assinada\n1,036.70\n1.00%\n\n\n2023\n2\nEmpregado no setor público com carteira de trabalho assinada\n4,520.34\n1.00%\n\n\n2023\n2\nEmpregado no setor público sem carteira de trabalho assinada\n2,707.57\n1.00%\n\n\n2023\n2\nMilitar e servidor estatutário\n5,686.52\n1.00%\n\n\n2023\n2\nEmpregador\n8,083.26\n1.00%\n\n\n2023\n2\nConta-própria\n2,489.08\n1.00%\n\n\n2023\n2\nTrabalhador familiar auxiliar\n1,691.38\n1.00%\n\n\n2023\n3\nEmpregado no setor privado com carteira de trabalho assinada\n2,932.37\n1.03%\n\n\n2023\n3\nEmpregado no setor privado sem carteira de trabalho assinada\n2,152.87\n1.03%\n\n\n2023\n3\nTrabalhador doméstico com carteira de trabalho assinada\n1,684.21\n1.03%\n\n\n2023\n3\nTrabalhador doméstico sem carteira de trabalho assinada\n1,024.39\n1.03%\n\n\n2023\n3\nEmpregado no setor público com carteira de trabalho assinada\n4,662.51\n1.03%\n\n\n2023\n3\nEmpregado no setor público sem carteira de trabalho assinada\n2,771.57\n1.03%\n\n\n2023\n3\nMilitar e servidor estatutário\n5,793.04\n1.03%\n\n\n2023\n3\nEmpregador\n8,087.67\n1.03%\n\n\n2023\n3\nConta-própria\n2,540.16\n1.03%\n\n\n2023\n3\nTrabalhador familiar auxiliar\n1,416.35\n1.03%\n\n\n2023\n4\nEmpregado no setor privado com carteira de trabalho assinada\n2,968.76\n0.99%\n\n\n2023\n4\nEmpregado no setor privado sem carteira de trabalho assinada\n2,229.43\n0.99%\n\n\n2023\n4\nTrabalhador doméstico com carteira de trabalho assinada\n1,700.81\n0.99%\n\n\n2023\n4\nTrabalhador doméstico sem carteira de trabalho assinada\n1,029.99\n0.99%\n\n\n2023\n4\nEmpregado no setor público com carteira de trabalho assinada\n4,935.49\n0.99%\n\n\n2023\n4\nEmpregado no setor público sem carteira de trabalho assinada\n2,740.99\n0.99%\n\n\n2023\n4\nMilitar e servidor estatutário\n5,859.32\n0.99%\n\n\n2023\n4\nEmpregador\n8,014.68\n0.99%\n\n\n2023\n4\nConta-própria\n2,551.92\n0.99%\n\n\n2023\n4\nTrabalhador familiar auxiliar\n1,264.63\n0.99%\n\n\n2024\n1\nEmpregado no setor privado com carteira de trabalho assinada\n2,982.57\n1.00%\n\n\n2024\n1\nEmpregado no setor privado sem carteira de trabalho assinada\n2,278.37\n1.00%\n\n\n2024\n1\nTrabalhador doméstico com carteira de trabalho assinada\n1,723.98\n1.00%\n\n\n2024\n1\nTrabalhador doméstico sem carteira de trabalho assinada\n1,041.69\n1.00%\n\n\n2024\n1\nEmpregado no setor público com carteira de trabalho assinada\n4,778.09\n1.00%\n\n\n2024\n1\nEmpregado no setor público sem carteira de trabalho assinada\n2,815.33\n1.00%\n\n\n2024\n1\nMilitar e servidor estatutário\n5,959.79\n1.00%\n\n\n2024\n1\nEmpregador\n8,068.64\n1.00%\n\n\n2024\n1\nConta-própria\n2,634.15\n1.00%\n\n\n2024\n1\nTrabalhador familiar auxiliar\n956.40\n1.00%\n\n\n2024\n2\nEmpregado no setor privado com carteira de trabalho assinada\n3,002.57\n0.92%\n\n\n2024\n2\nEmpregado no setor privado sem carteira de trabalho assinada\n2,287.13\n0.92%\n\n\n2024\n2\nTrabalhador doméstico com carteira de trabalho assinada\n1,742.84\n0.92%\n\n\n2024\n2\nTrabalhador doméstico sem carteira de trabalho assinada\n1,042.98\n0.92%\n\n\n2024\n2\nEmpregado no setor público com carteira de trabalho assinada\n4,897.98\n0.92%\n\n\n2024\n2\nEmpregado no setor público sem carteira de trabalho assinada\n2,807.38\n0.92%\n\n\n2024\n2\nMilitar e servidor estatutário\n6,155.47\n0.92%\n\n\n2024\n2\nEmpregador\n8,356.36\n0.92%\n\n\n2024\n2\nConta-própria\n2,664.01\n0.92%\n\n\n2024\n2\nTrabalhador familiar auxiliar\n1,190.46\n0.92%",
+    "text": "Tabela\nUsando o pacote gt é possível formatar uma tabela para exibir os valores calculados.\n\n# Carregando pacote\nlibrary(gt)\n\n# Criando tabela\ngt(df) |&gt; \n tab_header(\n   title = \"6471 - Rendimento médio mensal real das pessoas de 14 anos ou mais de idade ocupadas na semana de referência com rendimento de trabalho, habitualmente recebido no trabalho principal\",\n   subtitle = \"Variável - Rendimento médio mensal real das pessoas de 14 anos ou mais de idade ocupadas na semana de referência com rendimento de trabalho, habitualmente recebido no trabalho principal\"\n ) |&gt; \n  cols_label(\n   year = \"Ano\",\n   quarter = \"Trimestre\",\n   VD4009 = \"Ocupação\",\n   VD4019_real = \"Renda média\",\n   cv = \"Coeficiente de Variação\"\n ) |&gt; \n  fmt_percent(\n    columns = c(cv),\n    decimals = 2) |&gt; \n  fmt_number(\n    columns = c(VD4019_real),\n    decimals = 2\n  ) |&gt; \n  opt_interactive()\n\n\n\n\n6471 - Rendimento médio mensal real das pessoas de 14 anos ou mais de idade ocupadas na semana de referência com rendimento de trabalho, habitualmente recebido no trabalho principal\nVariável - Rendimento médio mensal real das pessoas de 14 anos ou mais de idade ocupadas na semana de referência com rendimento de trabalho, habitualmente recebido no trabalho principal",
     "crumbs": [
-      "Reprodução da tabela 6471 (Rendimento médio mensal por ocupação)"
+      "Tabela 6471 - Rendimento médio",
+      "Reproduzindo a tabela"
     ]
   },
   {
     "objectID": "grafico6471.html",
     "href": "grafico6471.html",
-    "title": "Reprodução da tabela 5606",
+    "title": "Criando gráfico de barras",
     "section": "",
-    "text": "Criar gráfico a partir dos dados estimados da tabela 6471.",
+    "text": "Criar gráfico de barras a partir dos dados estimados da tabela 6471.",
     "crumbs": [
-      "Elaboração de gráfico da tabela 6471 (Rendimento médio mensal por ocupação)"
+      "Tabela 6471 - Rendimento médio",
+      "Criando gráfico de barras"
     ]
   },
   {
     "objectID": "grafico6471.html#objetivo",
     "href": "grafico6471.html#objetivo",
-    "title": "Reprodução da tabela 5606",
+    "title": "Criando gráfico de barras",
     "section": "",
-    "text": "Criar gráfico a partir dos dados estimados da tabela 6471.",
+    "text": "Criar gráfico de barras a partir dos dados estimados da tabela 6471.",
     "crumbs": [
-      "Elaboração de gráfico da tabela 6471 (Rendimento médio mensal por ocupação)"
+      "Tabela 6471 - Rendimento médio",
+      "Criando gráfico de barras"
     ]
   },
   {
     "objectID": "grafico6471.html#gráfico",
     "href": "grafico6471.html#gráfico",
-    "title": "Reprodução da tabela 5606",
+    "title": "Criando gráfico de barras",
     "section": "Gráfico",
-    "text": "Gráfico\nUsando o pacote ggplot2 é possível criar diversos tipos de gráfico. Os gráficos gerados com o ggplot2 usam como base dados no formato tidy. Dessa forma, usaremos os pacotes dplyr, tidyr e forcats para formatar os dados obtidos anteriormente.\n\n# Carregando pacotes\nlibrary(dplyr)\n\n\nAnexando pacote: 'dplyr'\n\n\nOs seguintes objetos são mascarados por 'package:stats':\n\n    filter, lag\n\n\nOs seguintes objetos são mascarados por 'package:base':\n\n    intersect, setdiff, setequal, union\n\nlibrary(tidyr)\nlibrary(ggplot2)\n\n# Criando gráfico\n\ndf |&gt; \n  # Cria coluna com trimestre e ano\n  mutate(trimestre = paste(year,quarter,sep = \" - \")) |&gt; \n  ggplot() +\n  # Definindo o tipo de gráfico (colunas). Ordena as colunas com base no valor\n  geom_col(aes(y=forcats::fct_reorder(VD4009, VD4019_real),\n               x = VD4019_real, fill = '1')) +\n  # Adicionando o texto com o valor em cada coluna\n  geom_text(aes(y=forcats::fct_reorder(VD4009, VD4019_real),\n                x = VD4019_real, label = round(VD4019_real)), \n            color = 'white', fontface = 'bold',hjust = 1.1, size = 3.2) +\n  # Definindo a cor de preenchimento das colunas\n  scale_fill_manual(values = '#004282') +\n  # Adiciona quebra de texto nas categorias com mais de 50 caracteres\n  scale_y_discrete(labels = function(x) stringr::str_wrap(x, width = 50)) +\n  # Altera o tema do gráfico para \"minimal\"\n  theme_minimal() +\n  # Adiciona facetas por ano e trimestre\n  facet_wrap(facets = vars(trimestre)) +\n  # Adiciona título e subtitulo\n  labs(\n    title = 'Rendimento médio mensal real das pessoas de 14 anos ou mais por tipo de ocupação',\n    subtitle = 'Pesquisa Nacional por Amostra de Domicílios Contínua Trimestral - Dados de 2023 e 2024'\n  ) +\n  # Faz ajustes no tema do gráfico\n  theme(legend.position = 'none',\n        axis.text = element_text(face = 'bold', size = 11,\n                                   colour = 'gray15'),\n        axis.title = element_blank(),\n        plot.title = element_text(face = 'bold', size = 18),\n        plot.subtitle = element_text(face = 'italic', size = 15),\n        plot.title.position = \"plot\", \n        plot.caption.position =  \"plot\",\n        strip.background = element_rect(fill = 'gray'),\n        strip.text = element_text(color = \"white\", face = \"bold\",size = 15)\n        ) \n\n\n\n\n\n\n\n\nUsando o comando ggsave() é possível salvar a imagem em PNG.\n\nggsave('grafico1.png',dpi = 600,width = 9,height = 7)",
+    "text": "Gráfico\nUsando o pacote ggplot2 é possível criar diversos tipos de gráfico. Os gráficos gerados com o ggplot2 usam como base dados no formato tidy. Dessa forma, usaremos os pacotes dplyr, tidyr e forcats para formatar os dados obtidos anteriormente.\n\n# Carregando pacotes\nlibrary(dplyr)\nlibrary(tidyr)\nlibrary(ggplot2)\n\n# Criando gráfico\n\ndf |&gt; \n  # Cria coluna com trimestre e ano\n  mutate(trimestre = paste(year,quarter,sep = \" - \")) |&gt; \n  ggplot() +\n  # Definindo o tipo de gráfico (colunas). Ordena as colunas com base no valor\n  geom_col(aes(y=forcats::fct_reorder(VD4009, VD4019_real),\n               x = VD4019_real, fill = '1')) +\n  # Adicionando o texto com o valor em cada coluna\n  geom_text(aes(y=forcats::fct_reorder(VD4009, VD4019_real),\n                x = VD4019_real, label = round(VD4019_real)), \n            color = 'white', fontface = 'bold',hjust = 1.1, size = 3.2) +\n  # Definindo a cor de preenchimento das colunas\n  scale_fill_manual(values = '#004282') +\n  # Adiciona quebra de texto nas categorias com mais de 50 caracteres\n  scale_y_discrete(labels = function(x) stringr::str_wrap(x, width = 50)) +\n  # Altera o tema do gráfico para \"minimal\"\n  theme_minimal() +\n  # Adiciona facetas por ano e trimestre\n  facet_wrap(facets = vars(trimestre)) +\n  # Adiciona título e subtitulo\n  labs(\n    title = 'Rendimento médio mensal real das pessoas de 14 anos ou mais por tipo de ocupação',\n    subtitle = 'Pesquisa Nacional por Amostra de Domicílios Contínua Trimestral - Dados de 2023 e 2024'\n  ) +\n  # Faz ajustes no tema do gráfico\n  theme(legend.position = 'none',\n        axis.text = element_text(face = 'bold', size = 11,\n                                   colour = 'gray15'),\n        axis.title = element_blank(),\n        plot.title = element_text(face = 'bold', size = 18),\n        plot.subtitle = element_text(face = 'italic', size = 15),\n        plot.title.position = \"plot\", \n        plot.caption.position =  \"plot\",\n        strip.background = element_rect(fill = 'gray'),\n        strip.text = element_text(color = \"white\", face = \"bold\",size = 15)\n        ) \n\n\n\n\n\n\n\n\nUsando o comando ggsave() é possível salvar a imagem em PNG.\n\nggsave('grafico1.png',dpi = 600,width = 9,height = 7)",
     "crumbs": [
-      "Elaboração de gráfico da tabela 6471 (Rendimento médio mensal por ocupação)"
+      "Tabela 6471 - Rendimento médio",
+      "Criando gráfico de barras"
     ]
   },
   {
@@ -109,69 +116,220 @@
   {
     "objectID": "tabela5606.html",
     "href": "tabela5606.html",
-    "title": "Reprodução da tabela 5606",
+    "title": "Reproduzindo a tabela",
     "section": "",
     "text": "Reproduzir tabela 5606 apresenta a Massa de rendimento mensal, na semana de referência, das pessoas de 14 anos ou mais de idade.",
     "crumbs": [
-      "Reprodução da tabela 5606 (Massa de rendimento)"
+      "Tabela 5606 - Massa de rendimento",
+      "Reproduzindo a tabela"
     ]
   },
   {
     "objectID": "tabela5606.html#objetivo",
     "href": "tabela5606.html#objetivo",
-    "title": "Reprodução da tabela 5606",
+    "title": "Reproduzindo a tabela",
     "section": "",
     "text": "Reproduzir tabela 5606 apresenta a Massa de rendimento mensal, na semana de referência, das pessoas de 14 anos ou mais de idade.",
     "crumbs": [
-      "Reprodução da tabela 5606 (Massa de rendimento)"
+      "Tabela 5606 - Massa de rendimento",
+      "Reproduzindo a tabela"
     ]
   },
   {
     "objectID": "tabela5606.html#estimando-valores",
     "href": "tabela5606.html#estimando-valores",
-    "title": "Reprodução da tabela 5606",
+    "title": "Reproduzindo a tabela",
     "section": "Estimando valores",
-    "text": "Estimando valores\nPara estimar a massa de rendimento, usaremos a tabela svytotal, que estima o total de uma determinada variável.\n\n# Carregando pacotes----------------------------------------------------------------------------\nlibrary(PNADcIBGE)\nlibrary(survey)\n\n# Definindo parâmetros------------------------------------------------------------------------\n# Cria tabela com periodos de interesse (anos e trimestres)\nperiodos &lt;- expand.grid(year = 2023:2024, quarter = 1:4)\nperiodos &lt;- periodos[order(periodos$year, periodos$quarter), ]\nperiodos &lt;- periodos[1:6,]\n\n# Define variáveis de interesse da PNADc\nvariaveis_selecionadas &lt;- c(\"VD4019\")\n\n# Importando dados e estimando valores de interesse -----------------------------------------\n# Cria data frame para armazenar resultados\ndf &lt;- data.frame(periodos,total = NA, cv = NA)\n\n# Cria looping iterando sobre os trimestres selecionados\nfor(i in 1:nrow(periodos)){\n  # Importando dados\n  dados = get_pnadc(year = periodos$year[i], quarter = periodos$quarter[i],\n                    vars = variaveis_selecionadas)\n  \n  # Estimando valores\n  ## O resultado apresenta duas linhas. A primeira contém \"Pessoas na força de trabalho\" e a\n  ## segunda \"Pessoas fora da força de trabalho\".\n  resultado = svytotal(x = ~VD4019, design = dados, na.rm = TRUE)\n  \n  # Estimando CV\n  cv = cv(resultado)\n  \n  # Gravando resultados no data frame\n  df$total[df$year == periodos$year[i] & df$quarter == periodos$quarter[i]] = resultado[1] \n  df$cv[df$year == periodos$year[i] & df$quarter == periodos$quarter[i]] = cv[1] \n  \n  # Remove dados da do trimestre da memória\n  remove(dados)\n}",
+    "text": "Estimando valores\nPara estimar a massa de rendimento, usaremos a tabela svytotal, que estima o total de uma determinada variável.\n\n# Carregando pacotes----------------------------------------------------------------------------\nlibrary(PNADcIBGE)\nlibrary(survey)\n\n# Definindo parâmetros------------------------------------------------------------------------\n# Cria tabela com periodos de interesse (anos e trimestres)\nperiodos &lt;- expand.grid(year = 2023:2024, quarter = 1:4)\nperiodos &lt;- periodos[order(periodos$year, periodos$quarter), ]\nperiodos &lt;- periodos[1:6,]\n\n# Define variáveis de interesse da PNADc\nvariaveis_selecionadas &lt;- c(\"VD4019\")\n\n# Importando dados e estimando valores de interesse -----------------------------------------\n# Cria data frame para armazenar resultados\ndf &lt;- data.frame(periodos, total = NA, cv = NA)\n\n# Cria looping iterando sobre os trimestres selecionados\nfor(i in 1:nrow(periodos)){\n  # Importando dados\n  dados = get_pnadc(year = periodos$year[i], quarter = periodos$quarter[i],\n                    vars = variaveis_selecionadas)\n  \n  # Estimando valores\n  ## O resultado apresenta duas linhas. A primeira contém \"Pessoas na força de trabalho\" e a\n  ## segunda \"Pessoas fora da força de trabalho\".\n  resultado = svytotal(x = ~VD4019, design = dados, na.rm = TRUE)\n  \n  # Estimando CV\n  cv = cv(resultado)\n  \n  # Gravando resultados no data frame\n  df$total[df$year == periodos$year[i] & df$quarter == periodos$quarter[i]] = resultado[1] \n  df$cv[df$year == periodos$year[i] & df$quarter == periodos$quarter[i]] = cv[1] \n  \n  # Remove dados da do trimestre da memória\n  remove(dados)\n}",
     "crumbs": [
-      "Reprodução da tabela 5606 (Massa de rendimento)"
+      "Tabela 5606 - Massa de rendimento",
+      "Reproduzindo a tabela"
     ]
   },
   {
     "objectID": "tabela5606.html#tabela",
     "href": "tabela5606.html#tabela",
-    "title": "Reprodução da tabela 5606",
+    "title": "Reproduzindo a tabela",
     "section": "Tabela",
-    "text": "Tabela\nUsando o pacote gt é possível formatar uma tabela para exibir os valores calculados.\n\n# Carregando pacote\nlibrary(gt)\n\n# Criando tabela\ngt(df) |&gt; \n tab_header(\n   title = \"Tabela 5606 - Massa de rendimento mensal real das pessoas de 14 anos ou mais de idade ocupadas na semana de referência com rendimento de trabalho, habitualmente e efetivamente recebidos em todos os trabalhos\",\n   subtitle = \"Variável - Massa de rendimento mensal real das pessoas de 14 anos ou mais de idade ocupadas na semana de referência com rendimento de trabalho, habitualmente recebido em todos os trabalhos\"\n ) |&gt; \n  cols_label(\n   year = \"Ano\",\n   total = \"Trimestre\",\n   total = \"Total\",\n   cv = \"Coeficiente de Variação\"\n )\n\n\n\n\n\n\n\nTabela 5606 - Massa de rendimento mensal real das pessoas de 14 anos ou mais de idade ocupadas na semana de referência com rendimento de trabalho, habitualmente e efetivamente recebidos em todos os trabalhos\n\n\nVariável - Massa de rendimento mensal real das pessoas de 14 anos ou mais de idade ocupadas na semana de referência com rendimento de trabalho, habitualmente recebido em todos os trabalhos\n\n\nAno\nquarter\nTotal\nCoeficiente de Variação\n\n\n\n\n2023\n1\n277194102895\n0.010563171\n\n\n2023\n2\n284148251879\n0.010842367\n\n\n2023\n3\n292952332243\n0.010306548\n\n\n2023\n4\n301602463630\n0.009368015\n\n\n2024\n1\n308317913373\n0.009907235\n\n\n2024\n2\n322647259419\n0.009419048",
+    "text": "Tabela\nUsando o pacote gt é possível formatar uma tabela para exibir os valores calculados.\n\n# Carregando pacote\nlibrary(gt)\n\n# Criando tabela\ngt(df) |&gt; \n tab_header(\n   title = \"Tabela 5606 - Massa de rendimento mensal real das pessoas de 14 anos ou mais de idade ocupadas na semana de referência com rendimento de trabalho, habitualmente e efetivamente recebidos em todos os trabalhos\",\n   subtitle = \"Variável - Massa de rendimento mensal real das pessoas de 14 anos ou mais de idade ocupadas na semana de referência com rendimento de trabalho, habitualmente recebido em todos os trabalhos\"\n ) |&gt; \n  cols_label(\n   year = \"Ano\",\n   quarter = \"Trimestre\",\n   total = \"Total\",\n   cv = \"Coeficiente de Variação\"\n ) |&gt; \n  fmt_percent(\n    columns = c(cv),\n    decimals = 2) |&gt; \n  fmt_number(\n    columns = c(total),\n    decimals = 2\n  ) |&gt; \n  opt_interactive()\n\n\n\n\nTabela 5606 - Massa de rendimento mensal real das pessoas de 14 anos ou mais de idade ocupadas na semana de referência com rendimento de trabalho, habitualmente e efetivamente recebidos em todos os trabalhos\nVariável - Massa de rendimento mensal real das pessoas de 14 anos ou mais de idade ocupadas na semana de referência com rendimento de trabalho, habitualmente recebido em todos os trabalhos",
     "crumbs": [
-      "Reprodução da tabela 5606 (Massa de rendimento)"
+      "Tabela 5606 - Massa de rendimento",
+      "Reproduzindo a tabela"
     ]
   },
   {
     "objectID": "mapa6471.html",
     "href": "mapa6471.html",
-    "title": "Reprodução de mapa a partir da tabela 6471",
+    "title": "Criando mapa",
     "section": "",
-    "text": "Criar mapa a partir da reprodução da tabela tabela 6471 do SIDRA, através dos pacotes PNADcIBGE, survey e ggplot2."
+    "text": "Criar mapa a partir da reprodução da tabela tabela 6471 do SIDRA, através dos pacotes ggplot2 e geobr.",
+    "crumbs": [
+      "Tabela 6471 - Rendimento médio",
+      "Criando mapa"
+    ]
   },
   {
     "objectID": "mapa6471.html#objetivo",
     "href": "mapa6471.html#objetivo",
-    "title": "Reprodução de mapa a partir da tabela 6471",
+    "title": "Criando mapa",
     "section": "",
-    "text": "Criar mapa a partir da reprodução da tabela tabela 6471 do SIDRA, através dos pacotes PNADcIBGE, survey e ggplot2."
+    "text": "Criar mapa a partir da reprodução da tabela tabela 6471 do SIDRA, através dos pacotes ggplot2 e geobr.",
+    "crumbs": [
+      "Tabela 6471 - Rendimento médio",
+      "Criando mapa"
+    ]
   },
   {
     "objectID": "mapa6471.html#estimando-valores",
     "href": "mapa6471.html#estimando-valores",
-    "title": "Reprodução de mapa a partir da tabela 6471",
+    "title": "Criando mapa",
     "section": "Estimando valores",
-    "text": "Estimando valores\nUsaremos a função get_pnadc para obter dados da população no segundo trimestre de 2024. Depois, usaremos a função svytotal para estimar os totais populacionais das interações entre sexo e idade.\nAlternativamente, é possível carregar dados baixados anteriormente, economizando no tempo de execução do código.\n\n# Carregando pacotes----------------------------------------------------------------------------\nlibrary(PNADcIBGE)\nlibrary(survey)\n\n# Define variáveis de interesse da PNADc\nvariaveis_selecionadas &lt;- c(\"VD4020\", \"UF\")\n\n# Importando dados e estimando valores de interesse -----------------------------------------\n# dados =  get_pnadc(year = \"2024\", quarter = \"2\",\n#                   vars = variaveis_selecionadas)\n\n# Carregando os dados baixados anteriormente (altere o caminho usado em sua máquina)\ndados = readRDS(paste0(\"C:/Users/03002433/Documents/LABDATA/pnadc\",\n                       \"2024\",\"2\",\".RDS\"))\n\n# Estimando a renda por Estado\nrenda = svyby(~VD4020, ~UF, dados, svymean, na.rm = TRUE)"
+    "text": "Estimando valores\nPara criar o mapa, precisamos estimar o rendimento médio por estado. Usaremos a função svyby novamente.\n\n# Carregando pacotes----------------------------------------------------------------------------\nlibrary(PNADcIBGE)\nlibrary(survey)\n\n# Define variáveis de interesse da PNADc\nvariaveis_selecionadas &lt;- c(\"VD4019\", \"UF\")\n\n# Importando dados e estimando valores de interesse -----------------------------------------\ndados =  get_pnadc(year = \"2024\", quarter = \"2\",\n                   vars = variaveis_selecionadas)\n\n\n# Estimando a renda por Estado\nrenda = svyby(~VD4019, ~UF, dados, svymean, na.rm = TRUE)",
+    "crumbs": [
+      "Tabela 6471 - Rendimento médio",
+      "Criando mapa"
+    ]
   },
   {
     "objectID": "mapa6471.html#gráfico",
     "href": "mapa6471.html#gráfico",
-    "title": "Reprodução de mapa a partir da tabela 6471",
+    "title": "Criando mapa",
     "section": "Gráfico",
-    "text": "Gráfico\nUsando o pacote ggplot2 é possível criar diversos tipos de gráfico. Com o pacote geobr é possível baixar dados especiais brasileiros. Dessa forma, usaremos os pacotes geobr, dplyr, tidyr e forcats para formatar os dados obtidos anteriormente.\n\n# Carregando pacotes\nlibrary(dplyr)\nlibrary(geobr)\nlibrary(ggplot2)\n\n# Baixando dados dos Estados\nestados = read_state(year=2020)\n\n# Juntando data frames\nestados = left_join(estados, renda, by = c('name_state' = 'UF'))\n\n# Alguns estados estão com acentuação diferente nos data frames \n# Ajustando dados\nestados$VD4020[estados$name_state=='Amazônas'] = renda$VD4020[renda$UF=='Amazonas']\nestados$VD4020[estados$name_state=='Rio Grande Do Norte'] = renda$VD4020[renda$UF=='Rio Grande do Norte']\nestados$VD4020[estados$name_state=='Rio Grande Do Sul'] = renda$VD4020[renda$UF=='Rio Grande do Sul']\nestados$VD4020[estados$name_state=='Mato Grosso Do Sul'] = renda$VD4020[renda$UF=='Mato Grosso do Sul']\nestados$VD4020[estados$name_state=='Rio De Janeiro'] = renda$VD4020[renda$UF=='Rio de Janeiro']\n\n# Criando gráfico\n\nggplot()+\n  # Definindo tipo do gráfico (mapa)\n  geom_sf(data=estados, aes(fill = as.numeric(VD4020)), colour=NA, size=.15)+\n  # Definindo cores usando escala viridis (acessível para dautônicos)\n  scale_fill_viridis_c(option = \"A\",name='Rendimento Médio',direction = -1) +\n  # Adicionando título\n  labs(title = 'Rendimento médio mensal real das pessoas de 14 anos ou mais',\n       subtitle = 'Segundo Trimestre de 2024',\n       caption = 'Pesquisa Nacional por Amostra de Domicílios Contínua Trimestral') +\n  # Alterando tema\n  theme_minimal() +\n  # Faz ajustes no tema do gráfico\n  theme(\n        plot.title = element_text(face = 'bold', size = 12),\n        plot.subtitle = element_text(face = 'italic', size = 9),\n        plot.title.position = \"plot\", \n        plot.caption.position =  \"plot\"\n        ) \n\n\n\n\n\n\n\n\nUsando o comando ggsave() é possível salvar a imagem em PNG.\n\nggsave('grafico1.png',dpi = 600,width = 9,height = 7)"
+    "text": "Gráfico\nUsando o pacote ggplot2 é possível criar diversos tipos de gráfico. Com o pacote geobr é possível baixar dados especiais brasileiros. Dessa forma, usaremos os pacotes geobr, dplyr, tidyr e forcats para formatar os dados obtidos anteriormente.\n\n# Carregando pacotes\nlibrary(dplyr)\nlibrary(geobr)\nlibrary(ggplot2)\n\n# Baixando dados dos Estados\nestados = read_state(year=2020)\n\n# Juntando data frames\nestados = left_join(estados, renda, by = c('name_state' = 'UF'))\n\n# Alguns estados estão com acentuação diferente nos data frames \n# Ajustando dados\nestados$VD4019[estados$name_state=='Amazônas'] = renda$VD4019[renda$UF=='Amazonas']\nestados$VD4019[estados$name_state=='Rio Grande Do Norte'] = renda$VD4019[renda$UF=='Rio Grande do Norte']\nestados$VD4019[estados$name_state=='Rio Grande Do Sul'] = renda$VD4019[renda$UF=='Rio Grande do Sul']\nestados$VD4019[estados$name_state=='Mato Grosso Do Sul'] = renda$VD4019[renda$UF=='Mato Grosso do Sul']\nestados$VD4019[estados$name_state=='Rio De Janeiro'] = renda$VD4019[renda$UF=='Rio de Janeiro']\n\n# Criando gráfico\n\nggplot()+\n  # Definindo tipo do gráfico (mapa)\n  geom_sf(data=estados, aes(fill = as.numeric(VD4019)), colour=NA, size=.15)+\n  # Definindo cores usando escala viridis (acessível para dautônicos)\n  scale_fill_viridis_c(option = \"A\",name='Rendimento Médio',direction = -1) +\n  # Adicionando título\n  labs(title = 'Rendimento médio mensal habitual das pessoas de 14 anos ou mais',\n       subtitle = 'Segundo Trimestre de 2024',\n       caption = 'Pesquisa Nacional por Amostra de Domicílios Contínua Trimestral') +\n  # Alterando tema\n  theme_minimal() +\n  # Faz ajustes no tema do gráfico\n  theme(\n        plot.title = element_text(face = 'bold', size = 12),\n        plot.subtitle = element_text(face = 'italic', size = 9),\n        plot.title.position = \"plot\", \n        plot.caption.position =  \"plot\"\n        ) \n\n\n\n\n\n\n\n\nUsando o comando ggsave() é possível salvar a imagem em PNG.\n\nggsave('grafico1.png',dpi = 600,width = 9,height = 7)",
+    "crumbs": [
+      "Tabela 6471 - Rendimento médio",
+      "Criando mapa"
+    ]
+  },
+  {
+    "objectID": "index.html#opções-de-importação",
+    "href": "index.html#opções-de-importação",
+    "title": "Introdução",
+    "section": "",
+    "text": "O pacote PNADcIBGE permite importar os dados online através da função get_pnadc ou carregá-los diretamente de arquivos salvos em disco offline, através das funções read_pnadc e pnadc_design.\nOs objetos obtidos a partir da função get_pnadc podem ocupar mais de 1,5 GB, se selecionadas todas as variáveis do trimestre. Portanto, se você deseja reproduzir as estimativas de uma tabela do SIDRA para um número grande de trimestres, é provável que a memória RAM de sua máquina não suporte todos os objetos de uma só vez. Assim, o ideal para um estimativas de um período grande é remover os objetos obtidos de cada trimestre após calcular suas estimativas. Caso deseje reutilizar o objeto, é possível salvá-lo na memória principal de sua máquina, eliminando a necessidade de baixá-lo novamente com a função get_pnadc, que pode ser um processo lento a depender de sua conexão.\n\n# Importando online\ndadosPNADc &lt;- get_pnadc(year=2024, quarter=2)\n\n# Importando offline\ndadosPNADc &lt;- read_pnadc(microdata=\"PNADC_022024.txt\", input_txt=\"input_PNADC_trimestral.txt\")\ndadosPNADc &lt;- pnadc_design(data_pnadc=dadosPNADc)\n\n# Salvando objeto na máquina\nsaveRDS(object = dadosPNADC, file = \"dadospnad.RDS\")\n\n# Recarregando objeto salvo na máquina\ndadosPNADc = readRDS(\"dadospnad.RDS\")",
+    "crumbs": [
+      "Introdução"
+    ]
+  },
+  {
+    "objectID": "grafico5606.html",
+    "href": "grafico5606.html",
+    "title": "Criando gráfico de linhas",
+    "section": "",
+    "text": "Criar gráfico de barras a partir dos dados estimados da tabela 5606.",
+    "crumbs": [
+      "Tabela 5606 - Massa de rendimento",
+      "Criando gráfico de linhas"
+    ]
+  },
+  {
+    "objectID": "grafico5606.html#objetivo",
+    "href": "grafico5606.html#objetivo",
+    "title": "Criando gráfico de linhas",
+    "section": "",
+    "text": "Criar gráfico de barras a partir dos dados estimados da tabela 5606.",
+    "crumbs": [
+      "Tabela 5606 - Massa de rendimento",
+      "Criando gráfico de linhas"
+    ]
+  },
+  {
+    "objectID": "grafico5606.html#gráfico",
+    "href": "grafico5606.html#gráfico",
+    "title": "Criando gráfico de linhas",
+    "section": "Gráfico",
+    "text": "Gráfico\nUsando o pacote ggplot2 é possível criar diversos tipos de gráfico. Os gráficos gerados com o ggplot2 usam como base dados no formato tidy. Dessa forma, usaremos os pacotes dplyr, tidyr e scales para formatar os dados obtidos anteriormente.\n\n# Carregando pacotes\nlibrary(dplyr)\nlibrary(scales)\nlibrary(ggplot2)\n\n# Criando gráfico\n\ndf |&gt; \n  # Cria coluna com trimestre e ano\n  mutate(trimestre = as.factor(paste(year,quarter,sep = \" - \"))) |&gt; \n  ggplot(aes(y = total, x = as.factor(trimestre), group=1, color = '#004282')) +\n  # Definindo o tipo de gráfico (linhas) com o tipo de linha tracejado\n  geom_line(linetype = 'dashed') +\n  # Adicionando ponto para cada trimestre\n  geom_point(size = 5) +\n  # Adicionando o texto com o valor em cada trimestre\n  geom_text(aes(label = scales::number(total, scale = 1e-9,suffix = \" B\")),\n            nudge_y = -20*10^9,size = 8) +\n  # Usando a cor definida no aes()\n  scale_color_identity() +\n  # Alterando a escala do eixo y para incluir o zero e label para bilhões\n  scale_y_continuous(limits = c(0,323000000000), n.breaks = 10,\n                     labels = unit_format(unit = \"B\", scale = 1e-9)) +\n  # Altera o tema do gráfico para \"minimal\"\n  theme_minimal() +\n  # Adiciona título e subtitulo\n  labs(\n    title = 'Massa de rendimento mensal das pessoas de 14 anos ou mais',\n    subtitle = 'Pesquisa Nacional por Amostra de Domicílios Contínua Trimestral - Dados de 2023 e 2024'\n  ) +\n  # Faz ajustes no tema do gráfico\n  theme(legend.position = 'none',\n        axis.text = element_text(face = 'bold', size = 15,\n                                   colour = 'gray15'),\n        axis.title = element_blank(),\n        plot.title = element_text(face = 'bold', size = 18),\n        plot.subtitle = element_text(face = 'italic', size = 15),\n        plot.title.position = \"plot\", \n        plot.caption.position =  \"plot\",\n        strip.background = element_rect(fill = 'gray'),\n        strip.text = element_text(color = \"white\", face = \"bold\",size = 15)\n        ) \n\n\n\n\n\n\n\n\nUsando o comando ggsave() é possível salvar a imagem em PNG.\n\nggsave('grafico1.png',dpi = 600,width = 9,height = 7)",
+    "crumbs": [
+      "Tabela 5606 - Massa de rendimento",
+      "Criando gráfico de linhas"
+    ]
+  },
+  {
+    "objectID": "tabela5917.html",
+    "href": "tabela5917.html",
+    "title": "Reproduzindo a tabela",
+    "section": "",
+    "text": "Reproduzir tabela 5917 apresenta a População total, por sexo.",
+    "crumbs": [
+      "Tabela 5917 - População total",
+      "Reproduzindo a tabela"
+    ]
+  },
+  {
+    "objectID": "tabela5917.html#objetivo",
+    "href": "tabela5917.html#objetivo",
+    "title": "Reproduzindo a tabela",
+    "section": "",
+    "text": "Reproduzir tabela 5917 apresenta a População total, por sexo.",
+    "crumbs": [
+      "Tabela 5917 - População total",
+      "Reproduzindo a tabela"
+    ]
+  },
+  {
+    "objectID": "tabela5917.html#estimando-valores",
+    "href": "tabela5917.html#estimando-valores",
+    "title": "Reproduzindo a tabela",
+    "section": "Estimando valores",
+    "text": "Estimando valores\nPara estimar a massa de rendimento, usaremos a tabela svytotal, que estima o total de uma determinada variável.\n\n# Carregando pacotes----------------------------------------------------------------------------\nlibrary(PNADcIBGE)\nlibrary(survey)\n\n# Definindo parâmetros------------------------------------------------------------------------\n# Cria tabela com periodos de interesse (anos e trimestres)\nperiodos &lt;- expand.grid(year = 2023:2024, quarter = 1:4)\nperiodos &lt;- periodos[order(periodos$year, periodos$quarter), ]\nperiodos &lt;- periodos[1:6,]\n\n# Define variáveis de interesse da PNADc\nvariaveis_selecionadas &lt;- c(\"V2007\")\n\n# Importando dados e estimando valores de interesse -----------------------------------------\n# Cria data frame para armazenar resultados\ndf &lt;- data.frame()\n\n# Cria looping iterando sobre os trimestres selecionados\nfor(i in 1:nrow(periodos)){\n  # Importando dados\n  dados = get_pnadc(year = periodos$year[i], quarter = periodos$quarter[i],\n                    vars = variaveis_selecionadas)\n  \n  # Estimando valores para homens e mulheres\n  resultado &lt;- svytotal(~V2007, design=dados, na.rm=TRUE)\n \n  # Estimando CV\n  cv = cv(resultado)\n  \n  # Criando data frame temporário com resultados do trimestre\n  df_temp &lt;- data.frame(\n    year = periodos$year[i],\n    quarter = periodos$quarter[i],\n    total_homem = resultado[1],\n    total_mulher = resultado[2],\n    cv_homem = cv[1],\n    cv_mulher = cv[2])\n  \n  # Gravando resultados no data frame\n  df &lt;- rbind(df, df_temp)\n  \n  # Remove dados da do trimestre da memória\n  remove(dados)\n}",
+    "crumbs": [
+      "Tabela 5917 - População total",
+      "Reproduzindo a tabela"
+    ]
+  },
+  {
+    "objectID": "tabela5917.html#tabela",
+    "href": "tabela5917.html#tabela",
+    "title": "Reproduzindo a tabela",
+    "section": "Tabela",
+    "text": "Tabela\nUsando o pacote gt é possível formatar uma tabela para exibir os valores calculados.\n\n# Carregando pacote\nlibrary(gt)\nlibrary(dplyr)\n\n\nAnexando pacote: 'dplyr'\n\n\nOs seguintes objetos são mascarados por 'package:stats':\n\n    filter, lag\n\n\nOs seguintes objetos são mascarados por 'package:base':\n\n    intersect, setdiff, setequal, union\n\n# Criando tabela\ndf |&gt; \n  group_by(year,quarter) |&gt;\n  mutate(total = sum(total_homem,total_mulher)/1000,\n         total_homem = total_homem/1000,\n         total_mulher = total_mulher/1000) |&gt; \n  select(year,quarter,total,total_homem,total_mulher,cv_homem,cv_mulher) |&gt; \ngt() |&gt; \n tab_header(\n   title = \"Tabela 5917 - População, por sexo\",\n   subtitle = \"Variável - população (Mil pessoas)\"\n ) |&gt; \n  cols_label(\n   year = \"Ano\",\n   quarter = \"Trimestre\",\n   total = \"Total\",\n   total_homem = \"Homens\",\n   total_mulher = \"Mulheres\",\n   cv_homem = \"CV Homens\",\n   cv_mulher = \"CV Mulheres\"\n ) |&gt; \n  fmt_percent(\n    columns = c(cv_homem,cv_mulher),\n    decimals = 2) |&gt; \n  fmt_number(\n    columns = c(total,total_homem,total_mulher),\n    decimals = 0\n  ) |&gt; \n  opt_interactive()\n\n\n\n\nTabela 5917 - População, por sexo\nVariável - população (Mil pessoas)",
+    "crumbs": [
+      "Tabela 5917 - População total",
+      "Reproduzindo a tabela"
+    ]
+  },
+  {
+    "objectID": "grafico5917.html",
+    "href": "grafico5917.html",
+    "title": "Criando pirâmide etária",
+    "section": "",
+    "text": "Reproduzir pirâmides etárias usando dados da tabela 5917. Aplicar códigos a nível nacional e estadual.\nReferências dos códigos utilizados na reprodução dos gráficos podem ser encontrados no site da pesquisadora Beatriz Milz .",
+    "crumbs": [
+      "Tabela 5917 - População total",
+      "Criando pirâmide etária"
+    ]
+  },
+  {
+    "objectID": "grafico5917.html#objetivo",
+    "href": "grafico5917.html#objetivo",
+    "title": "Criando pirâmide etária",
+    "section": "",
+    "text": "Reproduzir pirâmides etárias usando dados da tabela 5917. Aplicar códigos a nível nacional e estadual.\nReferências dos códigos utilizados na reprodução dos gráficos podem ser encontrados no site da pesquisadora Beatriz Milz .",
+    "crumbs": [
+      "Tabela 5917 - População total",
+      "Criando pirâmide etária"
+    ]
+  },
+  {
+    "objectID": "grafico5917.html#gráfico",
+    "href": "grafico5917.html#gráfico",
+    "title": "Criando pirâmide etária",
+    "section": "Gráfico",
+    "text": "Gráfico\nUsando o pacote ggplot2 é possível criar diversos tipos de gráfico. Os gráficos gerados com o ggplot2 usam como base dados no formato tidy. Dessa forma, usaremos os pacotes dplyr e tidyr para formatar os dados obtidos anteriormente.\n\n# Carregando pacotes\nlibrary(dplyr)\nlibrary(tidyr)\nlibrary(ggplot2)\n\n# Formatando os dados\ndf &lt;- as.data.frame(resultado)\ndf &lt;- df |&gt; \n  # Transformando o nome das linhas em coluna\n  add_rownames(var = 'tipo') |&gt; \n  # Removendo o termo \"interaction\" do nome das linhas\n  mutate(tipo = gsub(\"interaction\\\\(faixa_idade, V2007\\\\)\",'',tipo)) |&gt; \n  # Dividindo a coluna \"tipo\" em duas (faixa de idade e sexo)\n  separate(tipo,c(\"faixa_idade\",\"sexo\"), sep = \"\\\\.\") |&gt; \n  # Transformando a faixa de idade em fator para permitir ordenamento\n  mutate(faixa_idade = factor(\n    faixa_idade,\n    levels = c(\n      '0 a 4 anos',\n      '5 a 9 anos',\n      '10 a 14 anos',\n      '15 a 19 anos',\n      '20 a 24 anos',\n      '25 a 29 anos',\n      '30 a 34 anos',\n      '35 a 39 anos',\n      '40 a 44 anos',\n      '45 a 49 anos',\n      '50 a 54 anos',\n      '55 a 59 anos',\n      '60 a 64 anos',\n      '65 a 69 anos',\n      '70 a 74 anos',\n      '75 a 79 anos',\n      '80 a 84 anos',\n      '85 a 89 anos',\n      '90 a 94 anos',\n      '95 a 99 anos',\n      '100 anos ou mais'\n    )\n  )) |&gt;  \n  # Ordenando os dados por faixa de idade\n  arrange(faixa_idade)\n\n# Criando o gráfico\ndf |&gt; \n  # Como o gráfico de pirâmide etária apresenta os dois sexos lado a lado, \n  # atribuiremos um sinal negativo para os valores dos homens\n  mutate(total = case_when(sexo == \"Homem\" ~ x * -1,\n                           sexo == \"Mulher\" ~ x)) |&gt; \n  ggplot() +\n  # Definindo as variáveis dos eixos e o preenchimento das colunas\n  aes(y = faixa_idade, x = total, fill = sexo) +\n  # Definindo o tipo de gráfico (colunas)\n  geom_col() +\n  # Definindo as cores do gráfico\n  scale_fill_manual(values = c(\"#440154FF\", \"#FDE725FF\")) +\n  # Alterando a escala da população\n  scale_x_continuous(labels = function(x) paste0(abs(x) / 1e6, \"M\"),n.breaks = 10) +\n  # Alterando o tema do gráfico\n  theme_minimal() +\n  # Adicionando os títulos e legendas\n  labs(\n    x = \"População\", \n    y = \"Faixa etária\",\n    fill = \"Sexo\",\n    title = \"Pirâmide etária - População brasileira\",\n    subtitle = \"Dados do segundo trimestre de 2024\",\n    caption = \"Fonte: PNADc\"\n  )\n\n\n\n\n\n\n\n\n\nPodemos reproduzir o mesmo gráfico para estados usando a função subset.\n\n# Formatando os dados\ndf &lt;- as.data.frame(resultado2)\ndf &lt;- df |&gt; \n  # Transformando o nome das linhas em coluna\n  add_rownames(var = 'tipo') |&gt; \n  # Removendo o termo \"interaction\" do nome das linhas\n  mutate(tipo = gsub(\"interaction\\\\(faixa_idade, V2007\\\\)\",'',tipo)) |&gt; \n  # Dividindo a coluna \"tipo\" em duas (faixa de idade e sexo)\n  separate(tipo,c(\"faixa_idade\",\"sexo\"), sep = \"\\\\.\") |&gt; \n  # Transformando a faixa de idade em fator para permitir ordenamento\n  mutate(faixa_idade = factor(\n    faixa_idade,\n    levels = c(\n      '0 a 4 anos',\n      '5 a 9 anos',\n      '10 a 14 anos',\n      '15 a 19 anos',\n      '20 a 24 anos',\n      '25 a 29 anos',\n      '30 a 34 anos',\n      '35 a 39 anos',\n      '40 a 44 anos',\n      '45 a 49 anos',\n      '50 a 54 anos',\n      '55 a 59 anos',\n      '60 a 64 anos',\n      '65 a 69 anos',\n      '70 a 74 anos',\n      '75 a 79 anos',\n      '80 a 84 anos',\n      '85 a 89 anos',\n      '90 a 94 anos',\n      '95 a 99 anos',\n      '100 anos ou mais'\n    )\n  )) |&gt; \n  # Ordenando os dados por faixa de idade\n  arrange(faixa_idade)\n\n# Criando o gráfico\ndf |&gt; \n  # Como o gráfico de pirâmide etária apresenta os dois sexos lado a lado, atribuiremos um sinal negativo para os valores dos homens\n  mutate(total = dplyr::case_when(sexo == \"Homem\" ~ x * -1,\n                                         sexo == \"Mulher\" ~ x)) |&gt; \n  ggplot() +\n  # Definindo as variáveis dos eixos e o preenchimento das colunas\n  aes(y = faixa_idade, x = total, fill = sexo) +\n  # Definindo o tipo de gráfico (colunas)\n  geom_col() +\n  # Definindo as cores do gráfico\n  scale_fill_manual(values = c(\"#440154FF\", \"#FDE725FF\")) +\n  # Alterando a escala da população\n  scale_x_continuous(labels = function(x) paste0(abs(x) / 1e6, \"M\"),n.breaks = 10) +\n  # Alterando o tema do gráfico\n  theme_minimal() +\n  # Adicionando os títulos e legendas\n  labs(\n    x = \"População\", \n    y = \"Faixa etária\",\n    fill = \"Sexo\",\n    title = \"Pirâmide etária - População do Rio de Janeiro\",\n    subtitle = \"Dados do segundo trimestre de 2024\",\n    caption = \"Fonte: PNADc\"\n  )",
+    "crumbs": [
+      "Tabela 5917 - População total",
+      "Criando pirâmide etária"
+    ]
+  },
+  {
+    "objectID": "grafico5917.html#estimando-valores",
+    "href": "grafico5917.html#estimando-valores",
+    "title": "Criando pirâmide etária",
+    "section": "Estimando valores",
+    "text": "Estimando valores\nUsaremos a função get_pnadc para obter dados da população no segundo trimestre de 2024. Depois, usaremos a função svytotal para estimar os totais populacionais das interações entre sexo e idade.\nAlternativamente, é possível carregar dados baixados anteriormente, economizando no tempo de execução do código\n\n# Carregando pacotes----------------------------------------------------------------------------\nlibrary(PNADcIBGE)\nlibrary(survey)\n\n# Define variáveis de interesse da PNADc\nvariaveis_selecionadas &lt;- c(\"VD4002\", \"VD4009\", \"VD4019\")\n\n# Importando dados e estimando valores de interesse -----------------------------------------\n\n# Baixando os dados\n# dados = get_pnadc(year = \"2024\", quarter = \"2\",\n#                   vars = variaveis_selecionadas)\n\n# Carregando os dados baixados anteriormente (altere o caminho usado em sua máquina)\ndados = readRDS(paste0(\"C:/Users/Avell B155 MAX/Documents/faculdade/LABDATA/pnadc\",\n                       \"2024\",\"2\",\".RDS\"))\n   \n# Criando a variável faixa de idade\ndados$variables$faixa_idade = dplyr::case_when(\n  dados$variables$V2009 &lt; 5 ~ '0 a 4 anos',\n  dados$variables$V2009 &lt; 10 ~ '5 a 9 anos',\n  dados$variables$V2009 &lt; 15 ~ '10 a 14 anos',\n  dados$variables$V2009 &lt; 20 ~ '15 a 19 anos',\n  dados$variables$V2009 &lt; 25 ~ '20 a 24 anos',\n  dados$variables$V2009 &lt; 30 ~ '25 a 29 anos',\n  dados$variables$V2009 &lt; 35 ~ '30 a 34 anos',\n  dados$variables$V2009 &lt; 40 ~ '35 a 39 anos',\n  dados$variables$V2009 &lt; 45 ~ '40 a 44 anos',\n  dados$variables$V2009 &lt; 50 ~ '45 a 49 anos',\n  dados$variables$V2009 &lt; 55 ~ '50 a 54 anos',\n  dados$variables$V2009 &lt; 60 ~ '55 a 59 anos',\n  dados$variables$V2009 &lt; 65 ~ '60 a 64 anos',\n  dados$variables$V2009 &lt; 70 ~ '65 a 69 anos',\n  dados$variables$V2009 &lt; 75 ~ '70 a 74 anos',\n  dados$variables$V2009 &lt; 80 ~ '75 a 79 anos',\n  dados$variables$V2009 &lt; 85 ~ '80 a 84 anos',\n  dados$variables$V2009 &lt; 90 ~ '85 a 89 anos',\n  dados$variables$V2009 &lt; 95 ~ '90 a 94 anos',\n  dados$variables$V2009 &lt; 100 ~ '95 a 99 anos',\n  TRUE ~ '100 anos ou mais'\n)\n  \n# Estimando valores\nresultado &lt;- svytotal(x=~interaction(faixa_idade,V2007), design=dados, na.rm=TRUE)\n\n# Estimando valores para um domínio específico da população\nresultado2 &lt;- svytotal(x=~interaction(faixa_idade,V2007), design=subset(dados, UF==\"Rio de Janeiro\"), na.rm=TRUE)",
+    "crumbs": [
+      "Tabela 5917 - População total",
+      "Criando pirâmide etária"
+    ]
   }
 ]

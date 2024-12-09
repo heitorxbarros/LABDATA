@@ -1,5 +1,6 @@
 ---
-title: "Reprodução da tabela 6471"
+title: "Reproduzindo a tabela"
+lang: pt
 ---
 
 ## Objetivo
@@ -11,12 +12,15 @@ knitr::include_graphics("TABELAS/TABELA6471.png")
 df = readRDS("DADOS/dfgrafico6471.RDS")
 ```
 
-
 ## Estimando valores
 
-Os objetos obtidos a partir da função `get_pnadc` podem ocupar mais de 1,5 GB, se selecionadas todas as variáveis do trimestre. Portanto, se você deseja reproduzir as estimativas de uma tabela do SIDRA para um número grande de trimestres, é provável que a memória RAM de sua máquina não suporte todos os objetos de uma só vez. Assim, o ideal para um estimativas de um período grande é remover os objetos obtidos de cada trimestre após calcular suas estimativas. Caso deseje reutilizar o objeto, é possível salvá-lo na memória principal de sua máquina, eliminando a necessidade de baixá-lo novamente com a função `get_pnadc`, que pode ser um processo lento a depender de sua conexão.
+Usando a função `svyby`, é possível calcular estimativas para vários domínios. Dessa forma, vamos calcular a média da variável **VD4019** para os domínios da variável **VD009**.
 
-Então, com o uso de funções iterativas, é possível reutilizar o código para calcular as estimativas sem esgotar a memória RAM. Dessa forma, cada etapa do código é realizada através de funções específicas.
+-   VD009 - Posição na ocupação e categoria do emprego do trabalho principal da semana de referência para pessoas de 14 anos ou mais de idade;
+
+-   VD4019 - Rendimento mensal habitual de todos os trabalhos para pessoas de 14 anos ou mais de idade (apenas para pessoas que receberam em dinheiro, produtos ou mercadorias em qualquer trabalho);
+
+Também podemos calcular variáveis de rendimento deflacionadas. Multiplicando o rendimento pelas variáveis *Habitual* ou *Efetivo,* podemos obter estimativas sob o valor real.
 
 ```{r estimativas, results="hide",message=F, eval=F}
 # Carregando pacotes----------------------------------------------------------------------------
@@ -29,9 +33,9 @@ periodos <- expand.grid(year = 2023:2024, quarter = 1:4)
 periodos <- periodos[order(periodos$year, periodos$quarter), ]
 periodos <- periodos[1:6,]
 
-
+dados$variables$Efetivo
 # Define variáveis de interesse da PNADc
-variaveis_selecionadas <- c("VD4002", "VD4009", "VD4019")
+variaveis_selecionadas <- c("VD4009", "VD4019")
 
 # Importando dados e estimando valores de interesse -----------------------------------------
 # Cria data frame para armazenar resultados
@@ -40,11 +44,9 @@ df <- data.frame()
 # Cria looping iterando sobre os trimestres selecionados
 for(i in 1:nrow(periodos)){
   # Importando dados
-  # dados = get_pnadc(year = periodos$year[i], quarter = periodos$quarter[i],
-  #                  vars = variaveis_selecionadas)
+   dados = get_pnadc(year = periodos$year[i], quarter = periodos$quarter[i],
+                    vars = variaveis_selecionadas)
   
-   dados = readRDS(paste0("C:/Users/03002433/Documents/LABDATA/pnadc",
-                          periodos$year[i],periodos$quarter[i],".RDS"))
    
    # Transformando a variável para valores reais usando o deflator
    dados$variables = transform(dados$variables, VD4019_real = VD4019*Habitual)
@@ -73,7 +75,6 @@ for(i in 1:nrow(periodos)){
 }
 ```
 
-
 ## Tabela
 
 Usando o pacote `gt` é possível formatar uma tabela para exibir os valores calculados.
@@ -101,7 +102,8 @@ gt(df) |>
   fmt_number(
     columns = c(VD4019_real),
     decimals = 2
-  )
+  ) |> 
+  opt_interactive()
 ```
 
 </br>

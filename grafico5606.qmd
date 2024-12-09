@@ -1,0 +1,67 @@
+---
+title: "Criando gráfico de linhas"
+lang: pt
+---
+
+## Objetivo
+
+Criar gráfico de barras a partir dos dados estimados da [**tabela 5606**](https://sidra.ibge.gov.br/tabela/5606).
+
+```{r tabela1, echo=FALSE}
+df <- readRDS("DADOS/dadosTAB5606.RDS")
+```
+
+## Gráfico
+
+Usando o pacote `ggplot2` é possível criar diversos tipos de gráfico. Os gráficos gerados com o `ggplot2` usam como base dados no formato `tidy`. Dessa forma, usaremos os pacotes `dplyr`, `tidyr` e `scales` para formatar os dados obtidos anteriormente.
+
+```{r grafico, message=F, warning=F, out.width="100%", fig.align='center', dpi=600, fig.width = 12, fig.height = 8}
+# Carregando pacotes
+library(dplyr)
+library(scales)
+library(ggplot2)
+
+# Criando gráfico
+
+df |> 
+  # Cria coluna com trimestre e ano
+  mutate(trimestre = as.factor(paste(year,quarter,sep = " - "))) |> 
+  ggplot(aes(y = total, x = as.factor(trimestre), group=1, color = '#004282')) +
+  # Definindo o tipo de gráfico (linhas) com o tipo de linha tracejado
+  geom_line(linetype = 'dashed') +
+  # Adicionando ponto para cada trimestre
+  geom_point(size = 5) +
+  # Adicionando o texto com o valor em cada trimestre
+  geom_text(aes(label = scales::number(total, scale = 1e-9,suffix = " B")),
+            nudge_y = -20*10^9,size = 8) +
+  # Usando a cor definida no aes()
+  scale_color_identity() +
+  # Alterando a escala do eixo y para incluir o zero e label para bilhões
+  scale_y_continuous(limits = c(0,323000000000), n.breaks = 10,
+                     labels = unit_format(unit = "B", scale = 1e-9)) +
+  # Altera o tema do gráfico para "minimal"
+  theme_minimal() +
+  # Adiciona título e subtitulo
+  labs(
+    title = 'Massa de rendimento mensal das pessoas de 14 anos ou mais',
+    subtitle = 'Pesquisa Nacional por Amostra de Domicílios Contínua Trimestral - Dados de 2023 e 2024'
+  ) +
+  # Faz ajustes no tema do gráfico
+  theme(legend.position = 'none',
+        axis.text = element_text(face = 'bold', size = 15,
+                                   colour = 'gray15'),
+        axis.title = element_blank(),
+        plot.title = element_text(face = 'bold', size = 18),
+        plot.subtitle = element_text(face = 'italic', size = 15),
+        plot.title.position = "plot", 
+        plot.caption.position =  "plot",
+        strip.background = element_rect(fill = 'gray'),
+        strip.text = element_text(color = "white", face = "bold",size = 15)
+        ) 
+```
+
+Usando o comando `ggsave()` é possível salvar a imagem em PNG.
+
+```{r salva, eval=F}
+ggsave('grafico1.png',dpi = 600,width = 9,height = 7)
+```

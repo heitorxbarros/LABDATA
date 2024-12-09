@@ -9,13 +9,20 @@ website:
     logo: https://ence.ibge.gov.br/images/logoence.fw.png
     contents:
       - href: index.qmd
-        text: Introdução
-      - href: tabela6471.qmd
-        text: Reprodução da tabela 6471 (Rendimento médio mensal por ocupação)
-      - href: tabela5606.qmd
-        text: Reprodução da tabela 5606 (Massa de rendimento)
-      - href: grafico6471.qmd
-        text: Elaboração de gráfico da tabela 6471 (Rendimento médio mensal por ocupação)
+        text: "Introdução"
+      - section: "Tabela 6471 - Rendimento médio"
+        contents: 
+          - tabela6471.qmd
+          - grafico6471.qmd
+          - mapa6471.qmd
+      - section: "Tabela 5606 - Massa de rendimento"
+        contents: 
+          - tabela5606.qmd
+          - grafico5606.qmd
+      - section: "Tabela 5917 - População total"
+        contents: 
+          - tabela5917.qmd
+          - grafico5917.qmd
 
 format:
   html:

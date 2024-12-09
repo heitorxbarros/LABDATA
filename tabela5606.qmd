@@ -1,5 +1,6 @@
 ---
-title: "Reprodução da tabela 5606"
+title: "Reproduzindo a tabela"
+lang: pt
 ---
 
 ## Objetivo
@@ -31,7 +32,7 @@ variaveis_selecionadas <- c("VD4019")
 
 # Importando dados e estimando valores de interesse -----------------------------------------
 # Cria data frame para armazenar resultados
-df <- data.frame(periodos,total = NA, cv = NA)
+df <- data.frame(periodos, total = NA, cv = NA)
 
 # Cria looping iterando sobre os trimestres selecionados
 for(i in 1:nrow(periodos)){
@@ -72,11 +73,17 @@ gt(df) |>
  ) |> 
   cols_label(
    year = "Ano",
-   total = "Trimestre",
+   quarter = "Trimestre",
    total = "Total",
    cv = "Coeficiente de Variação"
- )
+ ) |> 
+  fmt_percent(
+    columns = c(cv),
+    decimals = 2) |> 
+  fmt_number(
+    columns = c(total),
+    decimals = 2
+  ) |> 
+  opt_interactive()
 
 ```
-
-</br>

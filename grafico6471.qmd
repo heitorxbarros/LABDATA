@@ -1,20 +1,21 @@
 ---
-title: "Reprodução da tabela 5606"
+title: "Criando gráfico de barras"
+lang: pt
 ---
 
 ## Objetivo
 
-Criar gráfico a partir dos dados estimados da [**tabela 6471**](https://sidra.ibge.gov.br/tabela/6471).
+Criar gráfico de barras a partir dos dados estimados da [**tabela 6471**](https://sidra.ibge.gov.br/tabela/6471).
 
 ```{r tabela1, echo=FALSE}
 df <- readRDS("DADOS/dfgrafico6471.RDS")
 ```
 
-## Gráfico 
+## Gráfico
 
 Usando o pacote `ggplot2` é possível criar diversos tipos de gráfico. Os gráficos gerados com o `ggplot2` usam como base dados no formato `tidy`. Dessa forma, usaremos os pacotes `dplyr`, `tidyr` e `forcats` para formatar os dados obtidos anteriormente.
 
-```{r grafico,  out.width="100%", fig.align='center', dpi=600, fig.width = 12, fig.height = 8}
+```{r grafico, message=F, warning=F, out.width="100%", fig.align='center', dpi=600, fig.width = 12, fig.height = 8}
 # Carregando pacotes
 library(dplyr)
 library(tidyr)
@@ -60,9 +61,7 @@ df |>
         ) 
 ```
 
-
 Usando o comando `ggsave()` é possível salvar a imagem em PNG.
-
 
 ```{r salva, eval=F}
 ggsave('grafico1.png',dpi = 600,width = 9,height = 7)

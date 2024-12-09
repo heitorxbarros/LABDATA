@@ -1,0 +1,224 @@
+---
+title: "Criando pirâmide etária"
+lang: pt
+---
+
+## Objetivo
+
+Reproduzir pirâmides etárias usando dados da [**tabela 5917**](https://sidra.ibge.gov.br/tabela/5917). Aplicar códigos a nível nacional e estadual.
+
+Referências dos códigos utilizados na reprodução dos gráficos podem ser encontrados no site da pesquisadora [**Beatriz Milz**](https://beamilz.com/posts/2024-04-21-piramide-ggplot2/pt/) .
+
+```{r tabela1, echo=FALSE}
+resultado <- readRDS("DADOS/piramide.RDS")
+resultado2 <- readRDS("DADOS/piramide2.RDS")
+```
+
+## Estimando valores
+
+Usaremos a função `get_pnadc` para obter dados da população no segundo trimestre de 2024. Depois, usaremos a função `svytotal` para estimar os totais populacionais das interações entre *sexo* e *idade*.
+
+Alternativamente, é possível carregar dados baixados anteriormente, economizando no tempo de execução do código
+
+
+```{r estimativas, results="hide",message=F,eval=F}
+# Carregando pacotes----------------------------------------------------------------------------
+library(PNADcIBGE)
+library(survey)
+
+# Define variáveis de interesse da PNADc
+variaveis_selecionadas <- c("VD4002", "VD4009", "VD4019")
+
+# Importando dados e estimando valores de interesse -----------------------------------------
+
+# Baixando os dados
+# dados = get_pnadc(year = "2024", quarter = "2",
+#                   vars = variaveis_selecionadas)
+
+# Carregando os dados baixados anteriormente (altere o caminho usado em sua máquina)
+dados = readRDS(paste0("C:/Users/Avell B155 MAX/Documents/faculdade/LABDATA/pnadc",
+                       "2024","2",".RDS"))
+   
+# Criando a variável faixa de idade
+dados$variables$faixa_idade = dplyr::case_when(
+  dados$variables$V2009 < 5 ~ '0 a 4 anos',
+  dados$variables$V2009 < 10 ~ '5 a 9 anos',
+  dados$variables$V2009 < 15 ~ '10 a 14 anos',
+  dados$variables$V2009 < 20 ~ '15 a 19 anos',
+  dados$variables$V2009 < 25 ~ '20 a 24 anos',
+  dados$variables$V2009 < 30 ~ '25 a 29 anos',
+  dados$variables$V2009 < 35 ~ '30 a 34 anos',
+  dados$variables$V2009 < 40 ~ '35 a 39 anos',
+  dados$variables$V2009 < 45 ~ '40 a 44 anos',
+  dados$variables$V2009 < 50 ~ '45 a 49 anos',
+  dados$variables$V2009 < 55 ~ '50 a 54 anos',
+  dados$variables$V2009 < 60 ~ '55 a 59 anos',
+  dados$variables$V2009 < 65 ~ '60 a 64 anos',
+  dados$variables$V2009 < 70 ~ '65 a 69 anos',
+  dados$variables$V2009 < 75 ~ '70 a 74 anos',
+  dados$variables$V2009 < 80 ~ '75 a 79 anos',
+  dados$variables$V2009 < 85 ~ '80 a 84 anos',
+  dados$variables$V2009 < 90 ~ '85 a 89 anos',
+  dados$variables$V2009 < 95 ~ '90 a 94 anos',
+  dados$variables$V2009 < 100 ~ '95 a 99 anos',
+  TRUE ~ '100 anos ou mais'
+)
+  
+# Estimando valores
+resultado <- svytotal(x=~interaction(faixa_idade,V2007), design=dados, na.rm=TRUE)
+
+# Estimando valores para um domínio específico da população
+resultado2 <- svytotal(x=~interaction(faixa_idade,V2007), design=subset(dados, UF=="Rio de Janeiro"), na.rm=TRUE)
+```
+
+</br>
+
+## Gráfico
+
+Usando o pacote `ggplot2` é possível criar diversos tipos de gráfico. Os gráficos gerados com o `ggplot2` usam como base dados no formato `tidy`. Dessa forma, usaremos os pacotes `dplyr` e `tidyr` para formatar os dados obtidos anteriormente.
+
+```{r grafico, warning=F, message=F}
+# Carregando pacotes
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+
+# Formatando os dados
+df <- as.data.frame(resultado)
+df <- df |> 
+  # Transformando o nome das linhas em coluna
+  add_rownames(var = 'tipo') |> 
+  # Removendo o termo "interaction" do nome das linhas
+  mutate(tipo = gsub("interaction\\(faixa_idade, V2007\\)",'',tipo)) |> 
+  # Dividindo a coluna "tipo" em duas (faixa de idade e sexo)
+  separate(tipo,c("faixa_idade","sexo"), sep = "\\.") |> 
+  # Transformando a faixa de idade em fator para permitir ordenamento
+  mutate(faixa_idade = factor(
+    faixa_idade,
+    levels = c(
+      '0 a 4 anos',
+      '5 a 9 anos',
+      '10 a 14 anos',
+      '15 a 19 anos',
+      '20 a 24 anos',
+      '25 a 29 anos',
+      '30 a 34 anos',
+      '35 a 39 anos',
+      '40 a 44 anos',
+      '45 a 49 anos',
+      '50 a 54 anos',
+      '55 a 59 anos',
+      '60 a 64 anos',
+      '65 a 69 anos',
+      '70 a 74 anos',
+      '75 a 79 anos',
+      '80 a 84 anos',
+      '85 a 89 anos',
+      '90 a 94 anos',
+      '95 a 99 anos',
+      '100 anos ou mais'
+    )
+  )) |>  
+  # Ordenando os dados por faixa de idade
+  arrange(faixa_idade)
+
+# Criando o gráfico
+df |> 
+  # Como o gráfico de pirâmide etária apresenta os dois sexos lado a lado, 
+  # atribuiremos um sinal negativo para os valores dos homens
+  mutate(total = case_when(sexo == "Homem" ~ x * -1,
+                           sexo == "Mulher" ~ x)) |> 
+  ggplot() +
+  # Definindo as variáveis dos eixos e o preenchimento das colunas
+  aes(y = faixa_idade, x = total, fill = sexo) +
+  # Definindo o tipo de gráfico (colunas)
+  geom_col() +
+  # Definindo as cores do gráfico
+  scale_fill_manual(values = c("#440154FF", "#FDE725FF")) +
+  # Alterando a escala da população
+  scale_x_continuous(labels = function(x) paste0(abs(x) / 1e6, "M"),n.breaks = 10) +
+  # Alterando o tema do gráfico
+  theme_minimal() +
+  # Adicionando os títulos e legendas
+  labs(
+    x = "População", 
+    y = "Faixa etária",
+    fill = "Sexo",
+    title = "Pirâmide etária - População brasileira",
+    subtitle = "Dados do segundo trimestre de 2024",
+    caption = "Fonte: PNADc"
+  )
+
+```
+
+</br>
+
+Podemos reproduzir o mesmo gráfico para estados usando a função `subset`.
+
+```{r grafico2, warning=F, message=F}
+  
+# Formatando os dados
+df <- as.data.frame(resultado2)
+df <- df |> 
+  # Transformando o nome das linhas em coluna
+  add_rownames(var = 'tipo') |> 
+  # Removendo o termo "interaction" do nome das linhas
+  mutate(tipo = gsub("interaction\\(faixa_idade, V2007\\)",'',tipo)) |> 
+  # Dividindo a coluna "tipo" em duas (faixa de idade e sexo)
+  separate(tipo,c("faixa_idade","sexo"), sep = "\\.") |> 
+  # Transformando a faixa de idade em fator para permitir ordenamento
+  mutate(faixa_idade = factor(
+    faixa_idade,
+    levels = c(
+      '0 a 4 anos',
+      '5 a 9 anos',
+      '10 a 14 anos',
+      '15 a 19 anos',
+      '20 a 24 anos',
+      '25 a 29 anos',
+      '30 a 34 anos',
+      '35 a 39 anos',
+      '40 a 44 anos',
+      '45 a 49 anos',
+      '50 a 54 anos',
+      '55 a 59 anos',
+      '60 a 64 anos',
+      '65 a 69 anos',
+      '70 a 74 anos',
+      '75 a 79 anos',
+      '80 a 84 anos',
+      '85 a 89 anos',
+      '90 a 94 anos',
+      '95 a 99 anos',
+      '100 anos ou mais'
+    )
+  )) |> 
+  # Ordenando os dados por faixa de idade
+  arrange(faixa_idade)
+
+# Criando o gráfico
+df |> 
+  # Como o gráfico de pirâmide etária apresenta os dois sexos lado a lado, atribuiremos um sinal negativo para os valores dos homens
+  mutate(total = dplyr::case_when(sexo == "Homem" ~ x * -1,
+                                         sexo == "Mulher" ~ x)) |> 
+  ggplot() +
+  # Definindo as variáveis dos eixos e o preenchimento das colunas
+  aes(y = faixa_idade, x = total, fill = sexo) +
+  # Definindo o tipo de gráfico (colunas)
+  geom_col() +
+  # Definindo as cores do gráfico
+  scale_fill_manual(values = c("#440154FF", "#FDE725FF")) +
+  # Alterando a escala da população
+  scale_x_continuous(labels = function(x) paste0(abs(x) / 1e6, "M"),n.breaks = 10) +
+  # Alterando o tema do gráfico
+  theme_minimal() +
+  # Adicionando os títulos e legendas
+  labs(
+    x = "População", 
+    y = "Faixa etária",
+    fill = "Sexo",
+    title = "Pirâmide etária - População do Rio de Janeiro",
+    subtitle = "Dados do segundo trimestre de 2024",
+    caption = "Fonte: PNADc"
+  )
+```

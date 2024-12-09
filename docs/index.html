@@ -145,30 +145,58 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  <span class="menu-text">Introdução</span></a>
   </div>
 </li>
-        <li class="sidebar-item">
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text">Tabela 6471 - Rendimento médio</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./tabela6471.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Reprodução da tabela 6471 (Rendimento médio mensal por ocupação)</span></a>
+ <span class="menu-text">Reproduzindo a tabela</span></a>
   </div>
 </li>
-        <li class="sidebar-item">
-  <div class="sidebar-item-container"> 
-  <a href="./tabela5606.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Reprodução da tabela 5606 (Massa de rendimento)</span></a>
-  </div>
-</li>
-        <li class="sidebar-item">
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./grafico6471.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Elaboração de gráfico da tabela 6471</span></a>
+ <span class="menu-text">Criando gráfico de barras</span></a>
   </div>
 </li>
-        <li class="sidebar-item">
+          <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./mapa6471.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Elaboração de mapa com dados da tabela 6471</span></a>
+ <span class="menu-text">Criando mapa</span></a>
   </div>
 </li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
+ <span class="menu-text">Tabela 5606 - Massa de rendimento</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./tabela5606.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Reproduzindo a tabela</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./grafico5606.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Criando gráfico de linhas</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
     </ul>
     </div>
 </nav>
@@ -182,6 +210,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#replicando-resultados-do-sidra" id="toc-replicando-resultados-do-sidra" class="nav-link active" data-scroll-target="#replicando-resultados-do-sidra">Replicando resultados do SIDRA</a>
   <ul class="collapse">
   <li><a href="#preparação" id="toc-preparação" class="nav-link" data-scroll-target="#preparação">Preparação</a></li>
+  <li><a href="#opções-de-importação" id="toc-opções-de-importação" class="nav-link" data-scroll-target="#opções-de-importação">Opções de importação</a></li>
   <li><a href="#links-importantes" id="toc-links-importantes" class="nav-link" data-scroll-target="#links-importantes">Links importantes</a></li>
   </ul></li>
   </ul>
@@ -220,11 +249,32 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">install.packages</span>(<span class="st">'survey'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
+<section id="opções-de-importação" class="level2">
+<h2 class="anchored" data-anchor-id="opções-de-importação">Opções de importação</h2>
+<p>O pacote <code>PNADcIBGE</code> permite importar os dados online através da função <code>get_pnadc</code> ou carregá-los diretamente de arquivos salvos em disco offline, através das funções <code>read_pnadc</code> e <code>pnadc_design</code>.</p>
+<p>Os objetos obtidos a partir da função <code>get_pnadc</code> podem ocupar mais de 1,5 GB, se selecionadas todas as variáveis do trimestre. Portanto, se você deseja reproduzir as estimativas de uma tabela do SIDRA para um número grande de trimestres, é provável que a memória RAM de sua máquina não suporte todos os objetos de uma só vez. Assim, o ideal para um estimativas de um período grande é remover os objetos obtidos de cada trimestre após calcular suas estimativas. Caso deseje reutilizar o objeto, é possível salvá-lo na memória principal de sua máquina, eliminando a necessidade de baixá-lo novamente com a função <code>get_pnadc</code>, que pode ser um processo lento a depender de sua conexão.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Importando online</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>dadosPNADc <span class="ot">&lt;-</span> <span class="fu">get_pnadc</span>(<span class="at">year=</span><span class="dv">2024</span>, <span class="at">quarter=</span><span class="dv">2</span>)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Importando offline</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>dadosPNADc <span class="ot">&lt;-</span> <span class="fu">read_pnadc</span>(<span class="at">microdata=</span><span class="st">"PNADC_022024.txt"</span>, <span class="at">input_txt=</span><span class="st">"input_PNADC_trimestral.txt"</span>)</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>dadosPNADc <span class="ot">&lt;-</span> <span class="fu">pnadc_design</span>(<span class="at">data_pnadc=</span>dadosPNADc)</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Salvando objeto na máquina</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="fu">saveRDS</span>(<span class="at">object =</span> dadosPNADC, <span class="at">file =</span> <span class="st">"dadospnad.RDS"</span>)</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Recarregando objeto salvo na máquina</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>dadosPNADc <span class="ot">=</span> <span class="fu">readRDS</span>(<span class="st">"dadospnad.RDS"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
 <section id="links-importantes" class="level2">
 <h2 class="anchored" data-anchor-id="links-importantes">Links importantes</h2>
-<p>Tutorial do desenvolvedor do pacote <code>PNADcIBGE</code>, <strong><em>Gabriel Assuncao:</em></strong> <a href="https://rpubs.com/gabriel-assuncao-ibge/pnadc" class="uri">https://rpubs.com/gabriel-assuncao-ibge/pnadc</a> ;</p>
-<p>Tabelas do SIDRA: <a href="https://sidra.ibge.gov.br/pesquisa/pnadct/tabelas" class="uri">https://sidra.ibge.gov.br/pesquisa/pnadct/tabelas</a> ;</p>
-<p>Documentação do pacote survey: <a href="https://cran.r-project.org/web/packages/survey/survey.pdf" class="uri">https://cran.r-project.org/web/packages/survey/survey.pdf</a> ;</p>
+<ol type="1">
+<li>Tutorial do desenvolvedor do pacote <code>PNADcIBGE</code>, <strong><em>Gabriel Assuncao:</em></strong> <a href="https://rpubs.com/gabriel-assuncao-ibge/pnadc" class="uri">https://rpubs.com/gabriel-assuncao-ibge/pnadc</a> ;</li>
+<li>Tabelas do SIDRA: <a href="https://sidra.ibge.gov.br/pesquisa/pnadct/tabelas" class="uri">https://sidra.ibge.gov.br/pesquisa/pnadct/tabelas</a> ;</li>
+<li>Documentação do pacote survey: <a href="https://cran.r-project.org/web/packages/survey/survey.pdf" class="uri">https://cran.r-project.org/web/packages/survey/survey.pdf</a> ;</li>
+</ol>
 
 
 </section>

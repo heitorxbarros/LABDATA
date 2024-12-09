@@ -1,0 +1,105 @@
+---
+title: "Reproduzindo a tabela"
+lang: pt
+---
+
+## Objetivo
+
+Reproduzir [**tabela 5917**](https://sidra.ibge.gov.br/tabela/5917) apresenta a População total, por sexo.
+
+```{r tabela1, echo=FALSE, out.width="100%", fig.align='center', dpi=600}
+knitr::include_graphics("TABELAS/TABELA5917.png")
+df = readRDS("DADOS/dadosTAB5917.RDS")
+```
+
+## Estimando valores
+
+Para estimar a massa de rendimento, usaremos a tabela `svytotal`, que estima o total de uma determinada variável.
+
+```{r estimativas, results="hide",message=F,eval=FALSE,warning=F}
+# Carregando pacotes----------------------------------------------------------------------------
+library(PNADcIBGE)
+library(survey)
+
+# Definindo parâmetros------------------------------------------------------------------------
+# Cria tabela com periodos de interesse (anos e trimestres)
+periodos <- expand.grid(year = 2023:2024, quarter = 1:4)
+periodos <- periodos[order(periodos$year, periodos$quarter), ]
+periodos <- periodos[1:6,]
+
+# Define variáveis de interesse da PNADc
+variaveis_selecionadas <- c("V2007")
+
+# Importando dados e estimando valores de interesse -----------------------------------------
+# Cria data frame para armazenar resultados
+df <- data.frame()
+
+# Cria looping iterando sobre os trimestres selecionados
+for(i in 1:nrow(periodos)){
+  # Importando dados
+  dados = get_pnadc(year = periodos$year[i], quarter = periodos$quarter[i],
+                    vars = variaveis_selecionadas)
+  
+  # Estimando valores para homens e mulheres
+  resultado <- svytotal(~V2007, design=dados, na.rm=TRUE)
+ 
+  # Estimando CV
+  cv = cv(resultado)
+  
+  # Criando data frame temporário com resultados do trimestre
+  df_temp <- data.frame(
+    year = periodos$year[i],
+    quarter = periodos$quarter[i],
+    total_homem = resultado[1],
+    total_mulher = resultado[2],
+    cv_homem = cv[1],
+    cv_mulher = cv[2])
+  
+  # Gravando resultados no data frame
+  df <- rbind(df, df_temp)
+  
+  # Remove dados da do trimestre da memória
+  remove(dados)
+}
+```
+
+## Tabela
+
+Usando o pacote `gt` é possível formatar uma tabela para exibir os valores calculados.
+
+```{r tabela}
+# Carregando pacote
+library(gt)
+library(dplyr)
+
+# Criando tabela
+df |> 
+  group_by(year,quarter) |>
+  mutate(total = sum(total_homem,total_mulher)/1000,
+         total_homem = total_homem/1000,
+         total_mulher = total_mulher/1000) |> 
+  select(year,quarter,total,total_homem,total_mulher,cv_homem,cv_mulher) |> 
+gt() |> 
+ tab_header(
+   title = "Tabela 5917 - População, por sexo",
+   subtitle = "Variável - população (Mil pessoas)"
+ ) |> 
+  cols_label(
+   year = "Ano",
+   quarter = "Trimestre",
+   total = "Total",
+   total_homem = "Homens",
+   total_mulher = "Mulheres",
+   cv_homem = "CV Homens",
+   cv_mulher = "CV Mulheres"
+ ) |> 
+  fmt_percent(
+    columns = c(cv_homem,cv_mulher),
+    decimals = 2) |> 
+  fmt_number(
+    columns = c(total,total_homem,total_mulher),
+    decimals = 0
+  ) |> 
+  opt_interactive()
+
+```
