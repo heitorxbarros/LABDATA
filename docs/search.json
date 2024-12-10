@@ -338,6 +338,7 @@
     "crumbs": [
       "Tabela 6371 - Média de horas habitualmente trabalhada",
       "Reproduzindo a tabela"
+<<<<<<< HEAD
     ]
   },
   {
@@ -378,6 +379,8 @@
     "text": "Tutorial do desenvolvedor do pacote PNADcIBGE, Gabriel Assuncao: https://rpubs.com/gabriel-assuncao-ibge/pnadc ;\nTabelas do SIDRA: https://sidra.ibge.gov.br/pesquisa/pnadct/tabelas ;\nDocumentação do pacote survey: https://cran.r-project.org/web/packages/survey/survey.pdf ;",
     "crumbs": [
       "Introdução"
+=======
+>>>>>>> f09f1019db90935b7029acae169c200ba38948ca
     ]
   }
 ]
