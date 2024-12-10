@@ -100,6 +100,20 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-label": "Procurar"
   }
 }</script>
+<script src="site_libs/core-js-2.5.3/shim.min.js"></script>
+
+<script src="site_libs/react-18.2.0/react.min.js"></script>
+
+<script src="site_libs/react-18.2.0/react-dom.min.js"></script>
+
+<script src="site_libs/reactwidget-2.0.0/react-tools.js"></script>
+
+<script src="site_libs/htmlwidgets-1.6.4/htmlwidgets.js"></script>
+
+<link href="site_libs/reactable-0.4.4/reactable.css" rel="stylesheet">
+
+<script src="site_libs/reactable-binding-0.4.4/reactable.js"></script>
+
 
 
 <link rel="stylesheet" href="styles.css">
@@ -235,6 +249,35 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  <span class="menu-text">Reproduzindo a tabela</span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./grafico4099.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Criando gráfico de linhas com intervalo de confiança</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true">
+ <span class="menu-text">Tabela 6371 - Média de horas habitualmente trabalhada</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true" aria-label="Alternar seção">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./tabela6371.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Reproduzindo a tabela</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./grafico6371.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Criando gráfico de barras</span></a>
+  </div>
+</li>
       </ul>
   </li>
     </ul>
@@ -358,25 +401,26 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a> ) <span class="sc">|&gt;</span> </span>
 <span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fmt_percent</span>(</span>
 <span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>    <span class="at">columns =</span> <span class="fu">c</span>(taxa,cv),</span>
-<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">decimals =</span> <span class="dv">1</span>)</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">decimals =</span> <span class="dv">1</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>  <span class="fu">opt_interactive</span>()</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
-<div id="vyvwevwlzn" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
-<style>#vyvwevwlzn table {
+<div id="kdsuictdnj" class=".gt_table" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#kdsuictdnj table {
   font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-#vyvwevwlzn thead, #vyvwevwlzn tbody, #vyvwevwlzn tfoot, #vyvwevwlzn tr, #vyvwevwlzn td, #vyvwevwlzn th {
+#kdsuictdnj thead, #kdsuictdnj tbody, #kdsuictdnj tfoot, #kdsuictdnj tr, #kdsuictdnj td, #kdsuictdnj th {
   border-style: none;
 }
 
-#vyvwevwlzn p {
+#kdsuictdnj p {
   margin: 0;
   padding: 0;
 }
 
-#vyvwevwlzn .gt_table {
+#kdsuictdnj .gt_table {
   display: table;
   border-collapse: collapse;
   line-height: normal;
@@ -402,12 +446,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   border-left-color: #D3D3D3;
 }
 
-#vyvwevwlzn .gt_caption {
+#kdsuictdnj .gt_caption {
   padding-top: 4px;
   padding-bottom: 4px;
 }
 
-#vyvwevwlzn .gt_title {
+#kdsuictdnj .gt_title {
   color: #333333;
   font-size: 125%;
   font-weight: initial;
@@ -419,7 +463,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   border-bottom-width: 0;
 }
 
-#vyvwevwlzn .gt_subtitle {
+#kdsuictdnj .gt_subtitle {
   color: #333333;
   font-size: 85%;
   font-weight: initial;
@@ -431,7 +475,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   border-top-width: 0;
 }
 
-#vyvwevwlzn .gt_heading {
+#kdsuictdnj .gt_heading {
   background-color: #FFFFFF;
   text-align: center;
   border-bottom-color: #FFFFFF;
@@ -443,13 +487,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   border-right-color: #D3D3D3;
 }
 
-#vyvwevwlzn .gt_bottom_border {
+#kdsuictdnj .gt_bottom_border {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
 }
 
-#vyvwevwlzn .gt_col_headings {
+#kdsuictdnj .gt_col_headings {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -464,7 +508,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   border-right-color: #D3D3D3;
 }
 
-#vyvwevwlzn .gt_col_heading {
+#kdsuictdnj .gt_col_heading {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -484,7 +528,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   overflow-x: hidden;
 }
 
-#vyvwevwlzn .gt_column_spanner_outer {
+#kdsuictdnj .gt_column_spanner_outer {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -496,15 +540,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   padding-right: 4px;
 }
 
-#vyvwevwlzn .gt_column_spanner_outer:first-child {
+#kdsuictdnj .gt_column_spanner_outer:first-child {
   padding-left: 0;
 }
 
-#vyvwevwlzn .gt_column_spanner_outer:last-child {
+#kdsuictdnj .gt_column_spanner_outer:last-child {
   padding-right: 0;
 }
 
-#vyvwevwlzn .gt_column_spanner {
+#kdsuictdnj .gt_column_spanner {
   border-bottom-style: solid;
   border-bottom-width: 2px;
   border-bottom-color: #D3D3D3;
@@ -516,11 +560,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   width: 100%;
 }
 
-#vyvwevwlzn .gt_spanner_row {
+#kdsuictdnj .gt_spanner_row {
   border-bottom-style: hidden;
 }
 
-#vyvwevwlzn .gt_group_heading {
+#kdsuictdnj .gt_group_heading {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -546,7 +590,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   text-align: left;
 }
 
-#vyvwevwlzn .gt_empty_group_heading {
+#kdsuictdnj .gt_empty_group_heading {
   padding: 0.5px;
   color: #333333;
   background-color: #FFFFFF;
@@ -561,15 +605,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   vertical-align: middle;
 }
 
-#vyvwevwlzn .gt_from_md > :first-child {
+#kdsuictdnj .gt_from_md > :first-child {
   margin-top: 0;
 }
 
-#vyvwevwlzn .gt_from_md > :last-child {
+#kdsuictdnj .gt_from_md > :last-child {
   margin-bottom: 0;
 }
 
-#vyvwevwlzn .gt_row {
+#kdsuictdnj .gt_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -588,7 +632,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   overflow-x: hidden;
 }
 
-#vyvwevwlzn .gt_stub {
+#kdsuictdnj .gt_stub {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -601,7 +645,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   padding-right: 5px;
 }
 
-#vyvwevwlzn .gt_stub_row_group {
+#kdsuictdnj .gt_stub_row_group {
   color: #333333;
   background-color: #FFFFFF;
   font-size: 100%;
@@ -615,15 +659,15 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   vertical-align: top;
 }
 
-#vyvwevwlzn .gt_row_group_first td {
+#kdsuictdnj .gt_row_group_first td {
   border-top-width: 2px;
 }
 
-#vyvwevwlzn .gt_row_group_first th {
+#kdsuictdnj .gt_row_group_first th {
   border-top-width: 2px;
 }
 
-#vyvwevwlzn .gt_summary_row {
+#kdsuictdnj .gt_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -633,16 +677,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   padding-right: 5px;
 }
 
-#vyvwevwlzn .gt_first_summary_row {
+#kdsuictdnj .gt_first_summary_row {
   border-top-style: solid;
   border-top-color: #D3D3D3;
 }
 
-#vyvwevwlzn .gt_first_summary_row.thick {
+#kdsuictdnj .gt_first_summary_row.thick {
   border-top-width: 2px;
 }
 
-#vyvwevwlzn .gt_last_summary_row {
+#kdsuictdnj .gt_last_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -652,7 +696,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   border-bottom-color: #D3D3D3;
 }
 
-#vyvwevwlzn .gt_grand_summary_row {
+#kdsuictdnj .gt_grand_summary_row {
   color: #333333;
   background-color: #FFFFFF;
   text-transform: inherit;
@@ -662,7 +706,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   padding-right: 5px;
 }
 
-#vyvwevwlzn .gt_first_grand_summary_row {
+#kdsuictdnj .gt_first_grand_summary_row {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -672,7 +716,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   border-top-color: #D3D3D3;
 }
 
-#vyvwevwlzn .gt_last_grand_summary_row_top {
+#kdsuictdnj .gt_last_grand_summary_row_top {
   padding-top: 8px;
   padding-bottom: 8px;
   padding-left: 5px;
@@ -682,11 +726,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   border-bottom-color: #D3D3D3;
 }
 
-#vyvwevwlzn .gt_striped {
+#kdsuictdnj .gt_striped {
   background-color: rgba(128, 128, 128, 0.05);
 }
 
-#vyvwevwlzn .gt_table_body {
+#kdsuictdnj .gt_table_body {
   border-top-style: solid;
   border-top-width: 2px;
   border-top-color: #D3D3D3;
@@ -695,7 +739,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   border-bottom-color: #D3D3D3;
 }
 
-#vyvwevwlzn .gt_footnotes {
+#kdsuictdnj .gt_footnotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -709,7 +753,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   border-right-color: #D3D3D3;
 }
 
-#vyvwevwlzn .gt_footnote {
+#kdsuictdnj .gt_footnote {
   margin: 0px;
   font-size: 90%;
   padding-top: 4px;
@@ -718,7 +762,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   padding-right: 5px;
 }
 
-#vyvwevwlzn .gt_sourcenotes {
+#kdsuictdnj .gt_sourcenotes {
   color: #333333;
   background-color: #FFFFFF;
   border-bottom-style: none;
@@ -732,7 +776,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   border-right-color: #D3D3D3;
 }
 
-#vyvwevwlzn .gt_sourcenote {
+#kdsuictdnj .gt_sourcenote {
   font-size: 90%;
   padding-top: 4px;
   padding-bottom: 4px;
@@ -740,131 +784,81 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   padding-right: 5px;
 }
 
-#vyvwevwlzn .gt_left {
+#kdsuictdnj .gt_left {
   text-align: left;
 }
 
-#vyvwevwlzn .gt_center {
+#kdsuictdnj .gt_center {
   text-align: center;
 }
 
-#vyvwevwlzn .gt_right {
+#kdsuictdnj .gt_right {
   text-align: right;
   font-variant-numeric: tabular-nums;
 }
 
-#vyvwevwlzn .gt_font_normal {
+#kdsuictdnj .gt_font_normal {
   font-weight: normal;
 }
 
-#vyvwevwlzn .gt_font_bold {
+#kdsuictdnj .gt_font_bold {
   font-weight: bold;
 }
 
-#vyvwevwlzn .gt_font_italic {
+#kdsuictdnj .gt_font_italic {
   font-style: italic;
 }
 
-#vyvwevwlzn .gt_super {
+#kdsuictdnj .gt_super {
   font-size: 65%;
 }
 
-#vyvwevwlzn .gt_footnote_marks {
+#kdsuictdnj .gt_footnote_marks {
   font-size: 75%;
   vertical-align: 0.4em;
   position: initial;
 }
 
-#vyvwevwlzn .gt_asterisk {
+#kdsuictdnj .gt_asterisk {
   font-size: 100%;
   vertical-align: 0;
 }
 
-#vyvwevwlzn .gt_indent_1 {
+#kdsuictdnj .gt_indent_1 {
   text-indent: 5px;
 }
 
-#vyvwevwlzn .gt_indent_2 {
+#kdsuictdnj .gt_indent_2 {
   text-indent: 10px;
 }
 
-#vyvwevwlzn .gt_indent_3 {
+#kdsuictdnj .gt_indent_3 {
   text-indent: 15px;
 }
 
-#vyvwevwlzn .gt_indent_4 {
+#kdsuictdnj .gt_indent_4 {
   text-indent: 20px;
 }
 
-#vyvwevwlzn .gt_indent_5 {
+#kdsuictdnj .gt_indent_5 {
   text-indent: 25px;
 }
 
-#vyvwevwlzn .katex-display {
+#kdsuictdnj .katex-display {
   display: inline-flex !important;
   margin-bottom: 0.75em !important;
 }
 
-#vyvwevwlzn div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+#kdsuictdnj div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
   height: 0px !important;
 }
 </style>
-
-<table class="gt_table caption-top table table-sm table-striped small" data-quarto-postprocess="true" data-quarto-disable-processing="false" data-quarto-bootstrap="false">
-<thead>
-<tr class="header gt_heading">
-<th colspan="4" class="gt_heading gt_title gt_font_normal">Tabela 4099 - Taxas de desocupação e de subutilização da força de trabalho, na semana de referência, das pessoas de 14 anos ou mais de idade</th>
-</tr>
-<tr class="odd gt_heading">
-<th colspan="4" class="gt_heading gt_subtitle gt_font_normal gt_bottom_border">Variável - Taxa de desocupação, na semana de referência, das pessoas de 14 anos ou mais de idade (%)</th>
-</tr>
-<tr class="header gt_col_headings">
-<th id="year" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">Ano</th>
-<th id="quarter" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">Trimestre</th>
-<th id="taxa" class="gt_col_heading gt_columns_bottom_border gt_center" data-quarto-table-cell-role="th" scope="col">Taxa</th>
-<th id="cv" class="gt_col_heading gt_columns_bottom_border gt_right" data-quarto-table-cell-role="th" scope="col">Coeficiente de Variação</th>
-</tr>
-</thead>
-<tbody class="gt_table_body">
-<tr class="odd">
-<td class="gt_row gt_right" headers="year">2023</td>
-<td class="gt_row gt_right" headers="quarter">1</td>
-<td class="gt_row gt_center" headers="taxa">0.08793574</td>
-<td class="gt_row gt_right" headers="cv">1.2%</td>
-</tr>
-<tr class="even">
-<td class="gt_row gt_right" headers="year">2023</td>
-<td class="gt_row gt_right" headers="quarter">2</td>
-<td class="gt_row gt_center" headers="taxa">0.08039508</td>
-<td class="gt_row gt_right" headers="cv">1.2%</td>
-</tr>
-<tr class="odd">
-<td class="gt_row gt_right" headers="year">2023</td>
-<td class="gt_row gt_right" headers="quarter">3</td>
-<td class="gt_row gt_center" headers="taxa">0.0768891</td>
-<td class="gt_row gt_right" headers="cv">1.2%</td>
-</tr>
-<tr class="even">
-<td class="gt_row gt_right" headers="year">2023</td>
-<td class="gt_row gt_right" headers="quarter">4</td>
-<td class="gt_row gt_center" headers="taxa">0.07409955</td>
-<td class="gt_row gt_right" headers="cv">1.1%</td>
-</tr>
-<tr class="odd">
-<td class="gt_row gt_right" headers="year">2024</td>
-<td class="gt_row gt_right" headers="quarter">1</td>
-<td class="gt_row gt_center" headers="taxa">0.07923948</td>
-<td class="gt_row gt_right" headers="cv">1.1%</td>
-</tr>
-<tr class="even">
-<td class="gt_row gt_right" headers="year">2024</td>
-<td class="gt_row gt_right" headers="quarter">2</td>
-<td class="gt_row gt_center" headers="taxa">0.06895154</td>
-<td class="gt_row gt_right" headers="cv">1.2%</td>
-</tr>
-</tbody>
-</table>
-
+<div style="font-family:system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;border-top-style:solid;border-top-width:2px;border-top-color:#D3D3D3;">
+<div class="gt_heading gt_title gt_font_normal" style="text-size:bigger;">Tabela 4099 - Taxas de desocupação e de subutilização da força de trabalho, na semana de referência, das pessoas de 14 anos ou mais de idade</div>
+<div class="gt_heading gt_subtitle ">Variável - Taxa de desocupação, na semana de referência, das pessoas de 14 anos ou mais de idade (%)</div>
+</div>
+<div id="kdsuictdnj" class="reactable html-widget" style="width:auto;height:auto;"></div>
+<script type="application/json" data-for="kdsuictdnj">{"x":{"tag":{"name":"Reactable","attribs":{"data":{"year":[2023,2023,2023,2023,2024,2024],"quarter":[1,2,3,4,1,2],"taxa":[[[0.0879357435519506]],[[0.0803950831383892]],[[0.0768890990047897]],[[0.0740995459975022]],[[0.0792394832583976]],[[0.0689515353732063]]],"cv":[0.011644740785858,0.0123373073542314,0.0118124012922781,0.0113217143296481,0.0108977778933672,0.0124169771085553]},"columns":[{"id":"year","name":"Ano","type":"numeric","na":"NA","minWidth":125,"style":"function(rowInfo, colInfo) {\nconst rowIndex = rowInfo.index + 1\n}","html":true,"align":"right"},{"id":"quarter","name":"Trimestre","type":"numeric","na":"NA","minWidth":125,"style":"function(rowInfo, colInfo) {\nconst rowIndex = rowInfo.index + 1\n}","html":true,"align":"right"},{"id":"taxa","name":"Taxa","type":"list","na":"NA","minWidth":125,"style":"function(rowInfo, colInfo) {\nconst rowIndex = rowInfo.index + 1\n}","html":true,"align":"center"},{"id":"cv","name":"Coeficiente de Variação","type":"numeric","na":"NA","minWidth":125,"style":"function(rowInfo, colInfo) {\nconst rowIndex = rowInfo.index + 1\n}","cell":["1.2%","1.2%","1.2%","1.1%","1.1%","1.2%"],"html":true,"align":"right"}],"defaultPageSize":10,"showPageSizeOptions":false,"pageSizeOptions":[10,25,50,100],"paginationType":"numbers","showPagination":true,"showPageInfo":true,"minRows":1,"height":"auto","theme":{"color":"#333333","backgroundColor":"#FFFFFF","stripedColor":"rgba(128,128,128,0.05)","style":{"font-family":"system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif","fontSize":"16px"},"tableStyle":{"borderTopStyle":"solid","borderTopWidth":"2px","borderTopColor":"#D3D3D3"},"headerStyle":{"fontWeight":"normal","backgroundColor":"transparent","borderBottomStyle":"solid","borderBottomWidth":"2px","borderBottomColor":"#D3D3D3"},"groupHeaderStyle":{"fontWeight":"normal","backgroundColor":"transparent","borderBottomStyle":"solid","borderBottomWidth":"2px","borderBottomColor":"#D3D3D3"},"cellStyle":{"fontWeight":"normal"}},"elementId":"kdsuictdnj","dataKey":"c7c5ea1030c8074bfa745aed558adeac"},"children":[]},"class":"reactR_markup"},"evals":["tag.attribs.columns.0.style","tag.attribs.columns.1.style","tag.attribs.columns.2.style","tag.attribs.columns.3.style"],"jsHooks":[]}</script>
 </div>
 </div>
 </div>

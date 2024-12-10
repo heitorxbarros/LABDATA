@@ -84,5 +84,7 @@ gt(df) |>
  ) |> 
   fmt_percent(
     columns = c(taxa,cv),
-    decimals = 1)
+    decimals = 1) |> 
+  opt_interactive()
+  
 ```

@@ -1,0 +1,66 @@
+---
+title: "Criando gráfico de linhas com intervalo de confiança"
+lang: pt
+---
+
+## Objetivo
+
+Criar gráfico de barras a partir dos dados estimados da [**tabela 4099**](https://sidra.ibge.gov.br/tabela/4099).
+
+```{r tabela1, echo=FALSE}
+df <- readRDS("DADOS/dadosTAB4099.RDS")
+```
+
+## Gráfico
+
+Usando o pacote `ggplot2` é possível criar diversos tipos de gráfico. Os gráficos gerados com o `ggplot2` usam como base dados no formato `tidy`. Dessa forma, usaremos os pacotes `dplyr`, `tidyr` e `forcats` para formatar os dados obtidos anteriormente.
+
+```{r grafico, message=F, warning=F, out.width="100%", fig.align='center', dpi=600, fig.width = 12, fig.height = 8}
+# Carregando pacotes
+library(dplyr)
+library(tidyr)
+library(ggplot2)
+
+
+df |>
+  # Criando colunas com valores dos Intervalos de Confiança de 95% para as taxas
+  mutate(taxa = as.numeric(taxa),
+         lower = taxa - (1.96 * cv),
+         upper = taxa + (1.96 * cv),
+         trimestre = paste(year,quarter,sep = " - ")) |> 
+  # Cria gráfico
+  ggplot(aes(x = trimestre, y = taxa, group = 1)) +
+  # Definindo o tipo de gráfico (linhas). Define tipo e transparência da linha  
+  geom_line(color = "#004282", size = 1, linetype = 'dashed', alpha = .8) +
+  # Adiciona pontos para cada estimativa
+  geom_point(color = "#004282", size = 5) +
+  # Adiciona barras de erro
+  geom_errorbar(aes(ymin = lower, ymax = upper),
+                width = 0.2, color = "#004282", alpha = .8) +
+  # Define limites do eixo y
+  ylim(c(0,.15)) +
+  # Adiciona títulos
+  labs(
+    title = "Taxa de Desocupação da Força de Trabalho",
+    subtitle = 'Pesquisa Nacional por Amostra de Domicílios Contínua Trimestral - Dados de 2023 e 2024',
+    x = "Período (Ano e Trimestre)",
+    y = "Taxa"
+  ) +
+  theme_minimal() +
+  # Faz ajustes no tema do gráfico
+  theme(legend.position = 'none',
+        axis.text = element_text(face = 'bold', size = 12,
+                                   colour = 'gray15'),
+        axis.title = element_text(face = 'bold', size = 15),
+        plot.title = element_text(face = 'bold', size = 18),
+        plot.subtitle = element_text(face = 'italic', size = 15),
+        plot.title.position = "plot", 
+        plot.caption.position =  "plot"
+        ) 
+```
+
+Usando o comando `ggsave()` é possível salvar a imagem em PNG.
+
+```{r salva, eval=F}
+ggsave('grafico1.png',dpi = 600,width = 9,height = 7)
+```

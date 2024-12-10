@@ -1,0 +1,1338 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="pt" xml:lang="pt"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.5.57">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Reproduzindo a tabela – LABDATA</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "Nenhum resultado",
+    "search-matching-documents-text": "documentos correspondentes",
+    "search-copy-link-title": "Copiar link para a busca",
+    "search-hide-matches-text": "Esconder correspondências adicionais",
+    "search-more-match-text": "mais correspondência neste documento",
+    "search-more-matches-text": "mais correspondências neste documento",
+    "search-clear-button-title": "Limpar",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancelar",
+    "search-submit-button-title": "Enviar",
+    "search-label": "Procurar"
+  }
+}</script>
+<script src="site_libs/core-js-2.5.3/shim.min.js"></script>
+
+<script src="site_libs/react-18.2.0/react.min.js"></script>
+
+<script src="site_libs/react-18.2.0/react-dom.min.js"></script>
+
+<script src="site_libs/reactwidget-2.0.0/react-tools.js"></script>
+
+<script src="site_libs/htmlwidgets-1.6.4/htmlwidgets.js"></script>
+
+<link href="site_libs/reactable-0.4.4/reactable.css" rel="stylesheet">
+
+<script src="site_libs/reactable-binding-0.4.4/reactable.js"></script>
+
+
+
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./tabela6371.html">Tabela 6371 - Média de horas habitualmente trabalhada</a></li><li class="breadcrumb-item"><a href="./tabela6371.html">Reproduzindo a tabela</a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Alternar barra lateral" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Procurar" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+      <a href="./index.html" class="sidebar-logo-link">
+      <img src="https://ence.ibge.gov.br/images/logoence.fw.png" alt="" class="sidebar-logo py-0 d-lg-inline d-none">
+      </a>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Procurar"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introdução</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text">Tabela 6471 - Rendimento médio</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Alternar seção">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./tabela6471.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Reproduzindo a tabela</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./grafico6471.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Criando gráfico de barras</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./mapa6471.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Criando mapa</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
+ <span class="menu-text">Tabela 5606 - Massa de rendimento</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Alternar seção">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./tabela5606.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Reproduzindo a tabela</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./grafico5606.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Criando gráfico de linhas</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true">
+ <span class="menu-text">Tabela 5917 - População total</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Alternar seção">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./tabela5917.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Reproduzindo a tabela</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./grafico5917.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Criando pirâmide etária</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true">
+ <span class="menu-text">Tabela 4099 - Taxa de desocupação</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true" aria-label="Alternar seção">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./tabela4099.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Reproduzindo a tabela</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./grafico4099.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Criando gráfico de linhas com intervalo de confiança</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true">
+ <span class="menu-text">Tabela 6371 - Média de horas habitualmente trabalhada</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-5" role="navigation" aria-expanded="true" aria-label="Alternar seção">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-5" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./tabela6371.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">Reproduzindo a tabela</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./grafico6371.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Criando gráfico de barras</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Nesta página</h2>
+   
+  <ul>
+  <li><a href="#objetivo" id="toc-objetivo" class="nav-link active" data-scroll-target="#objetivo">Objetivo</a></li>
+  <li><a href="#estimando-valores" id="toc-estimando-valores" class="nav-link" data-scroll-target="#estimando-valores">Estimando valores</a></li>
+  <li><a href="#formatando-os-dados" id="toc-formatando-os-dados" class="nav-link" data-scroll-target="#formatando-os-dados">Formatando os dados</a></li>
+  <li><a href="#tabela" id="toc-tabela" class="nav-link" data-scroll-target="#tabela">Tabela</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./tabela6371.html">Tabela 6371 - Média de horas habitualmente trabalhada</a></li><li class="breadcrumb-item"><a href="./tabela6371.html">Reproduzindo a tabela</a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title">Reproduzindo a tabela</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="objetivo" class="level2">
+<h2 class="anchored" data-anchor-id="objetivo">Objetivo</h2>
+<p>Reproduzir <a href="https://sidra.ibge.gov.br/tabela/6371"><strong>tabela 6371</strong></a>, que apresenta a <strong>Média de horas habitualmente trabalhadas por semana e efetivamente trabalhadas na semana de referência, no trabalho principal e em todos os trabalhos, das pessoas de 14 anos ou mais de idade, por sexo e por Unidade da Federação.</strong></p>
+<p>Variáveis utilizadas nas estimativas:</p>
+<ul>
+<li><p>UF - Unidade da Federação;</p></li>
+<li><p>V2007 - Sexo;</p></li>
+<li><p>VD4031 - Horas habitualmente trabalhadas;</p></li>
+</ul>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="TABELAS/TABELA6371.png" class="img-fluid quarto-figure quarto-figure-center figure-img" style="width:100.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="estimando-valores" class="level2">
+<h2 class="anchored" data-anchor-id="estimando-valores">Estimando valores</h2>
+<p>Para estimar a média considerando a interação entre sexo e Unidade da Federação, usamos as funções <code>svyby</code> e <code>interaction</code>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Carregando pacotes----------------------------------------------------------------------------</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(PNADcIBGE)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(survey)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Definindo parâmetros------------------------------------------------------------------------</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Cria tabela com periodos de interesse (anos e trimestres)</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>periodos <span class="ot">&lt;-</span> <span class="fu">expand.grid</span>(<span class="at">year =</span> <span class="dv">2023</span><span class="sc">:</span><span class="dv">2024</span>, <span class="at">quarter =</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>)</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>periodos <span class="ot">&lt;-</span> periodos[<span class="fu">order</span>(periodos<span class="sc">$</span>year, periodos<span class="sc">$</span>quarter), ]</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>periodos <span class="ot">&lt;-</span> periodos[<span class="dv">1</span><span class="sc">:</span><span class="dv">6</span>,]</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Define variáveis de interesse da PNADc</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>variaveis_selecionadas <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"UF"</span>,<span class="st">"V2007"</span>,<span class="st">"VD4031"</span>)</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Importando dados e estimando valores de interesse -----------------------------------------</span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Cria data frame para armazenar resultados</span></span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>()</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="co"># Cria looping iterando sobre os trimestres selecionados</span></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span>(i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(periodos)){</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Importando dados</span></span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>  <span class="co"># dados = get_pnadc(year = periodos$year[i], quarter = periodos$quarter[i],</span></span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>  <span class="co">#                  vars = variaveis_selecionadas)</span></span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>  dados <span class="ot">=</span> <span class="fu">readRDS</span>(<span class="fu">paste0</span>(<span class="st">"c://Users/03002433/Documents/pnadc"</span>,</span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>                          periodos<span class="sc">$</span>year[i],periodos<span class="sc">$</span>quarter[i],<span class="st">".RDS"</span>))</span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Estimando valores</span></span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>  <span class="do">## Estimativas com interações de sexo e UF</span></span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>  resultado <span class="ot">=</span> <span class="fu">svyby</span>(<span class="at">formula=</span><span class="sc">~</span>VD4031,<span class="at">by =</span><span class="sc">~</span><span class="fu">interaction</span>(V2007,UF),<span class="at">FUN=</span>svymean,</span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>                       <span class="at">design=</span>dados, <span class="at">na.rm=</span><span class="cn">TRUE</span>)</span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a>  <span class="do">## Estimativas a nível nacional por sexo</span></span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a>  resultado_total <span class="ot">=</span> <span class="fu">svyby</span>(<span class="at">formula=</span><span class="sc">~</span>VD4031,<span class="at">by =</span><span class="sc">~</span>V2007,<span class="at">FUN=</span>svymean,</span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>                       <span class="at">design=</span>dados, <span class="at">na.rm=</span><span class="cn">TRUE</span>)</span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Estimando CV</span></span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a>  cv <span class="ot">=</span> <span class="fu">as.data.frame</span>(<span class="fu">cv</span>(resultado))</span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a>  cv_total <span class="ot">=</span> <span class="fu">as.data.frame</span>(<span class="fu">cv</span>(resultado_total))</span>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Criando data fame temporário</span></span>
+<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a>  df_temp <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a>    <span class="at">year =</span> periodos<span class="sc">$</span>year[i],</span>
+<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a>    <span class="at">quarter =</span> periodos<span class="sc">$</span>quarter[i],</span>
+<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a>    <span class="at">interacao =</span> resultado[[<span class="dv">1</span>]],</span>
+<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a>    <span class="at">media =</span> resultado[[<span class="dv">2</span>]],</span>
+<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a>    <span class="at">cv =</span> cv[[<span class="dv">1</span>]]</span>
+<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a>    ) <span class="sc">|&gt;</span> </span>
+<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a>    <span class="fu">add_row</span>(</span>
+<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a>      <span class="at">year =</span> periodos<span class="sc">$</span>year[i],</span>
+<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a>      <span class="at">quarter =</span> periodos<span class="sc">$</span>quarter[i],</span>
+<span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a>      <span class="at">interacao =</span> <span class="fu">c</span>(<span class="st">"Homem.Brasil"</span>,<span class="st">"Mulher.Brasil"</span>),</span>
+<span id="cb1-52"><a href="#cb1-52" aria-hidden="true" tabindex="-1"></a>      <span class="at">media =</span> resultado_total[[<span class="dv">2</span>]],</span>
+<span id="cb1-53"><a href="#cb1-53" aria-hidden="true" tabindex="-1"></a>      <span class="at">cv =</span> cv_total[[<span class="dv">1</span>]]</span>
+<span id="cb1-54"><a href="#cb1-54" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb1-55"><a href="#cb1-55" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb1-56"><a href="#cb1-56" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Gravando resultados no data frame</span></span>
+<span id="cb1-57"><a href="#cb1-57" aria-hidden="true" tabindex="-1"></a>  df <span class="ot">&lt;-</span> <span class="fu">rbind</span>(df, df_temp)</span>
+<span id="cb1-58"><a href="#cb1-58" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb1-59"><a href="#cb1-59" aria-hidden="true" tabindex="-1"></a>  <span class="co"># Remove dados da do trimestre da memória</span></span>
+<span id="cb1-60"><a href="#cb1-60" aria-hidden="true" tabindex="-1"></a>  <span class="fu">remove</span>(dados)</span>
+<span id="cb1-61"><a href="#cb1-61" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="formatando-os-dados" class="level2">
+<h2 class="anchored" data-anchor-id="formatando-os-dados">Formatando os dados</h2>
+<p>O <em>data frame</em> obtido com o código a cima apresenta a coluna <code>interação</code> que está no formato <strong>“sexo.UF”</strong>. Assim, usaremos a função <code>separate</code> do pacote <code>tidyr</code> para criar duas novas colunas.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Carrega pacote</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyr)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Altera data frame</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> df <span class="sc">|&gt;</span> </span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">separate</span>(interacao,<span class="fu">c</span>(<span class="st">"sexo"</span>,<span class="st">"UF"</span>), <span class="at">sep =</span> <span class="st">"</span><span class="sc">\\</span><span class="st">."</span>)</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="tabela" class="level2">
+<h2 class="anchored" data-anchor-id="tabela">Tabela</h2>
+<p>Usando o pacote <code>gt</code> é possível formatar uma tabela para exibir os valores calculados.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Carregando pacote</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(gt)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Criando tabela</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="fu">gt</span>(df) <span class="sc">|&gt;</span> </span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a> <span class="fu">tab_header</span>(</span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>   <span class="at">title =</span> <span class="st">"Tabela 6371 - Média de horas habitualmente trabalhadas por semana e efetivamente trabalhadas na semana de referência, no trabalho principal e em todos os trabalhos, das pessoas de 14 anos ou mais de idade, por sexo e por Unidade da Federação"</span>,</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>   <span class="at">subtitle =</span> <span class="st">"Variável - Média de horas habitualmente trabalhadas por semana no trabalho principal das pessoas de 14 anos ou mais de idade (Horas)"</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a> ) <span class="sc">|&gt;</span> </span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">cols_label</span>(</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>   <span class="at">year =</span> <span class="st">"Ano"</span>,</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>   <span class="at">quarter =</span> <span class="st">"Trimestre"</span>,</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>   <span class="at">sexo =</span> <span class="st">"Sexo"</span>,</span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>   <span class="at">UF =</span> <span class="st">"Brasil e Unidades da Federação"</span>,</span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>   <span class="at">media =</span> <span class="st">"Média"</span>,</span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>   <span class="at">cv =</span> <span class="st">"Coeficiente de Variação"</span></span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a> ) <span class="sc">|&gt;</span> </span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fmt_number</span>(</span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">columns =</span> media,</span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>    <span class="at">decimals =</span> <span class="dv">1</span></span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">|&gt;</span> </span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">fmt_percent</span>(</span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a>    <span class="at">columns =</span> <span class="fu">c</span>(cv),</span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a>    <span class="at">decimals =</span> <span class="dv">1</span>) <span class="sc">|&gt;</span> </span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">opt_interactive</span>()</span></code><button title="Copiar para a área de transferência" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div id="qqpcgtjvqu" class=".gt_table" style="padding-left:0px;padding-right:0px;padding-top:10px;padding-bottom:10px;overflow-x:auto;overflow-y:auto;width:auto;height:auto;">
+<style>#qqpcgtjvqu table {
+  font-family: system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#qqpcgtjvqu thead, #qqpcgtjvqu tbody, #qqpcgtjvqu tfoot, #qqpcgtjvqu tr, #qqpcgtjvqu td, #qqpcgtjvqu th {
+  border-style: none;
+}
+
+#qqpcgtjvqu p {
+  margin: 0;
+  padding: 0;
+}
+
+#qqpcgtjvqu .gt_table {
+  display: table;
+  border-collapse: collapse;
+  line-height: normal;
+  margin-left: auto;
+  margin-right: auto;
+  color: #333333;
+  font-size: 16px;
+  font-weight: normal;
+  font-style: normal;
+  background-color: #FFFFFF;
+  width: auto;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #A8A8A8;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #A8A8A8;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+}
+
+#qqpcgtjvqu .gt_caption {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+#qqpcgtjvqu .gt_title {
+  color: #333333;
+  font-size: 125%;
+  font-weight: initial;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-color: #FFFFFF;
+  border-bottom-width: 0;
+}
+
+#qqpcgtjvqu .gt_subtitle {
+  color: #333333;
+  font-size: 85%;
+  font-weight: initial;
+  padding-top: 3px;
+  padding-bottom: 5px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-color: #FFFFFF;
+  border-top-width: 0;
+}
+
+#qqpcgtjvqu .gt_heading {
+  background-color: #FFFFFF;
+  text-align: center;
+  border-bottom-color: #FFFFFF;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#qqpcgtjvqu .gt_bottom_border {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#qqpcgtjvqu .gt_col_headings {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+}
+
+#qqpcgtjvqu .gt_col_heading {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 6px;
+  padding-left: 5px;
+  padding-right: 5px;
+  overflow-x: hidden;
+}
+
+#qqpcgtjvqu .gt_column_spanner_outer {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: normal;
+  text-transform: inherit;
+  padding-top: 0;
+  padding-bottom: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+
+#qqpcgtjvqu .gt_column_spanner_outer:first-child {
+  padding-left: 0;
+}
+
+#qqpcgtjvqu .gt_column_spanner_outer:last-child {
+  padding-right: 0;
+}
+
+#qqpcgtjvqu .gt_column_spanner {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: bottom;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  overflow-x: hidden;
+  display: inline-block;
+  width: 100%;
+}
+
+#qqpcgtjvqu .gt_spanner_row {
+  border-bottom-style: hidden;
+}
+
+#qqpcgtjvqu .gt_group_heading {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  text-align: left;
+}
+
+#qqpcgtjvqu .gt_empty_group_heading {
+  padding: 0.5px;
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  vertical-align: middle;
+}
+
+#qqpcgtjvqu .gt_from_md > :first-child {
+  margin-top: 0;
+}
+
+#qqpcgtjvqu .gt_from_md > :last-child {
+  margin-bottom: 0;
+}
+
+#qqpcgtjvqu .gt_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  margin: 10px;
+  border-top-style: solid;
+  border-top-width: 1px;
+  border-top-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 1px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 1px;
+  border-right-color: #D3D3D3;
+  vertical-align: middle;
+  overflow-x: hidden;
+}
+
+#qqpcgtjvqu .gt_stub {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#qqpcgtjvqu .gt_stub_row_group {
+  color: #333333;
+  background-color: #FFFFFF;
+  font-size: 100%;
+  font-weight: initial;
+  text-transform: inherit;
+  border-right-style: solid;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+  padding-left: 5px;
+  padding-right: 5px;
+  vertical-align: top;
+}
+
+#qqpcgtjvqu .gt_row_group_first td {
+  border-top-width: 2px;
+}
+
+#qqpcgtjvqu .gt_row_group_first th {
+  border-top-width: 2px;
+}
+
+#qqpcgtjvqu .gt_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#qqpcgtjvqu .gt_first_summary_row {
+  border-top-style: solid;
+  border-top-color: #D3D3D3;
+}
+
+#qqpcgtjvqu .gt_first_summary_row.thick {
+  border-top-width: 2px;
+}
+
+#qqpcgtjvqu .gt_last_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#qqpcgtjvqu .gt_grand_summary_row {
+  color: #333333;
+  background-color: #FFFFFF;
+  text-transform: inherit;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#qqpcgtjvqu .gt_first_grand_summary_row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-top-style: double;
+  border-top-width: 6px;
+  border-top-color: #D3D3D3;
+}
+
+#qqpcgtjvqu .gt_last_grand_summary_row_top {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  padding-left: 5px;
+  padding-right: 5px;
+  border-bottom-style: double;
+  border-bottom-width: 6px;
+  border-bottom-color: #D3D3D3;
+}
+
+#qqpcgtjvqu .gt_striped {
+  background-color: rgba(128, 128, 128, 0.05);
+}
+
+#qqpcgtjvqu .gt_table_body {
+  border-top-style: solid;
+  border-top-width: 2px;
+  border-top-color: #D3D3D3;
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+}
+
+#qqpcgtjvqu .gt_footnotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#qqpcgtjvqu .gt_footnote {
+  margin: 0px;
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#qqpcgtjvqu .gt_sourcenotes {
+  color: #333333;
+  background-color: #FFFFFF;
+  border-bottom-style: none;
+  border-bottom-width: 2px;
+  border-bottom-color: #D3D3D3;
+  border-left-style: none;
+  border-left-width: 2px;
+  border-left-color: #D3D3D3;
+  border-right-style: none;
+  border-right-width: 2px;
+  border-right-color: #D3D3D3;
+}
+
+#qqpcgtjvqu .gt_sourcenote {
+  font-size: 90%;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+#qqpcgtjvqu .gt_left {
+  text-align: left;
+}
+
+#qqpcgtjvqu .gt_center {
+  text-align: center;
+}
+
+#qqpcgtjvqu .gt_right {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+#qqpcgtjvqu .gt_font_normal {
+  font-weight: normal;
+}
+
+#qqpcgtjvqu .gt_font_bold {
+  font-weight: bold;
+}
+
+#qqpcgtjvqu .gt_font_italic {
+  font-style: italic;
+}
+
+#qqpcgtjvqu .gt_super {
+  font-size: 65%;
+}
+
+#qqpcgtjvqu .gt_footnote_marks {
+  font-size: 75%;
+  vertical-align: 0.4em;
+  position: initial;
+}
+
+#qqpcgtjvqu .gt_asterisk {
+  font-size: 100%;
+  vertical-align: 0;
+}
+
+#qqpcgtjvqu .gt_indent_1 {
+  text-indent: 5px;
+}
+
+#qqpcgtjvqu .gt_indent_2 {
+  text-indent: 10px;
+}
+
+#qqpcgtjvqu .gt_indent_3 {
+  text-indent: 15px;
+}
+
+#qqpcgtjvqu .gt_indent_4 {
+  text-indent: 20px;
+}
+
+#qqpcgtjvqu .gt_indent_5 {
+  text-indent: 25px;
+}
+
+#qqpcgtjvqu .katex-display {
+  display: inline-flex !important;
+  margin-bottom: 0.75em !important;
+}
+
+#qqpcgtjvqu div.Reactable > div.rt-table > div.rt-thead > div.rt-tr.rt-tr-group-header > div.rt-th-group:after {
+  height: 0px !important;
+}
+</style>
+<div style="font-family:system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;border-top-style:solid;border-top-width:2px;border-top-color:#D3D3D3;">
+<div class="gt_heading gt_title gt_font_normal" style="text-size:bigger;">Tabela 6371 - Média de horas habitualmente trabalhadas por semana e efetivamente trabalhadas na semana de referência, no trabalho principal e em todos os trabalhos, das pessoas de 14 anos ou mais de idade, por sexo e por Unidade da Federação</div>
+<div class="gt_heading gt_subtitle ">Variável - Média de horas habitualmente trabalhadas por semana no trabalho principal das pessoas de 14 anos ou mais de idade (Horas)</div>
+</div>
+<div id="qqpcgtjvqu" class="reactable html-widget" style="width:auto;height:auto;"></div>
+<script type="application/json" data-for="qqpcgtjvqu">{"x":{"tag":{"name":"Reactable","attribs":{"data":{"year":[2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2023,2024,2024,2024,2024,2024,2024,2024,2024,2024,2024,2024,2024,2024,2024,2024,2024,2024,2024,2024,2024,2024,2024,2024,2024,2024,2024,2024,2024,2024,2024,2024,2024,2024,2024,2024,2024,2024,2024,2024,2024,2024,2024,2024,2024,2024,2024,2024,2024,2024,2024,2024,2024,2024,2024,2024,2024,2024,2024,2024,2024,2024,2024,2024,2024,2024,2024,2024,2024,2024,2024,2024,2024,2024,2024,2024,2024,2024,2024,2024,2024,2024,2024,2024,2024,2024,2024,2024,2024,2024,2024,2024,2024,2024,2024,2024,2024,2024,2024,2024,2024,2024,2024,2024,2024,2024,2024,2024,2024,2024,2024,2024,2024],"quarter":[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2,2],"sexo":["Homem","Mulher","Homem","Mulher","Homem","Mulher","Homem","Mulher","Homem","Mulher","Homem","Mulher","Homem","Mulher","Homem","Mulher","Homem","Mulher","Homem","Mulher","Homem","Mulher","Homem","Mulher","Homem","Mulher","Homem","Mulher","Homem","Mulher","Homem","Mulher","Homem","Mulher","Homem","Mulher","Homem","Mulher","Homem","Mulher","Homem","Mulher","Homem","Mulher","Homem","Mulher","Homem","Mulher","Homem","Mulher","Homem","Mulher","Homem","Mulher","Homem","Mulher","Homem","Mulher","Homem","Mulher","Homem","Mulher","Homem","Mulher","Homem","Mulher","Homem","Mulher","Homem","Mulher","Homem","Mulher","Homem","Mulher","Homem","Mulher","Homem","Mulher","Homem","Mulher","Homem","Mulher","Homem","Mulher","Homem","Mulher","Homem","Mulher","Homem","Mulher","Homem","Mulher","Homem","Mulher","Homem","Mulher","Homem","Mulher","Homem","Mulher","Homem","Mulher","Homem","Mulher","Homem","Mulher","Homem","Mulher","Homem","Mulher","Homem","Mulher","Homem","Mulher","Homem","Mulher","Homem","Mulher","Homem","Mulher","Homem","Mulher","Homem","Mulher","Homem","Mulher","Homem","Mulher","Homem","Mulher","Homem","Mulher","Homem","Mulher","Homem","Mulher","Homem","Mulher","Homem","Mulher","Homem","Mulher","Homem","Mulher","Homem","Mulher","Homem","Mulher","Homem","Mulher","Homem","Mulher","Homem","Mulher","Homem","Mulher","Homem","Mulher","Homem","Mulher","Homem","Mulher","Homem","Mulher","Homem","Mulher","Homem","Mulher","Homem","Mulher","Homem","Mulher","Homem","Mulher","Homem","Mulher","Homem","Mulher","Homem","Mulher","Homem","Mulher","Homem","Mulher","Homem","Mulher","Homem","Mulher","Homem","Mulher","Homem","Mulher","Homem","Mulher","Homem","Mulher","Homem","Mulher","Homem","Mulher","Homem","Mulher","Homem","Mulher","Homem","Mulher","Homem","Mulher","Homem","Mulher","Homem","Mulher","Homem","Mulher","Homem","Mulher","Homem","Mulher","Homem","Mulher","Homem","Mulher","Homem","Mulher","Homem","Mulher","Homem","Mulher","Homem","Mulher","Homem","Mulher","Homem","Mulher","Homem","Mulher","Homem","Mulher","Homem","Mulher","Homem","Mulher","Homem","Mulher","Homem","Mulher","Homem","Mulher","Homem","Mulher","Homem","Mulher","Homem","Mulher","Homem","Mulher","Homem","Mulher","Homem","Mulher","Homem","Mulher","Homem","Mulher","Homem","Mulher","Homem","Mulher","Homem","Mulher","Homem","Mulher","Homem","Mulher","Homem","Mulher","Homem","Mulher","Homem","Mulher","Homem","Mulher","Homem","Mulher","Homem","Mulher","Homem","Mulher","Homem","Mulher","Homem","Mulher","Homem","Mulher","Homem","Mulher","Homem","Mulher","Homem","Mulher","Homem","Mulher","Homem","Mulher","Homem","Mulher","Homem","Mulher","Homem","Mulher","Homem","Mulher","Homem","Mulher","Homem","Mulher","Homem","Mulher","Homem","Mulher","Homem","Mulher","Homem","Mulher","Homem","Mulher","Homem","Mulher","Homem","Mulher","Homem","Mulher","Homem","Mulher","Homem","Mulher"],"UF":["Rondônia","Rondônia","Acre","Acre","Amazonas","Amazonas","Roraima","Roraima","Pará","Pará","Amapá","Amapá","Tocantins","Tocantins","Maranhão","Maranhão","Piauí","Piauí","Ceará","Ceará","Rio Grande do Norte","Rio Grande do Norte","Paraíba","Paraíba","Pernambuco","Pernambuco","Alagoas","Alagoas","Sergipe","Sergipe","Bahia","Bahia","Minas Gerais","Minas Gerais","Espírito Santo","Espírito Santo","Rio de Janeiro","Rio de Janeiro","São Paulo","São Paulo","Paraná","Paraná","Santa Catarina","Santa Catarina","Rio Grande do Sul","Rio Grande do Sul","Mato Grosso do Sul","Mato Grosso do Sul","Mato Grosso","Mato Grosso","Goiás","Goiás","Distrito Federal","Distrito Federal","Brasil","Brasil","Rondônia","Rondônia","Acre","Acre","Amazonas","Amazonas","Roraima","Roraima","Pará","Pará","Amapá","Amapá","Tocantins","Tocantins","Maranhão","Maranhão","Piauí","Piauí","Ceará","Ceará","Rio Grande do Norte","Rio Grande do Norte","Paraíba","Paraíba","Pernambuco","Pernambuco","Alagoas","Alagoas","Sergipe","Sergipe","Bahia","Bahia","Minas Gerais","Minas Gerais","Espírito Santo","Espírito Santo","Rio de Janeiro","Rio de Janeiro","São Paulo","São Paulo","Paraná","Paraná","Santa Catarina","Santa Catarina","Rio Grande do Sul","Rio Grande do Sul","Mato Grosso do Sul","Mato Grosso do Sul","Mato Grosso","Mato Grosso","Goiás","Goiás","Distrito Federal","Distrito Federal","Brasil","Brasil","Rondônia","Rondônia","Acre","Acre","Amazonas","Amazonas","Roraima","Roraima","Pará","Pará","Amapá","Amapá","Tocantins","Tocantins","Maranhão","Maranhão","Piauí","Piauí","Ceará","Ceará","Rio Grande do Norte","Rio Grande do Norte","Paraíba","Paraíba","Pernambuco","Pernambuco","Alagoas","Alagoas","Sergipe","Sergipe","Bahia","Bahia","Minas Gerais","Minas Gerais","Espírito Santo","Espírito Santo","Rio de Janeiro","Rio de Janeiro","São Paulo","São Paulo","Paraná","Paraná","Santa Catarina","Santa Catarina","Rio Grande do Sul","Rio Grande do Sul","Mato Grosso do Sul","Mato Grosso do Sul","Mato Grosso","Mato Grosso","Goiás","Goiás","Distrito Federal","Distrito Federal","Brasil","Brasil","Rondônia","Rondônia","Acre","Acre","Amazonas","Amazonas","Roraima","Roraima","Pará","Pará","Amapá","Amapá","Tocantins","Tocantins","Maranhão","Maranhão","Piauí","Piauí","Ceará","Ceará","Rio Grande do Norte","Rio Grande do Norte","Paraíba","Paraíba","Pernambuco","Pernambuco","Alagoas","Alagoas","Sergipe","Sergipe","Bahia","Bahia","Minas Gerais","Minas Gerais","Espírito Santo","Espírito Santo","Rio de Janeiro","Rio de Janeiro","São Paulo","São Paulo","Paraná","Paraná","Santa Catarina","Santa Catarina","Rio Grande do Sul","Rio Grande do Sul","Mato Grosso do Sul","Mato Grosso do Sul","Mato Grosso","Mato Grosso","Goiás","Goiás","Distrito Federal","Distrito Federal","Brasil","Brasil","Rondônia","Rondônia","Acre","Acre","Amazonas","Amazonas","Roraima","Roraima","Pará","Pará","Amapá","Amapá","Tocantins","Tocantins","Maranhão","Maranhão","Piauí","Piauí","Ceará","Ceará","Rio Grande do Norte","Rio Grande do Norte","Paraíba","Paraíba","Pernambuco","Pernambuco","Alagoas","Alagoas","Sergipe","Sergipe","Bahia","Bahia","Minas Gerais","Minas Gerais","Espírito Santo","Espírito Santo","Rio de Janeiro","Rio de Janeiro","São Paulo","São Paulo","Paraná","Paraná","Santa Catarina","Santa Catarina","Rio Grande do Sul","Rio Grande do Sul","Mato Grosso do Sul","Mato Grosso do Sul","Mato Grosso","Mato Grosso","Goiás","Goiás","Distrito Federal","Distrito Federal","Brasil","Brasil","Rondônia","Rondônia","Acre","Acre","Amazonas","Amazonas","Roraima","Roraima","Pará","Pará","Amapá","Amapá","Tocantins","Tocantins","Maranhão","Maranhão","Piauí","Piauí","Ceará","Ceará","Rio Grande do Norte","Rio Grande do Norte","Paraíba","Paraíba","Pernambuco","Pernambuco","Alagoas","Alagoas","Sergipe","Sergipe","Bahia","Bahia","Minas Gerais","Minas Gerais","Espírito Santo","Espírito Santo","Rio de Janeiro","Rio de Janeiro","São Paulo","São Paulo","Paraná","Paraná","Santa Catarina","Santa Catarina","Rio Grande do Sul","Rio Grande do Sul","Mato Grosso do Sul","Mato Grosso do Sul","Mato Grosso","Mato Grosso","Goiás","Goiás","Distrito Federal","Distrito Federal","Brasil","Brasil"],"media":[40.9955383430815,37.8624801645437,39.0294084479597,37.1415649491084,38.3389403627217,35.2097324637592,41.1833075390943,37.9596051924224,39.3779123884116,34.9888694006794,39.4089553741997,37.2046847472313,40.8273850728641,36.3526587439523,38.5417876909611,34.3341553880907,37.5122206026793,34.7855773258461,39.0996044909177,35.5278730126976,39.7814684581756,36.7573281098377,39.4236560462224,35.772667131601,40.7441542089086,37.2994348660729,39.8489134015254,36.7325618580632,39.1729606507878,34.5326866166722,39.1243934236633,35.0637433453126,42.86056019917,37.9888433852526,41.681484982408,37.6846592157192,41.9868399518022,37.6780006558194,42.7483609986545,38.7264496681466,42.447527150774,38.1959674222477,42.6788808886672,39.7576526411039,42.7077249271525,38.8019583173713,42.9895388397957,37.8276270547159,43.0702928996821,38.3040542613357,42.3850577446615,38.2518033461724,42.6500705288053,38.2704346147664,41.590296951973,37.6304801242227,41.2305692843928,37.7328191634751,38.2999638939059,36.691053508154,38.3913369807156,35.2324714581647,40.3311195196971,37.2630669445558,39.6735895332863,34.4589271972015,39.3960069156589,37.4140435721351,40.364022418937,35.7327911660633,38.5770527019047,34.1899735320403,37.7471251970979,33.829934469906,38.7359749198601,35.2808705572179,39.4263257922724,36.1016687852331,39.698671986894,35.40289421287,40.3639176628425,36.5403638324299,39.8789778741252,36.1216595722072,38.9228674089212,34.4627150713521,39.3415178246003,34.9095177852453,42.4855551886985,37.5045408472953,41.8959326358046,37.8949829796223,41.9171722242978,37.6493462137467,42.8637349137573,38.8716225583523,42.2753357774407,38.1068122993704,42.5211296288578,39.7606875488169,42.7415498582663,38.4578472193137,42.5697128936638,36.6385968820338,43.2567943820919,38.4581156604258,42.4233482525714,38.0173178166517,42.3596907528761,38.6271296985212,41.5460502358605,37.4608090623623,41.5452240501727,37.5422333383114,37.8874241241359,36.3289062758361,38.4460570932832,35.3146781233317,41.6270655787222,37.3641515461692,39.8033973413737,34.684886749002,39.9316124696041,37.745107736498,40.9677185372929,36.631701140819,38.3047692347207,34.0570519669652,36.9444039227748,32.9473789387458,38.8989129384141,34.794396472423,39.6484851380131,36.583073994574,38.610013606442,34.2486002223074,40.3759404949424,36.5998634002284,39.2972151286509,35.6880947398704,39.3202181370081,33.9664203633347,39.1657779305387,34.7139356115348,42.5804679270445,37.6105325166395,41.4637364210549,37.2706242296596,41.9375399427912,37.5046558937893,42.6190553313481,38.485898420825,41.9460861786375,38.1573044039778,42.4287992354428,39.4821058791702,42.5909111897942,38.2960050881257,42.5345281930046,37.5018561560204,42.7473740146451,37.910865942475,42.0903612979486,37.8701531189426,42.0421482618672,37.979864585725,41.4008472093598,37.257885834327,39.4975402846921,37.1829296790758,38.2796346451382,35.932737465039,38.3854193776507,34.6189156311791,41.8560145199401,37.8880844230181,40.0428444609226,35.3768182329649,39.7380296694539,37.3748793114996,40.4402193842336,36.5446619559196,37.8361698309628,34.1121865922494,38.3696232500812,33.6794051567207,38.6807203981141,35.2743288743968,39.445947347762,36.529770850352,39.306977691201,34.8244893438862,39.9875633567409,36.5291276495717,39.3333131088793,35.4299610200434,39.6187188105357,34.2630639735301,39.2948684120256,34.5104022423338,42.4885415980898,37.7966899017641,41.168151831559,37.3097490185802,41.9299993790897,37.5897922243408,42.7127813848284,38.4276574515883,42.4879531955476,38.1638972366113,42.7269171894063,39.7428042834637,42.8090762401002,38.4051456274462,42.8661855351778,37.7033116988386,43.3729962120435,37.7762208999956,42.1989577521384,37.8390805009156,41.9161878055553,38.2876236955225,41.4800335291238,37.3289557093989,40.2932780430067,37.6336426891378,38.7074103527737,36.1720519517549,38.1658406230924,35.1104767460917,41.8758888074125,37.7198923038383,40.0711141677571,35.4511731018394,39.2731699726242,36.5644270967092,41.1819786442455,36.3331387850483,38.2033417917407,34.5555319415679,37.4663980992442,33.1280561569235,38.4515072733458,35.4148073732381,40.3533512073603,36.8902635757019,39.4791081789224,35.2635387304843,40.4021727471409,36.0557061429982,39.2478515454619,35.4408872116286,39.5778203197087,35.2187518716438,39.7958273098895,35.5575186751908,42.5195958241838,37.6813025214125,41.4966202428789,37.6509672448082,42.1675301238696,37.7384715815865,42.7936029206464,38.9607630487238,42.4367664589505,38.192407881193,42.534765806584,39.5256469934339,43.190506869562,38.7548903642521,43.1700411671801,38.0440681842868,43.1846464181189,37.8246320490494,42.0376164888486,37.6190488852122,41.6850894589347,38.2315572853951,41.5941916923761,37.570498327375,41.1584828414956,37.3672085448461,38.0644570955638,35.9965121815137,39.0422235281179,35.4982157206967,42.4903431717897,37.7052002052118,40.1782237353087,35.0588487697068,39.6339978291792,36.2033380206402,40.2622943690603,36.3038897533401,37.9662132337232,34.4267467992508,36.5925414625119,33.6491383030281,38.3771345851077,35.706390521751,39.4890972317469,36.5749391643932,39.2945780711428,35.5558540081623,40.3768746792152,36.0547698769048,39.4556496317842,35.8945296919297,40.0776679840065,35.8269793008773,39.5776718965156,35.2036095902978,42.6336632559441,37.6034752114319,41.784956665617,37.6396572157466,42.1375737543548,37.4014631540244,43.0027362978059,38.9220875110991,42.2302195778718,38.1595174145547,42.5247973599267,39.5537244712296,43.164340002386,38.7099233082909,42.9635902433433,37.5856977332623,43.2247809097094,38.1832110675909,42.4748184347548,37.4801910371296,42.0940561444194,38.1308948788258,41.6348492023399,37.4985739552453],"cv":[0.00610836785328382,0.00907834072536387,0.00697898541445092,0.010905305187187,0.0096897711979481,0.0105940602292674,0.00692727491769221,0.0113676612686495,0.00787079514977901,0.0105859265606551,0.0126951535385489,0.0129666861868493,0.00949305399356073,0.010528111913496,0.0055036651357776,0.00695476036123177,0.0110332092410269,0.0132843877243673,0.00587866290183292,0.00800109976526951,0.00988131367309322,0.0132059666412547,0.00760763760222169,0.0108636245024114,0.00566735681004083,0.00741759116945259,0.00675086186605271,0.00805059594050724,0.0102669082581733,0.011963662420228,0.00619417969308253,0.00991214452711712,0.00361564379539052,0.00566963409871706,0.00452914183961365,0.00679368763486985,0.00359715458468309,0.00484205576928448,0.00323651408955774,0.00438323693765012,0.0039948688600229,0.00535008208583808,0.00367933074544594,0.00397901729289207,0.00408261489148946,0.00479678182772257,0.00533204479121352,0.00882542334760669,0.00542509706736852,0.00893393371186615,0.00504923106274883,0.00720607077726123,0.00851775345048736,0.00940125767251399,0.00115773144383334,0.00173065862601821,0.00629720777467012,0.0108278386902305,0.00616792194956741,0.00754143958290142,0.00720352945715841,0.00948552222924428,0.00922946945331811,0.0151931273524254,0.00794134569876365,0.0103301530930072,0.0156067658983999,0.0123075825281246,0.00806373649549122,0.0124993220307999,0.00582075780146959,0.0065343767987945,0.00987600589352975,0.0125574580088813,0.00610213173703376,0.00848612784447107,0.00863638585923888,0.0109751001604681,0.00778779381761985,0.0100315884709771,0.00547462280955821,0.00817157998409634,0.00726297736175783,0.00868559112169493,0.00948083070691495,0.0137233283120139,0.00609229526069171,0.00945578676139967,0.00410805770039996,0.00520082510257483,0.00446304553830568,0.00813134731670408,0.00371640754581925,0.00484585141167188,0.00343160847306756,0.00477325454965167,0.00330973234737845,0.00456507029326226,0.00279418651473193,0.0039618756499424,0.00402273251844765,0.0053471589004689,0.00534568386930723,0.00821525272665444,0.00500216912940249,0.00722339500284741,0.0047561280861729,0.0067678869033218,0.00600057012683277,0.00755047414974162,0.00123219662983491,0.00173364672966585,0.00599265654446691,0.011041524569661,0.00794695221815236,0.00727248751056024,0.00889307420710734,0.0109371321935302,0.00851611490960275,0.0121339861824511,0.0070912382998662,0.0111471845333735,0.0124130773891546,0.0121176130560988,0.00649222348594655,0.0110075893115018,0.00523491749060358,0.00798600488861134,0.00980349639570994,0.012442502649977,0.0063191312374155,0.00892691449137148,0.00811522852808967,0.0111299338496491,0.00929232300738717,0.011665742363557,0.00582768135577057,0.00754358495835152,0.00568379484565153,0.00799632317551678,0.00958353763688752,0.0138270946970574,0.00727533493390907,0.00883429699735695,0.00378150357586782,0.00577542447047662,0.0042952024886167,0.00660986260334337,0.00428344038638537,0.00560260012682905,0.00317170021397403,0.00413010210678151,0.00357223286515638,0.00489688622404756,0.0028012426016658,0.00406748721512384,0.00407949727771838,0.00579357856316376,0.00527303925019546,0.00745489046467004,0.00499694434765093,0.0072338193032762,0.00515343790244987,0.00725820067631387,0.00632421152671875,0.00705951953968426,0.00116608866271747,0.00177091124038361,0.00911351729942587,0.0126055806974769,0.00648921738498942,0.00967950458691504,0.00854042990012016,0.00997074941327016,0.00911613045776445,0.0126183637793483,0.00676990060493577,0.00909406471325433,0.0139154816216741,0.0125589705905836,0.00803795619131221,0.0101982968061002,0.0055354033002423,0.00745199062699634,0.00945766103596786,0.0132733497427317,0.00588561803528442,0.00882273963510539,0.0062926761202019,0.0106381052383774,0.0108636195742773,0.0137986254110263,0.00658236751023213,0.00844753117438509,0.00572198330989077,0.008968225822068,0.0103276515590075,0.013278208432946,0.0086404416283035,0.00941766095900816,0.003621354648299,0.00525609406398029,0.00490310286762372,0.00576149087658635,0.00369900492886411,0.00532865841563474,0.00285075265397702,0.00397698078095434,0.00348759105815313,0.00518263795161768,0.00300455674416749,0.00352865051790867,0.0039073130403662,0.00578795913929798,0.00575297183520466,0.00821520132927364,0.00489757991648756,0.00923625461998468,0.00522761253984582,0.00631443849327815,0.00605572849123382,0.0084100421442691,0.00117979261888284,0.00163492591746169,0.00639635904944193,0.00775647818502271,0.00742154501324127,0.00970039244040571,0.0058561017733601,0.00733574576860785,0.00945057996418855,0.0104524493069485,0.00698901540245889,0.00946719342627842,0.0139527853550536,0.0134842037426508,0.00851186435550967,0.0100581455182427,0.00548604565171474,0.00816361959404494,0.00941185360443937,0.0122925320778785,0.00557843848777092,0.00807238387832413,0.0100452973917878,0.0122641001495282,0.00640883315288059,0.0106723170237193,0.00623247990554171,0.00896270232944573,0.00564990557770109,0.00691112085821555,0.00972202161108426,0.0142004863529694,0.00686088018758565,0.00927226598178572,0.00345399327012876,0.00491303155748516,0.00412176290867092,0.00545205908546053,0.00348827088611945,0.00521043417409835,0.00336742075255285,0.003995719061658,0.0039010901760675,0.00497715834270554,0.00265946090440432,0.00381712874557147,0.00378787261906553,0.00513806053307043,0.00604109577224646,0.00770257936186077,0.00465393844359282,0.0077228571070962,0.00443007170294192,0.00652845393227434,0.00669042058699231,0.00857414132641773,0.00119748308285378,0.00152518676646465,0.00703396332029079,0.0101958825902757,0.00710597665480708,0.0102029886758418,0.00678401703726805,0.00923937635499323,0.00832074852139268,0.0137776582670491,0.00794056174559379,0.0103162661656736,0.0150200907069488,0.0163114289606818,0.00771549286682763,0.0116909439557158,0.00479478566650941,0.0073791658884956,0.00896124573673059,0.0131248531178514,0.00617918059364859,0.00837131491683816,0.00754423745583835,0.0114204267229372,0.00789224281158652,0.0104413855637752,0.00549742728224526,0.00823566739256051,0.00580958153173895,0.00887676306999646,0.0104871941567029,0.0130102711249005,0.00685220835144618,0.00822756927221365,0.00346576304574656,0.00518463167977773,0.00460773688425816,0.00620391583402616,0.00338882475196939,0.00515353882614374,0.00314759245153037,0.00362300664030537,0.00329588302626149,0.00477059552703358,0.00240759080694903,0.00361163194841489,0.00422211358945136,0.00588260981251375,0.00555671162564206,0.00837457266779325,0.00461833586079135,0.00697253597184274,0.00510519035566492,0.00669864940352521,0.00573133000181575,0.00745696660243735,0.00105867783885227,0.00147561335565296]},"columns":[{"id":"year","name":"Ano","type":"numeric","na":"NA","minWidth":125,"style":"function(rowInfo, colInfo) {\nconst rowIndex = rowInfo.index + 1\n}","html":true,"align":"right"},{"id":"quarter","name":"Trimestre","type":"numeric","na":"NA","minWidth":125,"style":"function(rowInfo, colInfo) {\nconst rowIndex = rowInfo.index + 1\n}","html":true,"align":"right"},{"id":"sexo","name":"Sexo","type":"character","na":"NA","minWidth":125,"style":"function(rowInfo, colInfo) {\nconst rowIndex = rowInfo.index + 1\n}","html":true,"align":"left"},{"id":"UF","name":"Brasil e Unidades da Federação","type":"character","na":"NA","minWidth":125,"style":"function(rowInfo, colInfo) {\nconst rowIndex = rowInfo.index + 1\n}","html":true,"align":"left"},{"id":"media","name":"Média","type":"numeric","na":"NA","minWidth":125,"style":"function(rowInfo, colInfo) {\nconst rowIndex = rowInfo.index + 1\n}","cell":["41.0","37.9","39.0","37.1","38.3","35.2","41.2","38.0","39.4","35.0","39.4","37.2","40.8","36.4","38.5","34.3","37.5","34.8","39.1","35.5","39.8","36.8","39.4","35.8","40.7","37.3","39.8","36.7","39.2","34.5","39.1","35.1","42.9","38.0","41.7","37.7","42.0","37.7","42.7","38.7","42.4","38.2","42.7","39.8","42.7","38.8","43.0","37.8","43.1","38.3","42.4","38.3","42.7","38.3","41.6","37.6","41.2","37.7","38.3","36.7","38.4","35.2","40.3","37.3","39.7","34.5","39.4","37.4","40.4","35.7","38.6","34.2","37.7","33.8","38.7","35.3","39.4","36.1","39.7","35.4","40.4","36.5","39.9","36.1","38.9","34.5","39.3","34.9","42.5","37.5","41.9","37.9","41.9","37.6","42.9","38.9","42.3","38.1","42.5","39.8","42.7","38.5","42.6","36.6","43.3","38.5","42.4","38.0","42.4","38.6","41.5","37.5","41.5","37.5","37.9","36.3","38.4","35.3","41.6","37.4","39.8","34.7","39.9","37.7","41.0","36.6","38.3","34.1","36.9","32.9","38.9","34.8","39.6","36.6","38.6","34.2","40.4","36.6","39.3","35.7","39.3","34.0","39.2","34.7","42.6","37.6","41.5","37.3","41.9","37.5","42.6","38.5","41.9","38.2","42.4","39.5","42.6","38.3","42.5","37.5","42.7","37.9","42.1","37.9","42.0","38.0","41.4","37.3","39.5","37.2","38.3","35.9","38.4","34.6","41.9","37.9","40.0","35.4","39.7","37.4","40.4","36.5","37.8","34.1","38.4","33.7","38.7","35.3","39.4","36.5","39.3","34.8","40.0","36.5","39.3","35.4","39.6","34.3","39.3","34.5","42.5","37.8","41.2","37.3","41.9","37.6","42.7","38.4","42.5","38.2","42.7","39.7","42.8","38.4","42.9","37.7","43.4","37.8","42.2","37.8","41.9","38.3","41.5","37.3","40.3","37.6","38.7","36.2","38.2","35.1","41.9","37.7","40.1","35.5","39.3","36.6","41.2","36.3","38.2","34.6","37.5","33.1","38.5","35.4","40.4","36.9","39.5","35.3","40.4","36.1","39.2","35.4","39.6","35.2","39.8","35.6","42.5","37.7","41.5","37.7","42.2","37.7","42.8","39.0","42.4","38.2","42.5","39.5","43.2","38.8","43.2","38.0","43.2","37.8","42.0","37.6","41.7","38.2","41.6","37.6","41.2","37.4","38.1","36.0","39.0","35.5","42.5","37.7","40.2","35.1","39.6","36.2","40.3","36.3","38.0","34.4","36.6","33.6","38.4","35.7","39.5","36.6","39.3","35.6","40.4","36.1","39.5","35.9","40.1","35.8","39.6","35.2","42.6","37.6","41.8","37.6","42.1","37.4","43.0","38.9","42.2","38.2","42.5","39.6","43.2","38.7","43.0","37.6","43.2","38.2","42.5","37.5","42.1","38.1","41.6","37.5"],"html":true,"align":"right"},{"id":"cv","name":"Coeficiente de Variação","type":"numeric","na":"NA","minWidth":125,"style":"function(rowInfo, colInfo) {\nconst rowIndex = rowInfo.index + 1\n}","cell":["0.6%","0.9%","0.7%","1.1%","1.0%","1.1%","0.7%","1.1%","0.8%","1.1%","1.3%","1.3%","0.9%","1.1%","0.6%","0.7%","1.1%","1.3%","0.6%","0.8%","1.0%","1.3%","0.8%","1.1%","0.6%","0.7%","0.7%","0.8%","1.0%","1.2%","0.6%","1.0%","0.4%","0.6%","0.5%","0.7%","0.4%","0.5%","0.3%","0.4%","0.4%","0.5%","0.4%","0.4%","0.4%","0.5%","0.5%","0.9%","0.5%","0.9%","0.5%","0.7%","0.9%","0.9%","0.1%","0.2%","0.6%","1.1%","0.6%","0.8%","0.7%","0.9%","0.9%","1.5%","0.8%","1.0%","1.6%","1.2%","0.8%","1.2%","0.6%","0.7%","1.0%","1.3%","0.6%","0.8%","0.9%","1.1%","0.8%","1.0%","0.5%","0.8%","0.7%","0.9%","0.9%","1.4%","0.6%","0.9%","0.4%","0.5%","0.4%","0.8%","0.4%","0.5%","0.3%","0.5%","0.3%","0.5%","0.3%","0.4%","0.4%","0.5%","0.5%","0.8%","0.5%","0.7%","0.5%","0.7%","0.6%","0.8%","0.1%","0.2%","0.6%","1.1%","0.8%","0.7%","0.9%","1.1%","0.9%","1.2%","0.7%","1.1%","1.2%","1.2%","0.6%","1.1%","0.5%","0.8%","1.0%","1.2%","0.6%","0.9%","0.8%","1.1%","0.9%","1.2%","0.6%","0.8%","0.6%","0.8%","1.0%","1.4%","0.7%","0.9%","0.4%","0.6%","0.4%","0.7%","0.4%","0.6%","0.3%","0.4%","0.4%","0.5%","0.3%","0.4%","0.4%","0.6%","0.5%","0.7%","0.5%","0.7%","0.5%","0.7%","0.6%","0.7%","0.1%","0.2%","0.9%","1.3%","0.6%","1.0%","0.9%","1.0%","0.9%","1.3%","0.7%","0.9%","1.4%","1.3%","0.8%","1.0%","0.6%","0.7%","0.9%","1.3%","0.6%","0.9%","0.6%","1.1%","1.1%","1.4%","0.7%","0.8%","0.6%","0.9%","1.0%","1.3%","0.9%","0.9%","0.4%","0.5%","0.5%","0.6%","0.4%","0.5%","0.3%","0.4%","0.3%","0.5%","0.3%","0.4%","0.4%","0.6%","0.6%","0.8%","0.5%","0.9%","0.5%","0.6%","0.6%","0.8%","0.1%","0.2%","0.6%","0.8%","0.7%","1.0%","0.6%","0.7%","0.9%","1.0%","0.7%","0.9%","1.4%","1.3%","0.9%","1.0%","0.5%","0.8%","0.9%","1.2%","0.6%","0.8%","1.0%","1.2%","0.6%","1.1%","0.6%","0.9%","0.6%","0.7%","1.0%","1.4%","0.7%","0.9%","0.3%","0.5%","0.4%","0.5%","0.3%","0.5%","0.3%","0.4%","0.4%","0.5%","0.3%","0.4%","0.4%","0.5%","0.6%","0.8%","0.5%","0.8%","0.4%","0.7%","0.7%","0.9%","0.1%","0.2%","0.7%","1.0%","0.7%","1.0%","0.7%","0.9%","0.8%","1.4%","0.8%","1.0%","1.5%","1.6%","0.8%","1.2%","0.5%","0.7%","0.9%","1.3%","0.6%","0.8%","0.8%","1.1%","0.8%","1.0%","0.5%","0.8%","0.6%","0.9%","1.0%","1.3%","0.7%","0.8%","0.3%","0.5%","0.5%","0.6%","0.3%","0.5%","0.3%","0.4%","0.3%","0.5%","0.2%","0.4%","0.4%","0.6%","0.6%","0.8%","0.5%","0.7%","0.5%","0.7%","0.6%","0.7%","0.1%","0.1%"],"html":true,"align":"right"}],"defaultPageSize":10,"showPageSizeOptions":false,"pageSizeOptions":[10,25,50,100],"paginationType":"numbers","showPagination":true,"showPageInfo":true,"minRows":1,"height":"auto","theme":{"color":"#333333","backgroundColor":"#FFFFFF","stripedColor":"rgba(128,128,128,0.05)","style":{"font-family":"system-ui, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif","fontSize":"16px"},"tableStyle":{"borderTopStyle":"solid","borderTopWidth":"2px","borderTopColor":"#D3D3D3"},"headerStyle":{"fontWeight":"normal","backgroundColor":"transparent","borderBottomStyle":"solid","borderBottomWidth":"2px","borderBottomColor":"#D3D3D3"},"groupHeaderStyle":{"fontWeight":"normal","backgroundColor":"transparent","borderBottomStyle":"solid","borderBottomWidth":"2px","borderBottomColor":"#D3D3D3"},"cellStyle":{"fontWeight":"normal"}},"elementId":"qqpcgtjvqu","dataKey":"6313a9409c23bfbd9846dadbc606a8d8"},"children":[]},"class":"reactR_markup"},"evals":["tag.attribs.columns.0.style","tag.attribs.columns.1.style","tag.attribs.columns.2.style","tag.attribs.columns.3.style","tag.attribs.columns.4.style","tag.attribs.columns.5.style"],"jsHooks":[]}</script>
+</div>
+</div>
+</div>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copiada");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copiada");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    // For code content inside modals, clipBoardJS needs to be initialized with a container option
+    // TODO: Check when it could be a function (https://github.com/zenorocha/clipboard.js/issues/860)
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

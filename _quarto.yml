@@ -26,6 +26,11 @@ website:
       - section: "Tabela 4099 - Taxa de desocupação"
         contents: 
           - tabela4099.qmd
+          - grafico4099.qmd
+      - section: "Tabela 6371 - Média de horas habitualmente trabalhada"
+        contents: 
+          - tabela6371.qmd
+          - grafico6371.qmd
 
 format:
   html:
