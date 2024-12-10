@@ -339,5 +339,45 @@
       "Tabela 6371 - Média de horas habitualmente trabalhada",
       "Reproduzindo a tabela"
     ]
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Introdução",
+    "section": "",
+    "text": "Os artigos apresentados tem como objetivo reproduzir resultados do SIDRA usando dados da PNAD Contínua, através dos pacotes PNADcIBGE e survey da linguagem R. Além disso, alguns artigos demonstram o uso dos dados obtidos na contrução de gráficos usando pacotes como ggplot2 e geobr.\n\n\nAntes de começar, certifique-se que os pacotes necessários estão instalados em suas versões mais recentes.\n\ninstall.packages('PNADcIBGE') \ninstall.packages('survey')\n\n\n\n\nO pacote PNADcIBGE permite importar os dados online através da função get_pnadc ou carregá-los diretamente de arquivos salvos em disco offline, através das funções read_pnadc e pnadc_design.\nOs objetos obtidos a partir da função get_pnadc podem ocupar mais de 1,5 GB, se selecionadas todas as variáveis do trimestre. Portanto, se você deseja reproduzir as estimativas de uma tabela do SIDRA para um número grande de trimestres, é provável que a memória RAM de sua máquina não suporte todos os objetos de uma só vez. Assim, o ideal para um estimativas de um período grande é remover os objetos obtidos de cada trimestre após calcular suas estimativas. Caso deseje reutilizar o objeto, é possível salvá-lo na memória principal de sua máquina, eliminando a necessidade de baixá-lo novamente com a função get_pnadc, que pode ser um processo lento a depender de sua conexão.\n\n# Importando online\ndadosPNADc &lt;- get_pnadc(year=2024, quarter=2)\n\n# Importando offline\ndadosPNADc &lt;- read_pnadc(microdata=\"PNADC_022024.txt\", input_txt=\"input_PNADC_trimestral.txt\")\ndadosPNADc &lt;- pnadc_design(data_pnadc=dadosPNADc)\n\n# Salvando objeto na máquina\nsaveRDS(object = dadosPNADC, file = \"dadospnad.RDS\")\n\n# Recarregando objeto salvo na máquina\ndadosPNADc = readRDS(\"dadospnad.RDS\")\n\n\n\n\n\nTutorial do desenvolvedor do pacote PNADcIBGE, Gabriel Assuncao: https://rpubs.com/gabriel-assuncao-ibge/pnadc ;\nTabelas do SIDRA: https://sidra.ibge.gov.br/pesquisa/pnadct/tabelas ;\nDocumentação do pacote survey: https://cran.r-project.org/web/packages/survey/survey.pdf ;",
+    "crumbs": [
+      "Introdução"
+    ]
+  },
+  {
+    "objectID": "index.html#preparação",
+    "href": "index.html#preparação",
+    "title": "Introdução",
+    "section": "",
+    "text": "Antes de começar, certifique-se que os pacotes necessários estão instalados em suas versões mais recentes.\n\ninstall.packages('PNADcIBGE') \ninstall.packages('survey')",
+    "crumbs": [
+      "Introdução"
+    ]
+  },
+  {
+    "objectID": "index.html#opções-de-importação",
+    "href": "index.html#opções-de-importação",
+    "title": "Introdução",
+    "section": "",
+    "text": "O pacote PNADcIBGE permite importar os dados online através da função get_pnadc ou carregá-los diretamente de arquivos salvos em disco offline, através das funções read_pnadc e pnadc_design.\nOs objetos obtidos a partir da função get_pnadc podem ocupar mais de 1,5 GB, se selecionadas todas as variáveis do trimestre. Portanto, se você deseja reproduzir as estimativas de uma tabela do SIDRA para um número grande de trimestres, é provável que a memória RAM de sua máquina não suporte todos os objetos de uma só vez. Assim, o ideal para um estimativas de um período grande é remover os objetos obtidos de cada trimestre após calcular suas estimativas. Caso deseje reutilizar o objeto, é possível salvá-lo na memória principal de sua máquina, eliminando a necessidade de baixá-lo novamente com a função get_pnadc, que pode ser um processo lento a depender de sua conexão.\n\n# Importando online\ndadosPNADc &lt;- get_pnadc(year=2024, quarter=2)\n\n# Importando offline\ndadosPNADc &lt;- read_pnadc(microdata=\"PNADC_022024.txt\", input_txt=\"input_PNADC_trimestral.txt\")\ndadosPNADc &lt;- pnadc_design(data_pnadc=dadosPNADc)\n\n# Salvando objeto na máquina\nsaveRDS(object = dadosPNADC, file = \"dadospnad.RDS\")\n\n# Recarregando objeto salvo na máquina\ndadosPNADc = readRDS(\"dadospnad.RDS\")",
+    "crumbs": [
+      "Introdução"
+    ]
+  },
+  {
+    "objectID": "index.html#links-importantes",
+    "href": "index.html#links-importantes",
+    "title": "Introdução",
+    "section": "",
+    "text": "Tutorial do desenvolvedor do pacote PNADcIBGE, Gabriel Assuncao: https://rpubs.com/gabriel-assuncao-ibge/pnadc ;\nTabelas do SIDRA: https://sidra.ibge.gov.br/pesquisa/pnadct/tabelas ;\nDocumentação do pacote survey: https://cran.r-project.org/web/packages/survey/survey.pdf ;",
+    "crumbs": [
+      "Introdução"
+    ]
   }
 ]
