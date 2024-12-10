@@ -1,0 +1,74 @@
+---
+title: "Criando gráfico de barras"
+lang: pt
+---
+
+## Objetivo
+
+Criar gráfico de barras a partir dos dados estimados da [**tabela 6371**](https://sidra.ibge.gov.br/tabela/6371).
+
+```{r tabela1, echo=FALSE}
+df <- readRDS("DADOS/dadosTAB6371.RDS")
+```
+
+## Gráfico
+
+Usando o pacote `ggplot2` é possível criar diversos tipos de gráfico. Os gráficos gerados com o `ggplot2` usam como base dados no formato `tidy`. Dessa forma, usaremos os pacotes `dplyr`, `tidyr` e `tidytext` para formatar os dados obtidos anteriormente.
+
+```{r grafico, message=F, warning=F, out.width="100%", fig.align='center', dpi=600, fig.width = 12, fig.height = 8}
+# Carregando pacotes
+library(dplyr)
+library(ggplot2)
+library(tidytext)
+
+# Criando gráfico
+
+df |>
+  # Seleciona dados do segundo trimestre de 2024
+  filter(year == 2024, quarter == 2) |> 
+  # Agrupa por sexo
+  group_by(sexo) |>
+  # Adequa formato/ordem das colunas 
+  mutate(sexo = as.factor(sexo),
+         # Cria coluna para diferenciar Brasil de UFs para auxiliar nas cores do gráfico
+         tipo = ifelse(UF == "Brasil","Brasil","UF"),
+         # Ordena coluna UF pela média dentro dos grupos (sexo)
+         UF = reorder_within(UF,media,sexo)) |> 
+  ggplot() +
+  # Definindo o tipo de gráfico (colunas). Ordena as colunas com base no valor
+  geom_col(aes(y=UF, x = media, fill = tipo)) +
+  # Adicionando o texto com o valor em cada coluna
+  geom_text(aes(y=UF, x = media, label = round(media,1)), 
+            color = 'white', fontface = 'bold',hjust = 1.1, size = 3.2) +
+  # Definindo a cor de preenchimento das colunas
+  scale_fill_manual(values = c("#ffbd7d",'#004282')) +
+  # Usa escala reordenada para o eixo y
+  scale_y_reordered() +
+  # Altera o tema do gráfico para "minimal"
+  theme_minimal() +
+  # Adiciona facetas por sexo com escala livre
+  facet_wrap(~sexo, scales = 'free_y') +
+  # Adiciona título e subtitulo
+  labs(
+    title = 'Média de horas habitualmente trabalhadas por semana no trabalho principal',
+    subtitle = 'Pesquisa Nacional por Amostra de Domicílios Contínua Trimestral - Dados de 2023 e 2024'
+  ) +
+  # Faz ajustes no tema do gráfico
+  theme(legend.position = 'none',
+        axis.text = element_text(face = 'bold', size = 11,
+                                   colour = 'gray15'),
+        axis.title = element_blank(),
+        plot.title = element_text(face = 'bold', size = 18),
+        plot.subtitle = element_text(face = 'italic', size = 15),
+        plot.title.position = "plot", 
+        plot.caption.position =  "plot",
+        strip.background = element_rect(fill = 'gray'),
+        strip.text = element_text(color = "white", face = "bold",size = 15)
+        ) 
+```
+
+Usando o comando `ggsave()` é possível salvar a imagem em PNG.
+
+```{r salva, eval=F}
+ggsave('grafico1.png',dpi = 600,width = 9,height = 7)
+```
